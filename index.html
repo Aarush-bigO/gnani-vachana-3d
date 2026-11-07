@@ -3795,6 +3795,16 @@ document.addEventListener('DOMContentLoaded', async function(e) {
       let text = e.property("value");
       if ( head && text.length ) {
 
+        // Hook into Gnani Artha Sovereign Voice AI Stack
+        if ( window.gnaniSendText && typeof window.gnaniSendText === 'function' ) {
+          const nodeInput = addMessage(true);
+          nodeInput.dataset.input = text;
+          addText(nodeInput, text);
+          e.property("value", "");
+          window.gnaniSendText(text);
+          return;
+        }
+
         if ( cfg('ai-model').startsWith("gpt") ) {
           const m = openaiBuildMessage();
           let flag = await openaiModerateMessage(m);

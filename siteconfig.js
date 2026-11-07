@@ -1,16 +1,16 @@
 // Site configuration
 export const site = {
 
-  // Preset avatars
+  // Preset avatars (Gen-Z Indian Avatars powered by Gnani Timbre voices)
   avatars: {
-    'Brunette': {
+    'Riya': {
       url: './avatars/brunette.glb',
       body: 'F',
       avatarMood: 'neutral',
-      fi: 'Brunetti'
-},
+      fi: 'Riya'
+    },
 
-    'MPFB': {
+    'Kalpana': {
       url: './avatars/mpfb.glb',
       body: 'F',
       avatarMood: 'happy',
@@ -64,7 +64,7 @@ export const site = {
       }
     },
 
-    'Avaturn': {
+    'Shubham': {
       url: './avatars/avaturn.glb',
       body: 'F',
       avatarMood: 'happy',
@@ -81,7 +81,7 @@ export const site = {
       }
     },
 
-    'AvatarSDK': {
+    'Kabir': {
       url: './avatars/avatarsdk.glb',
       body: 'M',
       avatarMood: 'neutral',
@@ -97,7 +97,7 @@ export const site = {
       }
     },
 
-    'VRoid': {
+    'Chetana': {
       url: './avatars/vroid.glb',
       body: 'F',
       avatarMood: 'neutral',

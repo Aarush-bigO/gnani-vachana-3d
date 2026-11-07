@@ -30,11 +30,11 @@
   };
 
   const REPO_AVATARS = [
-    { name: "Julia", file: "brunette.glb", voice: "Riyaa", icon: "👩", role: "Lead Conversational Human" },
-    { name: "Jenny", file: "vroid.glb", voice: "Chetana", icon: "👧", role: "VRoid Anime (Hair Physics)" },
-    { name: "Harri", file: "avatarsdk.glb", voice: "Avinash", icon: "👨", role: "Realistic Male Persona" },
-    { name: "Avaturn", file: "avaturn.glb", voice: "Shubham", icon: "🧑", role: "Avaturn Stylized 3D" },
-    { name: "MPFB", file: "mpfb.glb", voice: "Kalpana", icon: "👱‍♀️", role: "34-Chain Dynamic Bone Rig" },
+    { name: "Riya", file: "brunette.glb", voice: "Riyaa", icon: "👩", role: "Lead Gen-Z Conversationalist" },
+    { name: "Chetana", file: "vroid.glb", voice: "Chetana", icon: "👧", role: "Gen-Z Anime (Hair Physics)" },
+    { name: "Kabir", file: "avatarsdk.glb", voice: "Avinash", icon: "👨", role: "Realistic Gen-Z Male" },
+    { name: "Shubham", file: "avaturn.glb", voice: "Shubham", icon: "🧑", role: "Stylized 3D Creator" },
+    { name: "Kalpana", file: "mpfb.glb", voice: "Kalpana", icon: "👱‍♀️", role: "High-Fidelity 34-Bone Rig" },
   ];
 
   // ── 1. Inject Fonts & LiveKit CSS ─────────────────────────────────────────

@@ -29,18 +29,27 @@ VOICE_MODEL_REGISTRY: Dict[str, List[str]] = {
     "timbre-v2.5": TIMBRE_V25_VOICES,
 }
 
-# 3D Avatar Character -> Gnani Timbre Voice Mapping
+# 3D Avatar Character -> Gnani Timbre Voice Mapping (Gen-Z Indian Avatars)
 CHARACTER_VOICE_ALIASES: Dict[str, str] = {
+    "Riya": "Riyaa",
+    "Chetana": "Chetana",
+    "Kabir": "Avinash",
+    "Shubham": "Shubham",
+    "Kalpana": "Kalpana",
+    "riya": "Riyaa",
+    "chetana": "Chetana",
+    "kabir": "Avinash",
+    "shubham": "Shubham",
+    "kalpana": "Kalpana",
+    # Legacy aliases
     "Julia": "Riyaa",
     "Jenny": "Chetana",
     "Harri": "Avinash",
     "Avaturn": "Shubham",
     "MPFB": "Kalpana",
-    "julia": "Riyaa",
-    "jenny": "Chetana",
-    "harri": "Avinash",
-    "avaturn": "Shubham",
-    "mpfb": "Kalpana",
+    "Brunette": "Riyaa",
+    "VRoid": "Chetana",
+    "AvatarSDK": "Avinash",
 }
 
 SUPPORTED_LANGUAGES: Dict[str, str] = {
