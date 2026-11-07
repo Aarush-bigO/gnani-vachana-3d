@@ -1,0 +1,39 @@
+{
+  "name": "gnani-vachana-3d",
+  "version": "1.0.0",
+  "description": "Gnani Vachana 3D: Real-Time Multilingual Indic Voice AI, Tool-Calling & 3D Conversational Avatar Platform powered by Gnani.ai Vachana (Prisma v3.0, Evon, Timbre v3.0)",
+  "type": "module",
+  "main": "modules/gnani-avatar.mjs",
+  "files": [
+    "README.md",
+    "LICENSE",
+    "modules/"
+  ],
+  "dependencies": {
+    "three": "^0.186"
+  },
+  "scripts": {
+    "start": "cd backend && .venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aarush-bigO/gnani-vachana-3d.git"
+  },
+  "keywords": [
+    "gnani-ai",
+    "vachana",
+    "indic-voice-ai",
+    "prisma-v3",
+    "evon",
+    "timbre-v3",
+    "3d-avatar",
+    "full-duplex",
+    "code-switching"
+  ],
+  "author": "Aarush Bharti <aarushbharti2005@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Aarush-bigO/gnani-vachana-3d/issues"
+  },
+  "homepage": "https://github.com/Aarush-bigO/gnani-vachana-3d#readme"
+}
