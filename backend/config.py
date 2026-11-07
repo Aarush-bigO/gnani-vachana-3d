@@ -95,10 +95,10 @@ class Settings(BaseSettings):
         "GNANI_TTS_WS_URL", "wss://api.vachana.ai/api/v1/tts"
     )
     gnani_tts_sse_url: str = os.getenv(
-        "GNANI_TTS_SSE_URL", "https://api.vachana.ai/api/v1/tts/stream"
+        "GNANI_TTS_SSE_URL", "https://api.vachana.ai/api/v1/tts/sse"
     )
     gnani_tts_rest_url: str = os.getenv(
-        "GNANI_TTS_REST_URL", "https://api.vachana.ai/api/v1/tts"
+        "GNANI_TTS_REST_URL", "https://api.vachana.ai/api/v1/tts/inference"
     )
 
     # ── LLM Configuration (Evon or OpenAI-compatible) ───────────────────
