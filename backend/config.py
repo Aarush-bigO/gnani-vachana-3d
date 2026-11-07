@@ -1,5 +1,5 @@
 """
-BhashaSwarm 3D — Configuration & Voice-Model Validation
+Gnani Vachana 3D — Configuration & Voice-Model Validation
 ========================================================
 Strict validation for Gnani Vachana credentials, model-voice compatibility,
 language candidate arrays, and STT keyword sanitization.

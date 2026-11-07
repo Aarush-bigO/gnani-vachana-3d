@@ -106,16 +106,25 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 64px;
-      padding: 0 24px;
+      height: 52px;
+      padding: 0 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(3, 7, 18, 0.7);
+      gap: 12px;
+      background: rgba(3, 7, 18, 0.88);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--lk-border);
-      z-index: 100;
+      z-index: 1000;
+    }
+
+    #main {
+      top: calc(50% + 26px) !important;
+      z-index: 10 !important;
+    }
+    #left, #right, #bottom {
+      z-index: 20 !important;
     }
 
     .gnani-lk-brand {
@@ -485,10 +494,41 @@
           GNANI ARTHA 3D
           <span class="gnani-lk-brand-pill">SOVEREIGN STACK</span>
         </div>
-        <div style="font-size:10px;color:#94a3b8;margin-top:2px;">Prisma v2.5 • Evon v3.3 (30B MoE) • Timbre v2.5</div>
       </div>
     </div>
 
+    <!-- 1-Click Indic Scenarios & Full-Duplex Controls in Top Bar -->
+    <div class="gnani-lk-scenarios-top" style="display:flex;align-items:center;gap:6px;">
+      <button class="gnani-lk-mic-btn" id="gnani-mic-btn" style="padding:6px 12px;font-size:11px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+          <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+        </svg>
+        <span id="gnani-mic-text">16kHz MIC</span>
+      </button>
+
+      <button class="gnani-lk-barge-btn" id="gnani-barge-btn" title="Sub-50ms Full-Duplex Interruption" style="padding:6px 10px;font-size:11px;">
+        ⚡ BARGE-IN
+      </button>
+
+      <button class="gnani-lk-preset-chip" data-preset="hinglish_civic" style="padding:5px 8px;font-size:11px;">
+        🏛️ Civic
+      </button>
+      <button class="gnani-lk-preset-chip" data-preset="hinglish_kirana" style="padding:5px 8px;font-size:11px;">
+        🏪 Kirana
+      </button>
+      <button class="gnani-lk-preset-chip" data-preset="hinglish_viva" style="padding:5px 8px;font-size:11px;">
+        🎓 Viva
+      </button>
+      <button class="gnani-lk-preset-chip" data-preset="tanglish_switch" style="padding:5px 8px;font-size:11px;">
+        🔄 Tanglish
+      </button>
+      <button class="gnani-lk-preset-chip" id="gnani-btn-benchmark" style="padding:5px 8px;font-size:11px;border-color:rgba(16,185,129,0.4);color:#34d399;">
+        ⚡ Benchmark
+      </button>
+    </div>
+
+    <!-- Real-time Latency Waterfall -->
     <div class="gnani-lk-waterfall" id="gnani-waterfall">
       <div class="gnani-lk-pill gnani-lk-pill-stt" title="Prisma v2.5 Streaming STT Latency">
         <span>STT:</span> <strong id="gnani-stt-ms">184ms</strong>
@@ -501,29 +541,20 @@
       </div>
       <div class="gnani-lk-pill gnani-lk-pill-turn" title="Full Conversational Turn-Around Loop">
         <span class="gnani-badge-dot"></span>
-        <span>TURN:</span> <strong id="gnani-turn-ms">438ms</strong>
-        <span style="font-size:9px;background:rgba(16,185,129,0.3);padding:1px 5px;border-radius:4px;">SUB-500MS</span>
+        <strong id="gnani-turn-ms">438ms</strong>
       </div>
     </div>
 
-    <div class="gnani-lk-controls-top">
-      <select class="gnani-lk-select" id="gnani-voice-select" title="Switch 3D Avatar Character & Voice">
-        ${REPO_AVATARS.map((a) => `<option value="${a.voice}">${a.icon} ${a.name} (${a.voice} v2.5)</option>`).join("")}
+    <div class="gnani-lk-controls-top" style="display:flex;align-items:center;gap:6px;">
+      <select class="gnani-lk-select" id="gnani-voice-select" style="padding:5px 8px;font-size:11px;" title="Switch 3D Avatar Character & Voice">
+        ${REPO_AVATARS.map((a) => `<option value="${a.voice}">${a.icon} ${a.name}</option>`).join("")}
       </select>
 
-      <select class="gnani-lk-select" id="gnani-lang-select" title="Indic Language">
-        <option value="hi-IN">🇮🇳 Hindi / Hinglish</option>
-        <option value="ta-IN">🇮🇳 Tamil / Tanglish</option>
-        <option value="kn-IN">🇮🇳 Kannada / Kanglish</option>
-        <option value="te-IN">🇮🇳 Telugu</option>
-        <option value="en-IN">🇮🇳 Indian English</option>
-      </select>
-
-      <button class="gnani-lk-icon-btn" id="gnani-btn-keys" title="Configure Gnani API Key">
-        🔑 Keys
+      <button class="gnani-lk-icon-btn" id="gnani-btn-keys" title="Configure Gnani API Key" style="padding:5px 8px;font-size:11px;">
+        🔑
       </button>
 
-      <button class="gnani-lk-icon-btn" id="gnani-btn-drawer" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.3);color:#34d399;">
+      <button class="gnani-lk-icon-btn" id="gnani-btn-drawer" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.3);color:#34d399;padding:5px 8px;font-size:11px;">
         📊 Drawer
       </button>
     </div>
@@ -534,46 +565,8 @@
   const subtitlesEl = document.createElement("div");
   subtitlesEl.className = "gnani-lk-subtitles";
   subtitlesEl.id = "gnani-subtitles";
+  subtitlesEl.style.bottom = "120px";
   document.body.appendChild(subtitlesEl);
-
-  // Bottom Floating Action Pill Dock
-  const dock = document.createElement("div");
-  dock.className = "gnani-lk-dock";
-  dock.innerHTML = `
-    <button class="gnani-lk-mic-btn" id="gnani-mic-btn">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-      </svg>
-      <span id="gnani-mic-text">16kHz MIC</span>
-    </button>
-
-    <button class="gnani-lk-barge-btn" id="gnani-barge-btn" title="Sub-50ms Full-Duplex Interruption">
-      ⚡ BARGE-IN
-    </button>
-
-    <div class="gnani-lk-divider"></div>
-
-    <button class="gnani-lk-preset-chip" data-preset="hinglish_civic">
-      🏛️ Civic Triage
-    </button>
-    <button class="gnani-lk-preset-chip" data-preset="hinglish_kirana">
-      🏪 Kirana FEFO
-    </button>
-    <button class="gnani-lk-preset-chip" data-preset="hinglish_viva">
-      🎓 Socratic Viva
-    </button>
-    <button class="gnani-lk-preset-chip" data-preset="tanglish_switch">
-      🔄 Tanglish Switch
-    </button>
-
-    <div class="gnani-lk-divider"></div>
-
-    <button class="gnani-lk-preset-chip" id="gnani-btn-benchmark" style="border-color:rgba(16,185,129,0.4);color:#34d399;">
-      ⚡ Benchmark
-    </button>
-  `;
-  document.body.appendChild(dock);
 
   // Right Slide-Over Inspector Drawer
   const drawer = document.createElement("div");
