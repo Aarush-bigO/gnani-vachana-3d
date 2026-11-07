@@ -351,33 +351,42 @@
     src: url("./fonts/FiraSansExtraCondensed-Bold.ttf") format('truetype');
   }
 
-  /* Layouts */
-  #main.ratio-wide { width: min(96vw, 192vh, 1400px); height: min(48vw,96vh,700px); } /* 1:2 */
-  #main.ratio-normal { width: min(96vw, 128vh, 1040px); height: min(72vw,96vh,780px); } /* 3:4 */
-  #main.layout-full { width: 100%; height: 100%; }
-  #main.layout-land #left { top: 0; left: 0; bottom: 38%; right: 50%; }
-  #main.layout-port #left { top: 0; left: 0; bottom: 0; right: 60%; }
-  #main.layout-full #left { top: 0; left: 0; bottom: 0; right: 0; margin: 0; }
-  #main.layout-full #left .border { display: none; }
-  #main.layout-land #right { top: 0; left: 50%; bottom: 0; right: 0; }
-  #main.layout-port #right { top: 0; left: 40%; bottom: 30%; right: 0; }
-  #main.layout-full #right { top: 10%; left: 45%; bottom: 30%; right: 5%; max-width: 800px; }
-  #main.layout-land #bottom { top: 62%; left: 0; bottom: 0; right: 50%; }
-  #main.layout-port #bottom { top: 70%; left: 40%; bottom: 0; right: 0; }
-  #main.layout-full #bottom { top: 70%; left: 45%; bottom: 10%; right: 5%; max-width: 750px; }
-  #main.presence-vr #left { box-shadow: none; background-color: transparent; }
-  #main.presence-vr #view { display: none; }
-  #main.presence-vr #left .border { display: none; }
-  #main.presence-vr #avatar { bottom: -8px; left: -400px; right: -400px; }
-  #main.layout-full #avatar { top: 0; left: 0; bottom: 0; right: 45%; }
-
-  @media (max-width: 1000px) {
-    #main.ratio-wide, #main.ratio-normal { width: 96vw; height: 90vh; }
-    #main.layout-full { width: 100%; height: 100%; }
-    #main.layout-land #left { top: 0; left: 0; bottom: 62%; right: 0; }
-    #main.layout-port #left { top: 0; left: 0; bottom: 24%; right: 62%; }
-    #main.layout-land #right { top: 38%; left: 0; bottom: 24%; right: 0; }
-    #main.layout-port #right { top: 0; left: 38%; bottom: 24%; right: 0; }
+  /* Fullscreen LiveKit-Grade Studio Stage */
+  #main, #main.ratio-wide, #main.ratio-normal, #main.layout-land, #main.layout-port, #main.layout-full {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    margin: 0 !important;
+    transform: none !important;
+    background: radial-gradient(circle at 50% 30%, #1e1b4b 0%, #0f172a 55%, #020617 100%) !important;
+    overflow: hidden !important;
+  }
+  #left {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    background: transparent !important;
+  }
+  #avatar, #view {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    border-radius: 0 !important;
+  }
+  #right, #right .pages, .border, #loading {
+    display: none !important;
+  }
     #main.layout-full #right { top: 0; left: 38%; bottom: 24%; right: 0; max-width: none; }
     #main.layout-land #bottom { top: 76%; left: 0; bottom: 0; right: 0; }
     #main.layout-port #bottom { top: 76%; left: 0; bottom: 0; right: 0; }
@@ -4688,12 +4697,14 @@ document.addEventListener('DOMContentLoaded', async function(e) {
     }
     await head.showAvatar( o, progressUpdate);
     headLoaded(true);
+    try { head.setView("upper"); } catch(e) {}
   } catch (error) {
     errorShow(error);
 
     // Backup plan: show the first avatar in site config
     await head.showAvatar( Object.values(site.avatars)[0], progressUpdate);
     headLoaded(true);
+    try { head.setView("upper"); } catch(e) {}
   }
 
 });
