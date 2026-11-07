@@ -424,12 +424,31 @@
       document.getElementById("gnani-llm-ms").textContent = `${telemetry.llm}ms`;
       document.getElementById("gnani-tts-ms").textContent = `${telemetry.tts}ms`;
       document.getElementById("gnani-turn-ms").textContent = `${telemetry.total}ms`;
-    } else if (msg.type === "tool_call") {
-      renderToolCard(msg.tool_card);
-    } else if (msg.type === "transcript") {
-      if (msg.role === "assistant") {
-        showSubtitles(msg.text);
-        detectExpressiveTagsAndMood(msg.text);
+    } else if (msg.type === "tool_card" || msg.type === "tool_call") {
+      const card = msg.data || msg.tool_card;
+      renderToolCard(card);
+    } else if (msg.type === "llm_response" || msg.type === "transcript") {
+      const text = msg.text || msg.content || "";
+      if (text) {
+        showSubtitles(text);
+        detectExpressiveTagsAndMood(text);
+
+        // Resume AudioContext if suspended
+        const head = getHead();
+        if (head && head.audioCtx && head.audioCtx.state === "suspended") {
+          head.audioCtx.resume();
+        }
+
+        // Trigger avatar lip-sync & speech
+        if (typeof window.gnaniSpeak === "function") {
+          window.gnaniSpeak(text);
+        } else if (head && typeof head.speakText === "function") {
+          head.speakText(text);
+        }
+      }
+    } else if (msg.type === "stt_result") {
+      if (msg.text) {
+        showSubtitles(`🎙️ "${msg.text}"`);
       }
     } else if (msg.type === "barge_in_ack") {
       bargeInCount++;
@@ -448,7 +467,7 @@
         if (!head.isStreaming) {
           head.streamStart({ sampleRate: 16000 });
         }
-        head.streamAudio(arrayBuffer);
+        head.streamAudio({ audio: arrayBuffer });
       } catch (e) {
         console.warn("Avatar streamAudio notice:", e);
       }
@@ -459,9 +478,13 @@
     const head = getHead();
     if (head) {
       try {
-        head.streamStop();
-        head.stop();
+        if (typeof head.stopSpeaking === "function") head.stopSpeaking();
+        if (typeof head.streamStop === "function") head.streamStop();
+        if (typeof head.stop === "function") head.stop();
       } catch (e) {}
+    }
+    if (window.speechSynthesis && window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
     }
   }
 
@@ -633,6 +656,10 @@
 
   document.querySelectorAll(".gnani-preset-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
+      const head = getHead();
+      if (head && head.audioCtx && head.audioCtx.state === "suspended") {
+        head.audioCtx.resume();
+      }
       const presetId = btn.getAttribute("data-preset");
       if (ws && ws.readyState === WebSocket.OPEN) {
         ws.send(JSON.stringify({ type: "simulate", preset_id: presetId }));
