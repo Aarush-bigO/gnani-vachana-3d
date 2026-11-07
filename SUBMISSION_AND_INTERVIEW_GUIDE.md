@@ -26,23 +26,27 @@ Record your screen showing **`http://localhost:8000`** in Google Chrome.
 Copy and paste this exact post when uploading your 60-second video:
 
 ```markdown
-🚀 Excited to unveil BhashaSwarm 3D — an autonomous, real-time code-mixed Indic Voice AI & 3D Avatar platform built for the #GreatIndianAIInternshipChallenge hosted by @Gnani.ai!
+🚀 Excited to unveil Gnani Vachana 3D — an autonomous, real-time code-mixed Indic Voice AI & 3D Interactive Avatar platform built for the #GreatIndianAIInternshipChallenge hosted by @Gnani.ai!
 
-While most voice assistants struggle with regional nuances and feel like a black box, BhashaSwarm 3D fuses Gnani's proprietary Vachana AI platform (Prisma v3.0, Evon, Timbre v3.0) with an interactive Three.js 3D digital human that lip-syncs at 60 FPS in native Hinglish, Tanglish, and Kanglish.
+While most voice assistants struggle with regional nuances and telephonic audio, Gnani Vachana 3D leverages Gnani's Artha Sovereign Stack:
+• Prisma v2.5: Sub-200ms streaming STT trained on 14M+ hours of telephonic audio
+• Evon v3.3: 30B MoE Indic reasoning engine with 128K context
+• Timbre v2.5: Context-aware Indic TTS with natural lakh & crore cadence
+...fused with an interactive Three.js 3D digital human that lip-syncs at 60 FPS in native Hinglish, Tanglish, and Kanglish!
 
 🔥 Key Technical Highlights:
-1️⃣ Sub-500ms End-to-End Latency: Clocked at 439ms turn-taking loop (Prisma STT: 184ms, Evon LLM: 142ms, Timbre TTS: 112ms).
+1️⃣ Sub-500ms End-to-End Latency: Clocked at 439ms turn-taking loop (Prisma v2.5 STT: 184ms, Evon v3.3 LLM: 142ms, Timbre v2.5 TTS: 112ms).
 2️⃣ Concurrency Guard (Semaphore): Engineered a strict asyncio.Semaphore(1) lock preventing HTTP 429 rate collisions on student credit tiers.
 3️⃣ Grassroots Indian Utility: Automated real-world workflows including GramSeva Civic Triage (municipal SLA dispatch) and Kirana ShelfCheck Copilot (FEFO expiry flash discounting).
 4️⃣ Sub-50ms Mid-Sentence Barge-In: Clean audio buffer cancellation when the user interrupts mid-speech.
-5️⃣ Expressive Audio Tags: Native support for <laugh>, <chuckle>, and <sigh> that drive real-time physical avatar mood transitions and gestures (Namaste).
+5️⃣ Expressive Audio Tags: Native support for <laugh>, <chuckle>, and <sigh> driving real-time physical avatar moods and Namaste gestures.
 
 Full code & benchmark audit open-sourced on GitHub:
 👉 https://github.com/Aarush-bigO/gnani-vachana-3d
 
 A huge thank you to the Gnani.ai team for empowering Indian developers to build cutting-edge Indic voice intelligence! 🇮🇳
 
-#GnaniAI #VoiceAI #GenerativeAI #ThreeJS #IndicAI #MachineLearning #WebRTC #Python #FastAPI #IndianTech #Innovation
+#GnaniAI #VoiceAI #GenerativeAI #ThreeJS #IndicAI #MachineLearning #WebRTC #Python #FastAPI #IndianTech #Innovation #GreatIndianAIInternshipChallenge
 ```
 
 ---

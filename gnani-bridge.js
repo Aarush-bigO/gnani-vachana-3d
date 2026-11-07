@@ -277,8 +277,8 @@
     <div style="display:flex;align-items:center;gap:10px;">
       <div class="gnani-pulse-dot"></div>
       <div>
-        <div class="gnani-badge">GNANI VACHANA 3D • MULTILINGUAL</div>
-        <div style="font-size:9px;color:#94a3b8;">Prisma v3.0 • Evon • Timbre v3.0</div>
+        <div class="gnani-badge">GNANI ARTHA 3D • SOVEREIGN STACK</div>
+        <div style="font-size:9px;color:#94a3b8;">Prisma v2.5 • Evon v3.3 (30B MoE) • Timbre v2.5</div>
       </div>
     </div>
 
@@ -714,9 +714,10 @@
         overall_grade: "A+ (SUB-500MS QUALIFIED)",
       },
       models: {
-        stt: "Prisma v3.0 (Streaming 16kHz PCM, format='codemix')",
-        llm: "Evon (Indic Reasoning LLM)",
-        tts: "Timbre v3.0 (Expressive Audio Tags)",
+        stack: "Artha Sovereign Stack",
+        stt: "Prisma v2.5 (14M+ hrs telephonic audio, sub-200ms streaming)",
+        llm: "Evon v3.3 (30B Mixture-of-Experts, 128K context, 11 Indian languages)",
+        tts: "Timbre v2.5 / v3.0 (Streaming WebSocket/SSE, Lakh & Crore cadence)",
       },
       avatars: REPO_AVATARS.map((a) => `${a.name} (${a.voice} v3.0) - ${a.url}`),
     };

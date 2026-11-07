@@ -1,19 +1,24 @@
 # 🇮🇳 Gnani Vachana 3D: Real-Time Multilingual Indic Voice AI, Tool-Calling & 3D Conversational Avatar Platform
 
-[![Gnani Vachana](https://img.shields.io/badge/Gnani.ai-Vachana_v3.0-059669?style=for-the-badge)](https://gnani.ai)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge)](https://fastapi.tiangolo.com)
-[![Three.js](https://img.shields.io/badge/Three.js-WebGL_3D-38bdf8?style=for-the-badge)](https://threejs.org)
-[![Sub-500ms Pipeline](https://img.shields.io/badge/Latency-439ms_Turn--Around-10b981?style=for-the-badge)](#)
+[![Gnani Artha Stack](https://img.shields.io/badge/Gnani.ai-Artha_Sovereign_Stack-059669?style=for-the-badge)](https://gnani.ai/internship)
+[![Prisma v2.5](https://img.shields.io/badge/STT-Prisma_v2.5_(<200ms)-6366f1?style=for-the-badge)](https://gnani.ai/internship)
+[![Evon v3.3](https://img.shields.io/badge/LLM-Evon_v3.3_(30B_MoE)-a855f7?style=for-the-badge)](https://gnani.ai/internship)
+[![Timbre v2.5](https://img.shields.io/badge/TTS-Timbre_v2.5_/_v3.0-ec4899?style=for-the-badge)](https://gnani.ai/internship)
+[![Sub-500ms Pipeline](https://img.shields.io/badge/Turn_Latency-439ms-10b981?style=for-the-badge)](#)
 [![Contest Track](https://img.shields.io/badge/Target-₹1,00,000/mo_Internship-f59e0b?style=for-the-badge)](#)
 
 > **Official Submission for the Gnani.ai Great Indian AI Internship Challenge (Nov 10, 2026)**  
-> **Award Tracks:** *Code-Mixing Champion* (Hinglish/Tanglish/Kanglish), *Real-World Utility* (GramSeva Municipal SLA & Kirana ShelfCheck FEFO), *Main Character* (Expressive Audio Tags `<laugh>`, `<chuckle>`, `<sigh>` driving dynamic 3D mood and gestures).
+> **Target Award Tracks:** *Code-Mixing Champion* (Hinglish/Tanglish/Kanglish), *Real-World Utility* (GramSeva Municipal SLA & Kirana ShelfCheck FEFO), *Main Character* (Expressive Audio Tags `<laugh>`, `<chuckle>`, `<sigh>` driving dynamic 3D mood and physical gestures).
 
 ---
 
 ## 🌟 Architectural Overview
 
-**Gnani Vachana 3D** fuses **Gnani.ai's proprietary Vachana AI Voice Pipeline** (Prisma v3.0, Evon Indic Reasoning LLM, Timbre v3.0) with an interactive **Three.js WebGL 3D Conversational Avatar Engine** into a unified, full-stack application running on a single port.
+**Gnani Vachana 3D** fuses **Gnani.ai's Artha Sovereign Stack**:
+- **Prisma v2.5:** Sub-200ms streaming Speech-to-Text trained on 14M+ hours of real telephonic audio across 10+ Indian languages plus Hinglish, Tanglish, and Benglish.
+- **Evon v3.3:** 30B-parameter Mixture-of-Experts (MoE) reasoning engine with 128K context and native support for 11 Indian languages.
+- **Timbre v2.5 / v3.0:** Indic TTS with context-aware prosody, Indian name recognition, and natural lakh & crore cadence.
+- **3D Avatar Engine:** Interactive Three.js WebGL digital humans with real-time phoneme-viseme lip-sync at 60 FPS on a unified single port.
 
 ```
                     ┌───────────────────────────────────────────────┐
@@ -29,9 +34,9 @@
 │   [ Guardrail 1: GnaniConcurrencyGuard (asyncio.Semaphore(1) - HTTP 429 Prevention) ]     │
 │                                                                                           │
 │       ┌─────────────────┐       ┌─────────────────┐       ┌─────────────────┐             │
-│       │  PRISMA v3.0    │  ──►  │    EVON LLM     │  ──►  │   TIMBRE v3.0   │             │
-│       │ Streaming STT   │       │ Reasoning & Viva│       │ 16kHz Streaming │             │
-│       │ (CodeMix Mode)  │       │ Function Calling│       │ Expressive Tags │             │
+│       │  PRISMA v2.5    │  ──►  │    EVON v3.3    │  ──►  │TIMBRE v2.5/v3.0 │             │
+│       │ Sub-200ms STT   │       │ 30B MoE Reasoner│       │ Context-Aware   │             │
+│       │ (CodeMix Mode)  │       │ Function Calling│       │ Lakh/Crore TTS  │             │
 │       └─────────────────┘       └─────────────────┘       └─────────────────┘             │
 │                 ▲                                                                         │
 │                 └────── [ Guardrail 2: indic-auto Candidate Bounds: hi, ta, kn, te ]      │
