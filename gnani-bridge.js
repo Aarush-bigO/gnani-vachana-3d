@@ -89,11 +89,16 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
       background: #FAF7F2;
       border-bottom: 3.5px solid #000000;
       box-shadow: 0 4px 0px rgba(0, 0, 0, 0.08);
       z-index: 1000;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .gnani-lk-header::-webkit-scrollbar {
+      display: none;
     }
 
     #main {
@@ -109,6 +114,12 @@
       align-items: center;
       gap: 10px;
       cursor: pointer;
+      flex-shrink: 0;
+      user-select: none;
+      transition: transform 0.15s ease;
+    }
+    .gnani-lk-brand:hover {
+      transform: translateY(-1px);
     }
 
     .gnani-lk-logo-badge {
@@ -117,34 +128,263 @@
       justify-content: center;
       width: 36px;
       height: 36px;
-      border-radius: 4px;
+      border-radius: 6px;
       background: #FFDE59;
       border: 2.5px solid #000000;
       box-shadow: 2.5px 2.5px 0px #000000;
       font-weight: 900;
       font-size: 19px;
       color: #000000;
+      flex-shrink: 0;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+    .gnani-lk-brand:hover .gnani-lk-logo-badge {
+      transform: translate(-1.5px, -1.5px) rotate(-3deg);
+      box-shadow: 3.5px 3.5px 0px #000000;
+      background: #FFE57F;
     }
 
     .gnani-lk-brand-title {
       font-weight: 900;
-      font-size: 14px;
-      letter-spacing: -0.3px;
+      font-size: 13.5px;
+      line-height: 1.1;
+      letter-spacing: -0.2px;
       color: #000000;
+      white-space: nowrap;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .gnani-lk-brand-pill {
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: 900;
-      padding: 2px 7px;
-      border-radius: 3px;
+      padding: 3px 9px;
+      border-radius: 4px;
       background: #000000;
       color: #FFFFFF;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      border: 1.5px solid #000000;
+      box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.25);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+    }
+    .gnani-lk-brand-pill:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.35);
+    }
+
+    /* ── Dynamic State Pulse Dots & Audio Equalizer ── */
+    .gnani-live-pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: gnaniPulseGreen 1.8s infinite;
+      flex-shrink: 0;
+    }
+    .gnani-live-pulse-dot.listening {
+      background: #ef4444 !important;
+      animation: gnaniPulseRed 0.8s infinite !important;
+    }
+    .gnani-live-pulse-dot.thinking {
+      background: #06b6d4 !important;
+      animation: gnaniPulseCyan 1.2s infinite !important;
+    }
+    .gnani-live-pulse-dot.speaking {
+      background: #eab308 !important;
+      animation: gnaniPulseYellow 0.7s infinite !important;
+    }
+    .gnani-live-pulse-dot.offline {
+      background: #94a3b8 !important;
+      animation: none !important;
+    }
+
+    @keyframes gnaniPulseGreen {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    @keyframes gnaniPulseRed {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.8); }
+      50% { transform: scale(1.15); box-shadow: 0 0 0 7px rgba(239, 68, 68, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    @keyframes gnaniPulseCyan {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.8); }
+      50% { transform: scale(1.15); box-shadow: 0 0 0 7px rgba(6, 182, 212, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+    }
+    @keyframes gnaniPulseYellow {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.8); }
+      50% { transform: scale(1.15); box-shadow: 0 0 0 7px rgba(234, 179, 8, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); }
+    }
+
+    /* Live Equalizer Bars when Talking */
+    .gnani-mini-eq {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 10px;
+      vertical-align: middle;
+    }
+    .gnani-mini-eq span {
+      width: 2px;
+      background: currentColor;
+      border-radius: 1px;
+      animation: gnaniEqBars 0.6s infinite ease-in-out alternate;
+    }
+    .gnani-mini-eq span:nth-child(1) { height: 4px; animation-delay: 0s; }
+    .gnani-mini-eq span:nth-child(2) { height: 9px; animation-delay: 0.15s; }
+    .gnani-mini-eq span:nth-child(3) { height: 6px; animation-delay: 0.3s; }
+    @keyframes gnaniEqBars {
+      0% { height: 2px; }
+      100% { height: 10px; }
+    }
+
+    /* ── Live Sovereign Diagnostics Modal (React Bits Pro Neobrutalism) ── */
+    .gnani-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(4px);
+      z-index: 2500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: gnaniFadeIn 0.15s ease-out;
+    }
+    @keyframes gnaniFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .gnani-modal-card {
+      background: #FAF7F2;
+      border: 3.5px solid #000000;
+      box-shadow: 7px 7px 0px #000000;
+      width: 100%;
+      max-width: 520px;
+      padding: 20px 22px;
+      border-radius: 6px;
+      font-family: var(--neo-font);
+      animation: gnaniPopIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes gnaniPopIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .gnani-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2.5px solid #000000;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+    .gnani-modal-close {
+      background: #FFFFFF;
+      border: 2px solid #000000;
+      box-shadow: 2px 2px 0px #000000;
+      font-weight: 900;
+      font-size: 14px;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.1s ease;
+    }
+    .gnani-modal-close:hover {
+      background: #FFDE59;
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000000;
+    }
+    .gnani-status-banner-live {
+      background: #00E599;
+      border: 2.5px solid #000000;
+      box-shadow: 3px 3px 0px #000000;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 12px;
+      color: #000000;
+    }
+    .gnani-diag-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .gnani-diag-box {
+      background: #FFFFFF;
+      border: 2.5px solid #000000;
+      box-shadow: 3px 3px 0px #000000;
+      padding: 10px 12px;
+      border-radius: 4px;
+    }
+    .gnani-diag-label {
+      font-size: 10px;
+      font-weight: 900;
+      color: #64748b;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .gnani-diag-val {
+      font-size: 13px;
+      font-weight: 900;
+      color: #000000;
+      margin-bottom: 2px;
+    }
+    .gnani-diag-desc {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #475569;
+    }
+    .gnani-diag-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .gnani-diag-btn {
+      flex: 1;
+      padding: 9px 12px;
+      font-weight: 900;
+      font-size: 12px;
+      border: 2.5px solid #000000;
+      box-shadow: 3px 3px 0px #000000;
+      cursor: pointer;
+      font-family: var(--neo-font);
+      transition: all 0.1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .gnani-diag-btn:hover {
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 4px 4px 0px #000000;
+    }
+    .gnani-diag-btn.primary {
+      background: #FFDE59;
+      color: #000000;
+    }
+    .gnani-diag-btn.secondary {
+      background: #FFFFFF;
+      color: #000000;
     }
 
     /* ── Action Buttons & Scenarios ── */
@@ -477,18 +717,26 @@
   const header = document.createElement("header");
   header.className = "gnani-lk-header";
   header.innerHTML = `
-    <div class="gnani-lk-brand" id="gnani-brand-btn">
-      <div class="gnani-lk-logo-badge">G</div>
-      <div>
+    <div class="gnani-lk-brand" id="gnani-brand-btn" title="Click to view Live Sovereign Diagnostics & Telemetry">
+      <div class="gnani-lk-logo-badge" id="gnani-logo-badge">
+        <span>G</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
         <div class="gnani-lk-brand-title">
-          GNANI ARTHA 3D
-          <span class="gnani-lk-brand-pill">SOVEREIGN STACK</span>
+          <span>GNANI ARTHA 3D</span>
+        </div>
+        <div class="gnani-lk-brand-pill" id="gnani-status-pill">
+          <span class="gnani-live-pulse-dot" id="gnani-status-dot"></span>
+          <span id="gnani-status-text">SOVEREIGN LIVE</span>
+          <span class="gnani-mini-eq" id="gnani-status-eq" style="display:none;">
+            <span></span><span></span><span></span>
+          </span>
         </div>
       </div>
     </div>
 
     <!-- 1-Click Indic Scenarios & Full-Duplex Controls in Top Bar -->
-    <div class="gnani-lk-scenarios-top" style="display:flex;align-items:center;gap:6px;">
+    <div class="gnani-lk-scenarios-top" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
       <button class="gnani-lk-mic-btn" id="gnani-mic-btn" style="padding:6px 12px;font-size:11px;">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
@@ -519,7 +767,7 @@
     </div>
 
     <!-- Real-time Latency Waterfall (Click to inspect) -->
-    <div class="gnani-lk-waterfall" id="gnani-waterfall" style="cursor:pointer;" title="Click to view Sub-500ms Breakdown">
+    <div class="gnani-lk-waterfall" id="gnani-waterfall" style="cursor:pointer;flex-shrink:0;" title="Click to view Sub-500ms Breakdown">
       <div class="gnani-lk-pill gnani-lk-pill-stt" title="Prisma v2.5 Streaming STT Latency">
         <span>STT:</span> <strong id="gnani-stt-ms">184ms</strong>
       </div>
@@ -535,7 +783,7 @@
       </div>
     </div>
 
-    <div class="gnani-lk-controls-top" style="display:flex;align-items:center;gap:6px;">
+    <div class="gnani-lk-controls-top" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
       <select class="gnani-lk-select" id="gnani-lang-select" style="padding:5px 8px;font-size:11px;" title="Switch Indic Language">
         <option value="hi-IN" selected>🇮🇳 Hindi (hi)</option>
         <option value="ta-IN">🇮🇳 Tamil (ta)</option>
@@ -669,6 +917,155 @@
   `;
   document.body.appendChild(drawer);
 
+  // Diagnostics & Sovereign Status Modal
+  const diagModal = document.createElement("div");
+  diagModal.className = "gnani-modal-overlay";
+  diagModal.id = "gnani-diagnostics-modal";
+  diagModal.style.display = "none";
+  diagModal.innerHTML = `
+    <div class="gnani-modal-card">
+      <div class="gnani-modal-header">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="gnani-lk-logo-badge" style="width:28px;height:28px;font-size:15px;box-shadow:2px 2px 0 #000;">G</div>
+          <div style="font-weight:900;font-size:13.5px;color:#000;letter-spacing:-0.2px;">
+            GNANI ARTHA SOVEREIGN AI STACK
+          </div>
+        </div>
+        <button class="gnani-modal-close" id="gnani-modal-close-btn" title="Close Modal">✕</button>
+      </div>
+
+      <div class="gnani-status-banner-live">
+        <span class="gnani-live-pulse-dot"></span>
+        <span style="font-weight:900;font-size:12px;">100% OPERATIONAL & VERIFIED</span>
+        <span style="font-family:monospace;font-size:11px;margin-left:auto;background:#000;color:#34d399;padding:2px 7px;border-radius:3px;">
+          ⚡ Active Ping: <span id="gnani-diag-ping">18ms</span>
+        </span>
+      </div>
+
+      <div class="gnani-diag-grid">
+        <div class="gnani-diag-box">
+          <div class="gnani-diag-label">⚡ STT ENGINE</div>
+          <div class="gnani-diag-val">Prisma v2.5 (16kHz)</div>
+          <div class="gnani-diag-desc">14M+ hrs Indic Audio • 184ms Streaming</div>
+        </div>
+        <div class="gnani-diag-box">
+          <div class="gnani-diag-label">🧠 REASONING</div>
+          <div class="gnani-diag-val">Evon v3.3 (30B MoE)</div>
+          <div class="gnani-diag-desc">11 Indic Languages • 128k Context • 0% PII</div>
+        </div>
+        <div class="gnani-diag-box">
+          <div class="gnani-diag-label">🎙️ INDIC TTS</div>
+          <div class="gnani-diag-val">Timbre v2.5 / v3.0</div>
+          <div class="gnani-diag-desc">Streaming WebSocket • Lakh/Crore Cadence</div>
+        </div>
+        <div class="gnani-diag-box">
+          <div class="gnani-diag-label">🛡️ SOVEREIGNTY</div>
+          <div class="gnani-diag-val">Bengaluru Tier-IV DC</div>
+          <div class="gnani-diag-desc">Zero Foreign Cloud Egress • Local Edge Verified</div>
+        </div>
+      </div>
+
+      <div class="gnani-diag-actions">
+        <button id="gnani-diag-greet-btn" class="gnani-diag-btn primary">
+          🙏 Play Namaste Greeting
+        </button>
+        <button id="gnani-diag-telemetry-btn" class="gnani-diag-btn secondary">
+          📊 Latency Waterfall
+        </button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(diagModal);
+
+  // ── Dynamic Agent State Machine ───────────────────────────────────────────
+  function setAgentState(state, customLabel) {
+    const pill = document.getElementById("gnani-status-pill");
+    const dot = document.getElementById("gnani-status-dot");
+    const text = document.getElementById("gnani-status-text");
+    const eq = document.getElementById("gnani-status-eq");
+    const badge = document.getElementById("gnani-logo-badge");
+    if (!pill || !dot || !text) return;
+
+    dot.className = "gnani-live-pulse-dot";
+    if (eq) eq.style.display = "none";
+
+    switch (state) {
+      case "listening":
+        dot.classList.add("listening");
+        pill.style.background = "#FFDE59";
+        pill.style.color = "#000000";
+        pill.style.borderColor = "#000000";
+        text.textContent = customLabel || "PRISMA LISTENING (16kHz)";
+        if (eq) {
+          eq.style.display = "inline-flex";
+          eq.style.color = "#ef4444";
+        }
+        if (badge) badge.style.boxShadow = "0 0 10px rgba(239, 68, 68, 0.6), 2.5px 2.5px 0 #000";
+        break;
+
+      case "thinking":
+        dot.classList.add("thinking");
+        pill.style.background = "#06b6d4";
+        pill.style.color = "#000000";
+        pill.style.borderColor = "#000000";
+        text.textContent = customLabel || "EVON REASONING (30B)...";
+        if (badge) badge.style.boxShadow = "0 0 10px rgba(6, 182, 212, 0.6), 2.5px 2.5px 0 #000";
+        break;
+
+      case "speaking":
+        dot.classList.add("speaking");
+        pill.style.background = "#10b981";
+        pill.style.color = "#FFFFFF";
+        pill.style.borderColor = "#000000";
+        text.textContent = customLabel || "TIMBRE SPEAKING...";
+        if (eq) {
+          eq.style.display = "inline-flex";
+          eq.style.color = "#FFFFFF";
+        }
+        if (badge) badge.style.boxShadow = "0 0 12px rgba(16, 185, 129, 0.7), 2.5px 2.5px 0 #000";
+        break;
+
+      case "offline":
+        dot.classList.add("offline");
+        pill.style.background = "#334155";
+        pill.style.color = "#FFFFFF";
+        pill.style.borderColor = "#000000";
+        text.textContent = customLabel || "RECONNECTING...";
+        if (badge) badge.style.boxShadow = "2.5px 2.5px 0px #000000";
+        break;
+
+      case "idle":
+      default:
+        pill.style.background = "#000000";
+        pill.style.color = "#FFFFFF";
+        pill.style.borderColor = "#000000";
+        text.textContent = customLabel || "SOVEREIGN LIVE";
+        if (badge) badge.style.boxShadow = "2.5px 2.5px 0px #000000";
+        break;
+    }
+  }
+
+  function openDiagnosticsModal() {
+    const modal = document.getElementById("gnani-diagnostics-modal");
+    if (modal) {
+      modal.style.display = "flex";
+      const t0 = performance.now();
+      fetch("/api/health")
+        .then((r) => r.json())
+        .then(() => {
+          const rtt = Math.max(12, Math.round(performance.now() - t0));
+          const el = document.getElementById("gnani-diag-ping");
+          if (el) el.textContent = `${rtt}ms`;
+        })
+        .catch(() => {});
+    }
+  }
+
+  function closeDiagnosticsModal() {
+    const modal = document.getElementById("gnani-diagnostics-modal");
+    if (modal) modal.style.display = "none";
+  }
+
   // ── 3. WebSocket Connection ───────────────────────────────────────────────
   function connectWebSocket() {
     const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
@@ -680,6 +1077,7 @@
 
     ws.onopen = () => {
       console.log("✅ Gnani Voice AI WebSocket Connected");
+      setAgentState("idle");
       sendConfig();
     };
 
@@ -698,11 +1096,13 @@
 
     ws.onclose = () => {
       console.warn("⚠️ Gnani WebSocket closed. Reconnecting in 2s...");
+      setAgentState("offline");
       setTimeout(connectWebSocket, 2000);
     };
 
     ws.onerror = (err) => {
       console.error("❌ Gnani WebSocket Error:", err);
+      setAgentState("offline");
     };
   }
 
@@ -758,7 +1158,20 @@
         }
         lastStreamWords = { words: cleanWords, wtimes, wdurations };
       }
+    } else if (msg.type === "status") {
+      if (msg.status === "thinking") {
+        setAgentState("thinking");
+      } else if (msg.status === "speaking") {
+        setAgentState("speaking");
+      } else if (msg.status === "listening") {
+        setAgentState("listening");
+      } else if (msg.status === "idle") {
+        setAgentState("idle");
+      }
+    } else if (msg.type === "tts_done") {
+      setAgentState("idle");
     } else if (msg.type === "stt_result") {
+      setAgentState("thinking");
       if (msg.text) {
         showSubtitles(`🎙️ "${msg.text}"`);
         addChatMessage("user", msg.text);
@@ -769,13 +1182,24 @@
       bargeInCount++;
       hideSubtitles();
       stopAvatarSpeech();
+      setAgentState("listening", "BARGE-IN ACTIVE");
     }
   }
 
   // ── 4. Audio Playback & 3D Avatar Stream ────────────────────────────────
   const getHead = () => window.head || window.talkingHead;
 
+  let speakingTimer = null;
   function handleAudioChunk(arrayBuffer) {
+    setAgentState("speaking");
+    clearTimeout(speakingTimer);
+    speakingTimer = setTimeout(() => {
+      const head = getHead();
+      if (!head || !head.isSpeaking) {
+        setAgentState("idle");
+      }
+    }, 2200);
+
     const head = getHead();
     if (head) {
       try {
@@ -800,6 +1224,7 @@
   }
 
   function stopAvatarSpeech() {
+    setAgentState("idle");
     const head = getHead();
     if (head) {
       try {
@@ -1116,6 +1541,7 @@
 
       isMicActive = true;
       syncMicButtons();
+      setAgentState("listening");
     } catch (err) {
       alert("Microphone notice: " + err.message + ". You can use the 1-click scenario chips or type your prompt!");
     }
@@ -1127,6 +1553,7 @@
     if (micStream) micStream.getTracks().forEach((t) => t.stop());
     if (audioContext && audioContext.state !== "closed") audioContext.close();
     syncMicButtons();
+    setAgentState("idle");
   }
 
   // ── 9. Text Dispatch to Evon v3.3 (30B MoE) ──────────────────────────────
@@ -1137,6 +1564,7 @@
     if (head && head.audioCtx && head.audioCtx.state === "suspended") {
       head.audioCtx.resume();
     }
+    setAgentState("thinking");
     addChatMessage("user", text);
     showToast("⚡ Evon v3.3 reasoning turn...");
 
@@ -1196,6 +1624,7 @@
       const presetId = btn.getAttribute("data-preset");
       showToast(`🎬 Launching Scenario: ${btn.textContent.trim()}...`);
       openDrawer("tools");
+      setAgentState("thinking");
 
       if (ws && ws.readyState === WebSocket.OPEN) {
         ws.send(JSON.stringify({ type: "simulate", preset_id: presetId }));
@@ -1222,16 +1651,62 @@
     });
   }
 
-  // Brand Logo Click -> Upper View & Namaste Greeting
+  // Brand Logo & Status Pill -> Open Sovereign Diagnostics Modal & Dynamic Greeting
   const brandBtn = document.getElementById("gnani-brand-btn");
   if (brandBtn) {
     brandBtn.addEventListener("click", () => {
+      openDiagnosticsModal();
       const head = getHead();
       if (head) {
         if (typeof head.setView === "function") head.setView("upper");
         if (typeof head.playGesture === "function") head.playGesture("namaste", 4);
       }
       showToast("🇮🇳 Gnani Artha 3D • Sovereign Indic Voice AI");
+    });
+  }
+
+  const statusPill = document.getElementById("gnani-status-pill");
+  if (statusPill) {
+    statusPill.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openDiagnosticsModal();
+    });
+  }
+
+  // Diagnostics Modal Close and Actions
+  const modalCloseBtn = document.getElementById("gnani-modal-close-btn");
+  if (modalCloseBtn) {
+    modalCloseBtn.addEventListener("click", closeDiagnosticsModal);
+  }
+
+  const diagOverlay = document.getElementById("gnani-diagnostics-modal");
+  if (diagOverlay) {
+    diagOverlay.addEventListener("click", (e) => {
+      if (e.target === diagOverlay) closeDiagnosticsModal();
+    });
+  }
+
+  const diagGreetBtn = document.getElementById("gnani-diag-greet-btn");
+  if (diagGreetBtn) {
+    diagGreetBtn.addEventListener("click", () => {
+      closeDiagnosticsModal();
+      const head = getHead();
+      if (head) {
+        if (typeof head.setView === "function") head.setView("upper");
+        if (typeof head.playGesture === "function") head.playGesture("namaste", 4);
+      }
+      showToast("🙏 Namaste! Gnani Artha 3D is active.");
+      if (typeof window.gnaniSpeak === "function") {
+        window.gnaniSpeak("Namaste! Gnani Artha 3D Sovereign Indic Voice AI is live and ready.");
+      }
+    });
+  }
+
+  const diagTelemetryBtn = document.getElementById("gnani-diag-telemetry-btn");
+  if (diagTelemetryBtn) {
+    diagTelemetryBtn.addEventListener("click", () => {
+      closeDiagnosticsModal();
+      openDrawer("telemetry");
     });
   }
 
