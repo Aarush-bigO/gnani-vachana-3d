@@ -45,6 +45,7 @@ from concurrency_guard import concurrency_guard
 from normalizer import IndicTextNormalizer
 from tools import execute_agent_tool, TOOL_DEFINITIONS
 from telemetry import telemetry, TurnMetrics
+from reasoning_engine import reasoning_engine
 
 logger = logging.getLogger("bhashaswarm.pipeline")
 
@@ -179,29 +180,23 @@ class BhashaSwarmPipeline:
                         )
                         turn.detected_language = detected_lang
 
-                        await self.ws_send_json({
-                            "type": "stt_result",
-                            "text": transcript,
-                            "is_final": True,
-                            "detected_language": detected_lang,
-                            "latency_ms": round((time.perf_counter() - turn.stt_start) * 1000, 1),
-                        })
-                        logger.info("🎤 Prisma v3.0 STT transcribed: '%s' (%s, latency %.1fms)", transcript, detected_lang, turn.stt_latency_ms)
-                        return transcript
+                        if transcript:
+                            await self.ws_send_json({
+                                "type": "stt_result",
+                                "text": transcript,
+                                "is_final": True,
+                                "detected_language": detected_lang,
+                                "latency_ms": round((time.perf_counter() - turn.stt_start) * 1000, 1),
+                            })
+                            logger.info("🎤 Prisma v3.0 STT transcribed: '%s' (%s, latency %.1fms)", transcript, detected_lang, turn.stt_latency_ms)
+                            return transcript
+                        else:
+                            logger.debug("Prisma v3.0 STT returned silence (no speech detected)")
+                            return None
                     else:
                         error_text = await resp.text()
-                        logger.warning("STT API status %d (%s) — using intelligent mic turn simulation", resp.status, error_text[:60])
-                        sim_transcript = "Bhaiya Ward 4 MP Nagar mein transformer spark kar raha hai, urgent ticket raise karo!"
-                        detected_lang = "hi-IN (Simulated Mic STT)"
-                        turn.detected_language = detected_lang
-                        await self.ws_send_json({
-                            "type": "stt_result",
-                            "text": sim_transcript,
-                            "is_final": True,
-                            "detected_language": detected_lang,
-                            "latency_ms": 184.2,
-                        })
-                        return sim_transcript
+                        logger.warning("STT API status %d (%s)", resp.status, error_text[:60])
+                        return None
 
         except Exception as e:
             turn.stt_end = time.perf_counter()
@@ -341,77 +336,29 @@ class BhashaSwarmPipeline:
             return await self._fallback_tool_reasoning(user_text, turn)
 
     async def _fallback_tool_reasoning(self, user_text: str, turn: Optional[TurnMetrics]) -> Dict[str, Any]:
-        """Deterministic intent & tool matcher for 1-click simulation & offline testing."""
-        lower = user_text.lower()
-        if turn:
-            turn.llm_first_token = time.perf_counter()
+        """Sovereign conversational & Socratic reasoning engine powered by massive Indic database."""
+        reason_res = await reasoning_engine.reason_and_respond(
+            user_text, turn=turn, language=self.language, voice=self.voice
+        )
 
-        # 1. Civic Municipal Triage Match
-        if any(w in lower for w in ["transformer", "spark", "voltage", "ward", "power", "grid", "pipeline", "leak", "light", "pothole", "garbage", "sewer", "water"]):
-            res = execute_agent_tool("dispatch_gramseva_ticket", {
-                "ward": user_text,
-                "category": "water_leak" if "leak" in lower or "water" in lower else "power_outage",
-                "severity": "CRITICAL_P1",
-                "description": user_text,
-            })
-            if turn:
-                turn.tool_calls.append("dispatch_gramseva_ticket")
-            await self.ws_send_json({"type": "tool_card", "data": res})
-            if turn:
-                turn.llm_end = time.perf_counter()
-            return {"text": res["spoken_summary"], "tool_card": res}
+        tool_card = reason_res.get("tool_card")
+        if tool_card:
+            await self.ws_send_json({"type": "tool_card", "data": tool_card})
 
-        # 2. Kirana Copilot Match (4,700+ FMCG SKUs)
-        elif any(w in lower for w in ["amul", "taaza", "stock", "expiry", "kirana", "batch", "atta", "mrp", "shelf", "discount", "milk", "butter", "oil", "ghee", "rice", "dal", "salt", "maggi", "parle", "biscuit", "dolo", "soap", "tea", "chai", "coffee", "paneer"]):
-            res = execute_agent_tool("query_kirana_inventory", {
-                "sku": user_text,
-                "query_type": "expiry_alert",
-            })
-            if turn:
-                turn.tool_calls.append("query_kirana_inventory")
-            await self.ws_send_json({"type": "tool_card", "data": res})
-            if turn:
-                turn.llm_end = time.perf_counter()
-            return {"text": res["spoken_summary"], "tool_card": res}
+        gesture = reason_res.get("gesture")
+        if gesture:
+            await self.ws_send_json({"type": "trigger_gesture", "gesture": gesture})
 
-        # 3. APMC Mandi Daily Commodity Rates Match (1,150+ Mandi Records)
-        elif any(w in lower for w in ["mandi", "bhav", "rate", "price", "tomato", "onion", "wheat", "cotton", "turmeric", "chilli", "jeera", "potato", "soybean", "chana", "mustard"]):
-            res = execute_agent_tool("query_apmc_mandi_rates", {
-                "commodity": user_text,
-            })
-            if turn:
-                turn.tool_calls.append("query_apmc_mandi_rates")
-            await self.ws_send_json({"type": "tool_card", "data": res})
-            if turn:
-                turn.llm_end = time.perf_counter()
-            return {"text": res["spoken_summary"], "tool_card": res}
+        action = reason_res.get("action")
+        if action:
+            if action.get("type") == "switch_language":
+                self.update_language(action.get("language", "hi-IN"))
+                if action.get("voice"):
+                    self.update_voice(action["voice"])
+            elif action.get("type") == "barge_in":
+                await self.handle_barge_in()
 
-        # 4. Socratic Viva Match (1,100+ Engineering Probes)
-        elif any(w in lower for w in ["deadlock", "starvation", "operating system", "os", "concept", "viva", "process", "coffman", "virtual memory", "paging", "mutex", "b+ tree", "acid", "dijkstra", "knapsack"]):
-            res = execute_agent_tool("evaluate_socratic_viva", {
-                "topic": user_text,
-                "student_answer": user_text,
-                "clarity_score": 88,
-            })
-            if turn:
-                turn.tool_calls.append("evaluate_socratic_viva")
-            await self.ws_send_json({"type": "tool_card", "data": res})
-            if turn:
-                turn.llm_end = time.perf_counter()
-            return {"text": res["spoken_summary"], "tool_card": res}
-
-        # 5. Tanglish / Language Switch Match
-        elif any(w in lower for w in ["vanakkam", "tamil", "tanglish", "accent", "regional", "switch"]):
-            resp = "<chuckle> Vanakkam! Prisma v3.0 seamlessly handles code-mixing like Tanglish and regional accents by tracking acoustic candidates simultaneously. Inga paarunga, how naturally it adapts!"
-            if turn:
-                turn.llm_end = time.perf_counter()
-            return {"text": resp, "tool_card": None}
-
-        # Default conversational Hinglish with Audio Tags
-        resp = "<chuckle> Namaste! Maine aapki baat sun li hai. Aap Ward complaint, Kirana inventory check, ya CS viva exam ke baare mein kuch bhi pooch sakte hain!"
-        if turn:
-            turn.llm_end = time.perf_counter()
-        return {"text": resp, "tool_card": None}
+        return {"text": reason_res["text"], "tool_card": tool_card}
 
     # ── TTS: Gnani Timbre v3.0 Synthesis ────────────────────────────────
     async def synthesize_speech(self, text: str) -> None:

@@ -1205,6 +1205,13 @@
       }
     } else if (msg.type === "viseme") {
       animateVoiceRing(msg.energy);
+    } else if (msg.type === "trigger_gesture") {
+      const g = msg.gesture || "namaste";
+      const head = getHead();
+      if (head && typeof head.playGesture === "function") {
+        head.playGesture(g, 4);
+        showToast(`✨ Gesture: ${g.toUpperCase()}`);
+      }
     } else if (msg.type === "barge_in_ack") {
       bargeInCount++;
       hideSubtitles();
@@ -1544,6 +1551,9 @@
     }
   }
 
+  let speechRecognizer = null;
+  let silenceTimer = null;
+
   async function toggleMicrophone() {
     if (isMicActive) {
       stopMicrophone();
@@ -1583,7 +1593,66 @@
       };
 
       source.connect(scriptProcessor);
-      scriptProcessor.connect(audioContext.destination);
+      // Route through a silent gain node to avoid acoustic feedback through speakers
+      const silentGain = audioContext.createGain();
+      silentGain.gain.value = 0.0;
+      scriptProcessor.connect(silentGain);
+      silentGain.connect(audioContext.destination);
+
+      // Start client-side Web Speech Recognition for instant word-by-word streaming
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRec) {
+        try {
+          speechRecognizer = new SpeechRec();
+          speechRecognizer.continuous = true;
+          speechRecognizer.interimResults = true;
+          speechRecognizer.lang = selectedLanguage === "ta-IN" ? "ta-IN" : (selectedLanguage === "hi-IN" ? "hi-IN" : "en-IN");
+
+          let lastDispatched = "";
+
+          speechRecognizer.onresult = (ev) => {
+            let interimTranscript = "";
+            let finalTranscript = "";
+            for (let i = ev.resultIndex; i < ev.results.length; i++) {
+              const res = ev.results[i];
+              if (res.isFinal) {
+                finalTranscript += res[0].transcript;
+              } else {
+                interimTranscript += res[0].transcript;
+              }
+            }
+
+            const inputEl = document.getElementById("input");
+            if (interimTranscript.trim()) {
+              if (inputEl) inputEl.value = interimTranscript.trim();
+              showSubtitles(`🎙️ "${interimTranscript.trim()}"`);
+              clearTimeout(silenceTimer);
+            }
+
+            if (finalTranscript.trim() && finalTranscript.trim() !== lastDispatched) {
+              lastDispatched = finalTranscript.trim();
+              if (inputEl) inputEl.value = finalTranscript.trim();
+              console.log("🎤 Voice input recognized:", finalTranscript.trim());
+              window.gnaniSendText(finalTranscript.trim());
+              if (inputEl) inputEl.value = "";
+            }
+          };
+
+          speechRecognizer.onerror = (ev) => {
+            console.warn("SpeechRec notice:", ev.error);
+          };
+
+          speechRecognizer.onend = () => {
+            if (isMicActive && speechRecognizer) {
+              try { speechRecognizer.start(); } catch (err) {}
+            }
+          };
+
+          speechRecognizer.start();
+        } catch (recErr) {
+          console.warn("SpeechRec initialization notice:", recErr);
+        }
+      }
 
       isMicActive = true;
       syncMicButtons();
@@ -1595,6 +1664,21 @@
 
   function stopMicrophone() {
     isMicActive = false;
+    if (speechRecognizer) {
+      try { speechRecognizer.stop(); } catch (e) {}
+      speechRecognizer = null;
+    }
+    // Check if user had spoken words waiting in the input box
+    const inputEl = document.getElementById("input");
+    if (inputEl && inputEl.value.trim()) {
+      const pendingText = inputEl.value.trim();
+      inputEl.value = "";
+      window.gnaniSendText(pendingText);
+    }
+    // Send mic_end frame so backend flushes any buffered audio
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({ type: "mic_end" }));
+    }
     if (scriptProcessor) scriptProcessor.disconnect();
     if (micStream) micStream.getTracks().forEach((t) => t.stop());
     if (audioContext && audioContext.state !== "closed") audioContext.close();

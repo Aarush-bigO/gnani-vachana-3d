@@ -368,8 +368,9 @@ async def voice_websocket(ws: WebSocket):
     # Audio buffer for accumulating mic frames
     audio_buffer = bytearray()
     silence_frames = 0
-    SILENCE_THRESHOLD = 450  # Sensitive speech threshold in int16 range
-    SILENCE_FRAMES_CUTOFF = 16  # ~16 frames of silence = ~512ms for snappy turn-taking
+    speech_started = False
+    noise_floor = 250.0
+    SILENCE_FRAMES_CUTOFF = 14  # ~450ms of silence after speech to commit turn
 
     try:
         while True:
@@ -384,16 +385,19 @@ async def voice_websocket(ws: WebSocket):
                     audio_data = message["bytes"]
                     audio_buffer.extend(audio_data)
 
-                    # Simple VAD: check if this frame is silence
+                    # Dynamic Adaptive VAD: track noise floor & voice activity
                     import numpy as np
                     try:
                         samples = np.frombuffer(audio_data, dtype=np.int16)
-                        rms = np.sqrt(np.mean(samples.astype(np.float32) ** 2))
+                        rms = float(np.sqrt(np.mean(samples.astype(np.float32) ** 2)))
+                        noise_floor = min(noise_floor * 0.99 + rms * 0.01, 1000.0)
+                        threshold = max(350.0, noise_floor * 1.5)
 
-                        if rms < SILENCE_THRESHOLD:
+                        if rms < threshold:
                             silence_frames += 1
                         else:
                             silence_frames = 0
+                            speech_started = True
 
                         # Send interim waveform energy to frontend
                         await send_json({
@@ -404,18 +408,20 @@ async def voice_websocket(ws: WebSocket):
                     except Exception:
                         silence_frames += 1
 
-                    # If we have enough audio and silence detected, process the turn
+                    # If speech was detected and silence followed, process the turn
                     if (
-                        len(audio_buffer) > settings.pcm_frame_size * 10
+                        speech_started
+                        and len(audio_buffer) > settings.pcm_frame_size * 6
                         and silence_frames >= SILENCE_FRAMES_CUTOFF
                     ):
                         audio_bytes = bytes(audio_buffer)
                         audio_buffer.clear()
                         silence_frames = 0
+                        speech_started = False
 
-                        # Process the audio turn
+                        # Process the audio turn via Gnani Prisma v3 STT
                         transcript = await pipeline.transcribe_audio(audio_bytes)
-                        if transcript:
+                        if transcript and transcript.strip():
                             await pipeline.process_text_turn(transcript)
 
                 # Text frame: JSON commands
@@ -429,8 +435,20 @@ async def voice_websocket(ws: WebSocket):
 
                     if msg_type == "barge_in":
                         await pipeline.handle_barge_in()
-                        # Flush audio buffer too
                         audio_buffer.clear()
+                        speech_started = False
+                        silence_frames = 0
+
+                    elif msg_type == "mic_end":
+                        # User stopped mic — process any buffered speech immediately
+                        if len(audio_buffer) > settings.pcm_frame_size * 3:
+                            audio_bytes = bytes(audio_buffer)
+                            audio_buffer.clear()
+                            silence_frames = 0
+                            speech_started = False
+                            transcript = await pipeline.transcribe_audio(audio_bytes)
+                            if transcript and transcript.strip():
+                                await pipeline.process_text_turn(transcript)
 
                     elif msg_type == "config":
                         if "voice" in data:
