@@ -548,3 +548,4 @@ class IndicReasoningEngine:
 
 # Global singleton engine instance
 reasoning_engine = IndicReasoningEngine()
+

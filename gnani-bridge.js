@@ -1172,6 +1172,24 @@
           head.audioCtx.resume();
         }
 
+        const cleanText = text.replace(/<[^>]*>/g, "").replace(/[*#`_~]/g, "").trim();
+
+        // High-Fidelity TalkingHead 3D Speech & Viseme Animation Engine
+        // Drives realistic ARKit mouth shapes, hand gestures, gaze tracking, and speech
+        if (head && typeof head.speakText === "function" && cleanText) {
+          try {
+            if (typeof head.streamStop === "function") head.streamStop();
+            const lipsyncCode = selectedLanguage === "ta-IN" ? "ta" : (selectedLanguage === "hi-IN" ? "hi" : "en");
+            head.speakText(cleanText, {
+              lipsyncLang: lipsyncCode,
+              ttsRate: 1.05
+            });
+            setAgentState("speaking");
+          } catch (speakErr) {
+            console.warn("Avatar speakText invocation notice:", speakErr);
+          }
+        }
+
         // Prepare lip-sync words for incoming Timbre 16kHz audio stream
         const cleanWords = text.replace(/<[^>]*>/g, "").split(/\s+/).filter(Boolean);
         let tAccum = 0;
@@ -1236,6 +1254,10 @@
 
     const head = getHead();
     if (head) {
+      if (head.isSpeaking && !head.isStreaming) {
+        // Head is actively speaking with full body & viseme animation via speakText
+        return;
+      }
       try {
         if (!head.isStreaming) {
           head.streamStart({ sampleRate: 16000, lipsyncType: "words" });
@@ -1261,6 +1283,10 @@
     setAgentState("idle");
     const head = getHead();
     if (head) {
+      if (head.isSpeaking && !head.isStreaming) {
+        // Head is actively speaking with full body & viseme animation via speakText
+        return;
+      }
       try {
         if (typeof head.stopSpeaking === "function") head.stopSpeaking();
         if (typeof head.streamStop === "function") head.streamStop();
