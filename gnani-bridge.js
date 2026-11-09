@@ -48,79 +48,53 @@
     * { box-sizing: border-box; }
     
     :root {
-      --lk-bg: #030712;
-      --lk-surface: rgba(15, 23, 42, 0.78);
-      --lk-surface-hover: rgba(30, 41, 59, 0.85);
-      --lk-border: rgba(255, 255, 255, 0.08);
-      --lk-border-hover: rgba(255, 255, 255, 0.18);
-      --lk-primary: #10b981;
-      --lk-primary-glow: rgba(16, 185, 129, 0.4);
-      --lk-cyan: #06b6d4;
-      --lk-purple: #a855f7;
-      --lk-amber: #f59e0b;
-      --lk-rose: #f43f5e;
-      --lk-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      --lk-mono: 'JetBrains Mono', monospace;
+      --neo-bg: #F7F4EB;
+      --neo-yellow: #FFDE59;
+      --neo-blue: #60A5FA;
+      --neo-orange: #FFA726;
+      --neo-mint: #00E599;
+      --neo-purple: #C084FC;
+      --neo-red: #FF3B30;
+      --neo-black: #000000;
+      --neo-white: #FFFFFF;
+      --neo-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     body {
-      font-family: var(--lk-font);
-      background: var(--lk-bg);
-      color: #f8fafc;
+      font-family: var(--neo-font);
+      background-color: var(--neo-bg);
+      background-image: radial-gradient(#cbd5e1 1.2px, transparent 1.2px);
+      background-size: 24px 24px;
+      color: #000000;
       overflow: hidden;
       margin: 0;
       padding: 0;
     }
 
-    /* ── Ambient Studio Spotlight ── */
-    #gnani-stage-spotlight {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 1;
-      background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.15) 0%, rgba(15, 23, 42, 0.4) 50%, rgba(3, 7, 18, 0.95) 100%);
+    #gnani-stage-spotlight, #gnani-voice-ring {
+      display: none !important;
     }
 
-    /* ── Ambient Audio Visualizer Ring Under Avatar ── */
-    #gnani-voice-ring {
-      position: fixed;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 320px;
-      height: 32px;
-      border-radius: 50%;
-      background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.35) 0%, rgba(6, 182, 212, 0.15) 40%, transparent 70%);
-      filter: blur(12px);
-      pointer-events: none;
-      z-index: 2;
-      transition: all 0.15s ease-out;
-    }
-
-    /* ── Top Header Navigation Bar (LiveKit style) ── */
+    /* ── Neobrutalist Top Header Bar (React Bits Pro aesthetic) ── */
     .gnani-lk-header {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      height: 52px;
+      height: 54px;
       padding: 0 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      background: rgba(3, 7, 18, 0.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--lk-border);
+      gap: 10px;
+      background: #FAF7F2;
+      border-bottom: 3.5px solid #000000;
+      box-shadow: 0 4px 0px rgba(0, 0, 0, 0.08);
       z-index: 1000;
     }
 
     #main {
-      top: calc(50% + 26px) !important;
+      top: calc(50% + 12px) !important;
       z-index: 10 !important;
     }
     #left, #right, #bottom {
@@ -130,7 +104,7 @@
     .gnani-lk-brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       cursor: pointer;
     }
 
@@ -140,336 +114,334 @@
       justify-content: center;
       width: 36px;
       height: 36px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-      box-shadow: 0 0 16px var(--lk-primary-glow);
-      font-weight: 800;
-      font-size: 18px;
-      color: #fff;
+      border-radius: 4px;
+      background: #FFDE59;
+      border: 2.5px solid #000000;
+      box-shadow: 2.5px 2.5px 0px #000000;
+      font-weight: 900;
+      font-size: 19px;
+      color: #000000;
     }
 
     .gnani-lk-brand-title {
-      font-weight: 800;
-      font-size: 15px;
+      font-weight: 900;
+      font-size: 14px;
       letter-spacing: -0.3px;
-      color: #fff;
+      color: #000000;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .gnani-lk-brand-pill {
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 900;
       padding: 2px 7px;
-      border-radius: 9999px;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      color: #34d399;
+      border-radius: 3px;
+      background: #000000;
+      color: #FFFFFF;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
-    /* ── Latency Waterfall Pills ── */
-    .gnani-lk-waterfall {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(15, 23, 42, 0.6);
-      padding: 4px 10px;
-      border-radius: 9999px;
-      border: 1px solid var(--lk-border);
-    }
-
-    .gnani-lk-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 9999px;
+    /* ── Action Buttons & Scenarios ── */
+    .gnani-lk-preset-chip {
+      background: #FFFFFF;
+      color: #000000;
+      border: 2.5px solid #000000;
+      box-shadow: 2.5px 2.5px 0px #000000;
+      padding: 6px 11px;
+      border-radius: 4px;
       font-size: 11px;
-      font-family: var(--lk-mono);
-      font-weight: 600;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid transparent;
-      transition: all 0.2s;
-    }
-
-    .gnani-lk-pill-stt { color: #d8b4fe; border-color: rgba(168, 85, 247, 0.35); }
-    .gnani-lk-pill-llm { color: #67e8f9; border-color: rgba(6, 182, 212, 0.35); }
-    .gnani-lk-pill-tts { color: #6ee7b7; border-color: rgba(16, 185, 129, 0.35); }
-    .gnani-lk-pill-turn {
-      color: #34d399;
-      background: rgba(16, 185, 129, 0.12);
-      border-color: rgba(16, 185, 129, 0.5);
-      font-weight: 700;
-    }
-
-    /* ── Right Controls Header ── */
-    .gnani-lk-controls-top {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .gnani-lk-select {
-      background: rgba(15, 23, 42, 0.85);
-      color: #f1f5f9;
-      border: 1px solid var(--lk-border);
-      padding: 7px 12px;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 600;
-      font-family: var(--lk-font);
-      outline: none;
+      font-weight: 800;
       cursor: pointer;
-      transition: all 0.2s;
-    }
-    .gnani-lk-select:hover {
-      border-color: var(--lk-border-hover);
-      background: rgba(30, 41, 59, 0.9);
-    }
-
-    .gnani-lk-icon-btn {
       display: flex;
       align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--lk-border);
-      color: #e2e8f0;
-      padding: 7px 14px;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
+      gap: 5px;
+      transition: all 0.1s ease;
+      white-space: nowrap;
     }
-    .gnani-lk-icon-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: var(--lk-border-hover);
-      color: #fff;
+    .gnani-lk-preset-chip:hover {
+      background: #FFDE59;
+      transform: translate(-1px, -1px);
+      box-shadow: 3.5px 3.5px 0px #000000;
     }
-
-    .gnani-badge-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 8px #10b981;
-      display: inline-block;
-    }
-
-    /* ── Floating Subtitles Card ── */
-    .gnani-lk-subtitles {
-      position: fixed;
-      bottom: 120px;
-      left: 50%;
-      transform: translateX(-50%);
-      max-width: 680px;
-      padding: 14px 22px;
-      background: rgba(15, 23, 42, 0.82);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-      color: #fff;
-      font-size: 15px;
-      font-weight: 500;
-      line-height: 1.5;
-      text-align: center;
-      z-index: 90;
-      display: none;
-      animation: lkFadeUp 0.25s ease-out;
-    }
-
-    @keyframes lkFadeUp {
-      from { opacity: 0; transform: translate(-50%, 15px); }
-      to { opacity: 1; transform: translate(-50%, 0); }
-    }
-
-    /* ── Bottom Floating Action Pill Dock (LiveKit Dock) ── */
-    .gnani-lk-dock {
-      position: fixed;
-      bottom: 28px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(15, 23, 42, 0.82);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 8px 14px;
-      border-radius: 9999px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-      z-index: 100;
-    }
-
-    .gnani-lk-mic-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 9999px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .gnani-lk-mic-btn:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
-    }
-    .gnani-lk-mic-active {
-      background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important;
-      box-shadow: 0 0 25px rgba(244, 63, 94, 0.7) !important;
-      animation: lkPulse 1.2s infinite;
-    }
-
-    @keyframes lkPulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.88; transform: scale(1.04); }
+    .gnani-lk-preset-chip:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px #000000;
     }
 
     .gnani-lk-barge-btn {
       display: flex;
       align-items: center;
-      gap: 6px;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      color: #fca5a5;
-      padding: 10px 16px;
-      border-radius: 9999px;
-      font-size: 12px;
-      font-weight: 700;
+      gap: 5px;
+      background: #FF3B30;
+      border: 2.5px solid #000000;
+      box-shadow: 2.5px 2.5px 0px #000000;
+      color: #FFFFFF;
+      padding: 6px 11px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 900;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.1s ease;
     }
     .gnani-lk-barge-btn:hover {
-      background: rgba(239, 68, 68, 0.25);
-      border-color: rgba(239, 68, 68, 0.6);
-      color: #fff;
-      transform: scale(1.02);
+      background: #e11d48;
+      transform: translate(-1px, -1px);
+      box-shadow: 3.5px 3.5px 0px #000000;
+    }
+    .gnani-lk-barge-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px #000000;
     }
 
-    .gnani-lk-divider {
-      width: 1px;
-      height: 24px;
-      background: rgba(255, 255, 255, 0.12);
-      margin: 0 4px;
-    }
-
-    .gnani-lk-preset-chip {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--lk-border);
-      color: #cbd5e1;
-      padding: 8px 14px;
-      border-radius: 9999px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
+    .gnani-lk-mic-btn {
       display: flex;
       align-items: center;
-      gap: 6px;
-      transition: all 0.2s;
-      white-space: nowrap;
+      gap: 5px;
+      background: #00E599;
+      color: #000000;
+      border: 2.5px solid #000000;
+      box-shadow: 2.5px 2.5px 0px #000000;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: all 0.1s ease;
     }
-    .gnani-lk-preset-chip:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: var(--lk-border-hover);
-      color: #fff;
-      transform: translateY(-1px);
+    .gnani-lk-mic-btn:hover {
+      background: #34d399;
+      transform: translate(-1px, -1px);
+      box-shadow: 3.5px 3.5px 0px #000000;
+    }
+    .gnani-lk-mic-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px #000000;
+    }
+    .gnani-lk-mic-active {
+      background: #FFDE59 !important;
+      animation: neoPulse 0.8s infinite alternate !important;
+    }
+    @keyframes neoPulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.04); }
     }
 
-    /* ── LiveKit Slide-Over Inspector Drawer (Right Side) ── */
+    /* ── Bento Latency Waterfall (Image 2 style) ── */
+    .gnani-lk-waterfall {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .gnani-lk-pill {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 7px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-family: var(--neo-font);
+      font-weight: 800;
+      border: 2px solid #000000;
+      box-shadow: 2px 2px 0px #000000;
+      color: #000000;
+      background: #FFFFFF;
+    }
+    .gnani-lk-pill-stt { background: #E9D5FF; }
+    .gnani-lk-pill-llm { background: #BAE6FD; }
+    .gnani-lk-pill-tts { background: #FED7AA; }
+    .gnani-lk-pill-turn {
+      background: #00E599;
+      font-weight: 900;
+    }
+
+    /* ── Selects & Buttons ── */
+    .gnani-lk-select {
+      background: #FFFFFF;
+      color: #000000;
+      border: 2.5px solid #000000;
+      box-shadow: 2.5px 2.5px 0px #000000;
+      padding: 5px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      font-family: var(--neo-font);
+      outline: none;
+      cursor: pointer;
+    }
+    .gnani-lk-select:hover {
+      background: #FFDE59;
+    }
+    .gnani-lk-icon-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: #FFFFFF;
+      border: 2.5px solid #000000;
+      box-shadow: 2.5px 2.5px 0px #000000;
+      color: #000000;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+    .gnani-lk-icon-btn:hover {
+      background: #FFDE59;
+      transform: translate(-1px, -1px);
+      box-shadow: 3.5px 3.5px 0px #000000;
+    }
+    .gnani-lk-icon-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px #000000;
+    }
+
+    /* ── Neobrutalist Subtitles ── */
+    .gnani-lk-subtitles {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 720px;
+      padding: 10px 20px;
+      background: #FFFFFF;
+      border: 3px solid #000000;
+      box-shadow: 4px 4px 0px #000000;
+      border-radius: 4px;
+      color: #000000;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.5;
+      text-align: center;
+      z-index: 95;
+      display: none;
+    }
+
+    /* ── Neobrutalist Drawer ── */
     .gnani-lk-drawer {
       position: fixed;
-      top: 64px;
+      top: 54px;
       right: 0;
-      bottom: 0;
-      width: 420px;
-      background: rgba(10, 15, 30, 0.88);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      border-left: 1px solid var(--lk-border);
-      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.6);
+      bottom: 32px;
+      width: 440px;
+      background: #FAF7F2;
+      border-left: 3.5px solid #000000;
+      box-shadow: -6px 0 0px #000000;
       z-index: 105;
       display: flex;
       flex-direction: column;
       transform: translateX(100%);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .gnani-lk-drawer-open {
       transform: translateX(0) !important;
     }
 
     .gnani-lk-drawer-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--lk-border);
+      padding: 12px 16px;
+      border-bottom: 2.5px solid #000000;
+      background: #FFDE59;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      color: #000000;
     }
 
     .gnani-lk-drawer-tabs {
       display: flex;
-      padding: 8px 16px;
-      gap: 8px;
-      border-bottom: 1px solid var(--lk-border);
-      background: rgba(0, 0, 0, 0.2);
+      padding: 8px 12px;
+      gap: 6px;
+      border-bottom: 2.5px solid #000000;
+      background: #FFFFFF;
     }
-
     .gnani-lk-tab {
       flex: 1;
-      padding: 8px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
+      padding: 6px 8px;
+      border: 2px solid #000000;
+      box-shadow: 2px 2px 0px #000000;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 800;
       text-align: center;
-      background: transparent;
-      border: none;
-      color: #94a3b8;
+      background: #FFFFFF;
+      color: #000000;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.1s;
     }
     .gnani-lk-tab.active {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
+      background: #FFDE59;
+      box-shadow: 3px 3px 0px #000000;
     }
 
     .gnani-lk-drawer-body {
       flex: 1;
-      padding: 18px 20px;
+      padding: 16px 18px;
       overflow-y: auto;
+      color: #000000;
     }
 
-    /* ── Tool Card Styling ── */
+    /* ── Neobrutalist Tool Cards ── */
     .gnani-lk-card {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid var(--lk-border);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      background: #FFFFFF;
+      border: 2.5px solid #000000;
+      border-radius: 4px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 4px 4px 0px #000000;
+      color: #000000;
     }
 
     .gnani-copy-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--lk-border);
-      color: #fff;
-      padding: 3px 8px;
-      border-radius: 6px;
+      background: #FFDE59;
+      border: 2px solid #000000;
+      box-shadow: 2px 2px 0px #000000;
+      color: #000000;
+      padding: 4px 10px;
+      border-radius: 3px;
       font-size: 10px;
+      font-weight: 800;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.1s;
     }
-    .gnani-copy-btn:hover { background: rgba(255, 255, 255, 0.2); }
+    .gnani-copy-btn:hover {
+      background: #FFA726;
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #000000;
+    }
+
+    /* ── Bottom Marquee Yellow Ticker (from user screenshot 1!) ── */
+    .gnani-neo-ticker {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 32px;
+      background: #FFDE59;
+      border-top: 3px solid #000000;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      white-space: nowrap;
+      font-family: var(--neo-font);
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing: 0.8px;
+      color: #000000;
+      z-index: 1000;
+      user-select: none;
+    }
+    .gnani-neo-ticker-track {
+      display: inline-flex;
+      gap: 32px;
+      animation: neoTicker 32s linear infinite;
+    }
+    @keyframes neoTicker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
   `;
   document.head.appendChild(style);
 
@@ -565,8 +537,26 @@
   const subtitlesEl = document.createElement("div");
   subtitlesEl.className = "gnani-lk-subtitles";
   subtitlesEl.id = "gnani-subtitles";
-  subtitlesEl.style.bottom = "120px";
   document.body.appendChild(subtitlesEl);
+
+  // Bottom Marquee Yellow Ticker (Neobrutalism Ribbon from React Bits Pro)
+  const ticker = document.createElement("div");
+  ticker.className = "gnani-neo-ticker";
+  const tickerText = `
+    <span>⚡ PRISMA v2.5 STT</span> <span>◆</span>
+    <span>EVON v3.3 (30B MoE) REASONING</span> <span>◆</span>
+    <span>TIMBRE v2.5 STREAMING TTS</span> <span>◆</span>
+    <span>11 INDIC LANGUAGES</span> <span>◆</span>
+    <span>SUB-500MS TURNAROUND</span> <span>◆</span>
+    <span>REAL-TIME 3D DIGITAL HUMANS</span> <span>◆</span>
+    <span>100% SOVEREIGN INDIAN AI STACK</span> <span>◆</span>
+  `;
+  ticker.innerHTML = `
+    <div class="gnani-neo-ticker-track">
+      ${tickerText} ${tickerText} ${tickerText}
+    </div>
+  `;
+  document.body.appendChild(ticker);
 
   // Right Slide-Over Inspector Drawer
   const drawer = document.createElement("div");
@@ -574,10 +564,10 @@
   drawer.id = "gnani-drawer";
   drawer.innerHTML = `
     <div class="gnani-lk-drawer-header">
-      <div style="font-weight:700;font-size:13px;letter-spacing:0.5px;color:#cbd5e1;display:flex;align-items:center;gap:8px;">
+      <div style="font-weight:900;font-size:13px;letter-spacing:0.5px;color:#000000;display:flex;align-items:center;gap:8px;">
         <span class="gnani-badge-dot"></span> INSPECTOR & TELEMETRY
       </div>
-      <button id="gnani-drawer-close" style="background:transparent;border:none;color:#94a3b8;font-size:18px;cursor:pointer;">✕</button>
+      <button id="gnani-drawer-close" style="background:#FFF;border:2px solid #000;box-shadow:2px 2px 0px #000;font-weight:900;color:#000;width:24px;height:24px;border-radius:3px;cursor:pointer;">✕</button>
     </div>
 
     <div class="gnani-lk-drawer-tabs">
@@ -589,8 +579,8 @@
     <div class="gnani-lk-drawer-body" id="gnani-drawer-body">
       <!-- Tool Cards Tab Content (Default) -->
       <div id="tab-content-tools">
-        <div id="gnani-empty-tools" style="text-align:center;padding:40px 10px;color:#64748b;font-size:13px;">
-          Click <strong style="color:#cbd5e1;">🏛️ Civic Triage</strong> or <strong style="color:#cbd5e1;">🏪 Kirana FEFO</strong> to trigger autonomous tool execution cards.
+        <div id="gnani-empty-tools" style="text-align:center;padding:40px 10px;color:#475569;font-weight:700;font-size:13px;">
+          Click <strong style="background:#FFDE59;padding:2px 6px;border:1.5px solid #000;border-radius:3px;color:#000;">🏛️ Civic Triage</strong> or <strong style="background:#FFA726;padding:2px 6px;border:1.5px solid #000;border-radius:3px;color:#000;">🏪 Kirana FEFO</strong> to trigger autonomous tool execution cards.
         </div>
         <div id="gnani-tool-cards-container"></div>
       </div>
@@ -845,46 +835,52 @@
 
     if (card.card_type === "CIVIC_DISPATCH") {
       cardDiv.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;border-bottom:1px solid rgba(16,185,129,0.3);padding-bottom:8px;">
-          <strong style="color:#34d399;font-size:13px;">🏛️ GRAMSEVA CIVIC DISPATCH</strong>
-          <span style="font-size:10px;background:rgba(239,68,68,0.2);color:#fca5a5;padding:2px 8px;border-radius:6px;font-weight:700;">${card.severity}</span>
+        <div style="background:#FFDE59;border:2.5px solid #000;box-shadow:4px 4px 0px #000;border-radius:4px;padding:14px;color:#000;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;border-bottom:2px solid #000;padding-bottom:6px;">
+            <strong style="font-size:12px;font-weight:900;">🏛️ GRAMSEVA CIVIC DISPATCH</strong>
+            <span style="font-size:10px;background:#000;color:#FFF;padding:2px 8px;border-radius:2px;font-weight:900;">${card.severity}</span>
+          </div>
+          <div style="font-size:12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+            <span>TICKET ID: <strong style="font-family:var(--neo-font);font-weight:900;">#${card.ticket_id}</strong></span>
+            <button class="gnani-copy-btn" onclick="navigator.clipboard.writeText('#${card.ticket_id}')">Copy</button>
+          </div>
+          <div style="font-size:12px;margin-bottom:4px;">WARD: <strong style="font-weight:800;">${card.ward}</strong></div>
+          <div style="font-size:12px;margin-bottom:4px;">SLA ETA: <strong style="font-weight:900;text-decoration:underline;">${card.sla_eta}</strong></div>
+          <div style="font-size:12px;margin-bottom:6px;">ENGINEER: <strong style="font-weight:800;">${card.assigned_to}</strong></div>
+          <div style="font-size:10px;font-weight:800;background:#00E599;border:1.5px solid #000;border-radius:2px;padding:2px 6px;display:inline-block;margin-top:6px;">✓ 100% Synthetic Sovereign Data</div>
         </div>
-        <div style="font-size:12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
-          <span>TICKET ID: <strong style="color:#6ee7b7;font-family:var(--lk-mono);">#${card.ticket_id}</strong></span>
-          <button class="gnani-copy-btn" onclick="navigator.clipboard.writeText('#${card.ticket_id}')">Copy</button>
-        </div>
-        <div style="font-size:12px;margin-bottom:6px;"><span style="color:#94a3b8;">WARD:</span> <strong>${card.ward}</strong></div>
-        <div style="font-size:12px;margin-bottom:6px;"><span style="color:#94a3b8;">SLA ETA:</span> <strong style="color:#fbbf24;">${card.sla_eta}</strong></div>
-        <div style="font-size:12px;margin-bottom:6px;"><span style="color:#94a3b8;">ENGINEER:</span> <strong>${card.assigned_to}</strong></div>
-        <div style="font-size:11px;color:#10b981;margin-top:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:6px;">✓ 100% Synthetic Data Compliant</div>
       `;
     } else if (card.card_type === "KIRANA_COPILOT") {
       cardDiv.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;border-bottom:1px solid rgba(245,158,11,0.3);padding-bottom:8px;">
-          <strong style="color:#fbbf24;font-size:13px;">🏪 KIRANA SHELFCHECK</strong>
-          <span style="font-size:10px;background:rgba(245,158,11,0.2);color:#fde68a;padding:2px 8px;border-radius:6px;font-weight:700;">FEFO ALERT</span>
-        </div>
-        <div style="font-size:12px;margin-bottom:8px;"><span style="color:#94a3b8;">SKU:</span> <strong style="color:#fde047;">${card.sku}</strong></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px;">
-          <span>Stock: <strong>${card.current_stock}</strong></span>
-          <span>Expiry: <strong style="color:#f87171;">${card.expiry_in_days} days</strong></span>
-          <span>MRP: <strong>₹${card.unit_price_inr}</strong></span>
-        </div>
-        <div style="background:rgba(245,158,11,0.1);padding:8px;border-radius:8px;border:1px solid rgba(245,158,11,0.25);margin-top:6px;font-size:11px;">
-          <div style="color:#fbbf24;font-weight:700;margin-bottom:2px;">ACTION:</div>
-          <div>${card.action_display || card.recommended_action}</div>
+        <div style="background:#FFA726;border:2.5px solid #000;box-shadow:4px 4px 0px #000;border-radius:4px;padding:14px;color:#000;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;border-bottom:2px solid #000;padding-bottom:6px;">
+            <strong style="font-size:12px;font-weight:900;">🏪 KIRANA SHELFCHECK</strong>
+            <span style="font-size:10px;background:#000;color:#FFF;padding:2px 8px;border-radius:2px;font-weight:900;">FEFO ALERT</span>
+          </div>
+          <div style="font-size:12px;margin-bottom:6px;">SKU: <strong style="font-weight:900;">${card.sku}</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px;background:#FFF;border:1.5px solid #000;padding:6px;border-radius:3px;">
+            <span>Stock: <strong>${card.current_stock}</strong></span>
+            <span>Expiry: <strong style="color:#d97706;font-weight:900;">${card.expiry_in_days}d</strong></span>
+            <span>MRP: <strong>₹${card.unit_price_inr}</strong></span>
+          </div>
+          <div style="background:#FFF;border:2px solid #000;padding:8px;border-radius:3px;font-size:11px;">
+            <div style="font-weight:900;margin-bottom:2px;">ACTION:</div>
+            <div style="font-weight:700;">${card.action_display || card.recommended_action}</div>
+          </div>
         </div>
       `;
     } else if (card.card_type === "SOCRATIC_VIVA") {
       cardDiv.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;border-bottom:1px solid rgba(168,85,247,0.3);padding-bottom:8px;">
-          <strong style="color:#c084fc;font-size:13px;">🎓 SOCRATIC ENGINEERING VIVA</strong>
-          <span style="font-size:10px;background:rgba(168,85,247,0.2);color:#e9d5ff;padding:2px 8px;border-radius:6px;font-weight:700;">SCORE: ${card.clarity_score}%</span>
-        </div>
-        <div style="font-size:12px;margin-bottom:8px;"><span style="color:#94a3b8;">TOPIC:</span> <strong>${card.topic}</strong></div>
-        <div style="background:rgba(168,85,247,0.1);padding:8px;border-radius:8px;border:1px solid rgba(168,85,247,0.25);margin-top:6px;font-size:11px;">
-          <div style="color:#c084fc;font-weight:700;margin-bottom:2px;">NEXT SOCRATIC PROBE:</div>
-          <div>${card.next_socratic_probe}</div>
+        <div style="background:#60A5FA;border:2.5px solid #000;box-shadow:4px 4px 0px #000;border-radius:4px;padding:14px;color:#000;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;border-bottom:2px solid #000;padding-bottom:6px;">
+            <strong style="font-size:12px;font-weight:900;">🎓 SOCRATIC ENGINEERING VIVA</strong>
+            <span style="font-size:10px;background:#000;color:#FFF;padding:2px 8px;border-radius:2px;font-weight:900;">SCORE: ${card.clarity_score}%</span>
+          </div>
+          <div style="font-size:12px;margin-bottom:8px;">TOPIC: <strong style="font-weight:800;">${card.topic}</strong></div>
+          <div style="background:#FFF;border:2px solid #000;padding:8px;border-radius:3px;font-size:11px;">
+            <div style="font-weight:900;margin-bottom:2px;">NEXT SOCRATIC PROBE:</div>
+            <div style="font-weight:700;">${card.next_socratic_probe}</div>
+          </div>
         </div>
       `;
     }
@@ -900,20 +896,22 @@
 
     const msgDiv = document.createElement("div");
     msgDiv.style.padding = "10px 14px";
-    msgDiv.style.borderRadius = "12px";
+    msgDiv.style.borderRadius = "4px";
     msgDiv.style.fontSize = "12px";
     msgDiv.style.lineHeight = "1.4";
+    msgDiv.style.fontWeight = "600";
+    msgDiv.style.border = "2px solid #000";
+    msgDiv.style.boxShadow = "3px 3px 0px #000";
+    msgDiv.style.color = "#000";
 
     if (role === "user") {
-      msgDiv.style.background = "rgba(6, 182, 212, 0.12)";
-      msgDiv.style.border = "1px solid rgba(6, 182, 212, 0.25)";
+      msgDiv.style.background = "#FFDE59";
       msgDiv.style.alignSelf = "flex-end";
-      msgDiv.innerHTML = `<div style="font-weight:700;color:#67e8f9;margin-bottom:3px;font-size:10px;">YOU (${time})</div>${clean}`;
+      msgDiv.innerHTML = `<div style="font-weight:900;color:#000;margin-bottom:3px;font-size:10px;text-transform:uppercase;">YOU (${time})</div>${clean}`;
     } else {
-      msgDiv.style.background = "rgba(168, 85, 247, 0.12)";
-      msgDiv.style.border = "1px solid rgba(168, 85, 247, 0.25)";
+      msgDiv.style.background = "#FFFFFF";
       msgDiv.style.alignSelf = "flex-start";
-      msgDiv.innerHTML = `<div style="font-weight:700;color:#d8b4fe;margin-bottom:3px;font-size:10px;">${selectedVoice} • GNANI ARTHA (${time})</div>${clean}`;
+      msgDiv.innerHTML = `<div style="font-weight:900;color:#000;margin-bottom:3px;font-size:10px;text-transform:uppercase;">${selectedVoice} • GNANI ARTHA (${time})</div>${clean}`;
     }
 
     chatContainer.appendChild(msgDiv);
