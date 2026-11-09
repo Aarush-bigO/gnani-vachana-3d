@@ -959,10 +959,33 @@
           <div class="gnani-diag-desc">Streaming WebSocket • Lakh/Crore Cadence</div>
         </div>
         <div class="gnani-diag-box">
+          <div class="gnani-diag-label">🗄️ MASSIVE DATABASE</div>
+          <div class="gnani-diag-val" id="gnani-diag-db-count">10,000+ Records</div>
+          <div class="gnani-diag-desc">4.7k FMCG • 3k Wards • 1.1k Mandi • &lt;1ms Index</div>
+        </div>
+        <div class="gnani-diag-box">
+          <div class="gnani-diag-label">🔒 CONCURRENCY GUARD</div>
+          <div class="gnani-diag-val">Semaphore(1) Lock</div>
+          <div class="gnani-diag-desc">Zero HTTP 429 Collisions • Contest Grade</div>
+        </div>
+        <div class="gnani-diag-box">
           <div class="gnani-diag-label">🛡️ SOVEREIGNTY</div>
           <div class="gnani-diag-val">Bengaluru Tier-IV DC</div>
           <div class="gnani-diag-desc">Zero Foreign Cloud Egress • Local Edge Verified</div>
         </div>
+      </div>
+
+      <!-- Live Database Search Explorer inside Modal -->
+      <div style="margin-top:14px;background:#FFF;border:2.5px solid #000;box-shadow:3px 3px 0 #000;padding:12px;border-radius:4px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-weight:900;font-size:12px;color:#000;">🔍 MASSIVE INDIC DATABASE EXPLORER (10,000+ RECORDS)</span>
+          <span style="font-size:10px;background:#00E599;color:#000;font-weight:900;padding:2px 6px;border:1px solid #000;border-radius:2px;">&lt; 1ms In-Memory</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <input id="gnani-db-search-input" type="text" placeholder="Search 10k items (e.g. Amul, Indiranagar, Tomato, Deadlock)..." style="flex:1;padding:8px 12px;font-size:12px;font-weight:700;border:2px solid #000;border-radius:3px;background:#F7F4EB;outline:none;">
+          <button id="gnani-db-search-btn" style="background:#FFDE59;border:2px solid #000;box-shadow:2px 2px 0 #000;font-weight:900;font-size:12px;padding:0 14px;cursor:pointer;">Search</button>
+        </div>
+        <div id="gnani-db-search-results" style="margin-top:8px;max-height:140px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;font-size:11px;"></div>
       </div>
 
       <div class="gnani-diag-actions">
@@ -1052,10 +1075,14 @@
       const t0 = performance.now();
       fetch("/api/health")
         .then((r) => r.json())
-        .then(() => {
+        .then((data) => {
           const rtt = Math.max(12, Math.round(performance.now() - t0));
           const el = document.getElementById("gnani-diag-ping");
           if (el) el.textContent = `${rtt}ms`;
+          if (data && data.database) {
+            const dbCount = document.getElementById("gnani-diag-db-count");
+            if (dbCount) dbCount.textContent = `${data.database.total_records.toLocaleString()} Records`;
+          }
         })
         .catch(() => {});
     }
@@ -1347,6 +1374,25 @@
           <div style="background:#FFF;border:2px solid #000;padding:8px;border-radius:3px;font-size:11px;">
             <div style="font-weight:900;margin-bottom:2px;">NEXT SOCRATIC PROBE:</div>
             <div style="font-weight:700;">${card.next_socratic_probe}</div>
+          </div>
+        </div>
+      `;
+    } else if (card.card_type === "MANDI_RATES") {
+      cardDiv.innerHTML = `
+        <div style="background:#00E599;border:2.5px solid #000;box-shadow:4px 4px 0px #000;border-radius:4px;padding:14px;color:#000;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;border-bottom:2px solid #000;padding-bottom:6px;">
+            <strong style="font-size:12px;font-weight:900;">🌾 APMC MANDI COMMODITY TICKER</strong>
+            <span style="font-size:10px;background:#000;color:#FFF;padding:2px 8px;border-radius:2px;font-weight:900;">${card.trend}</span>
+          </div>
+          <div style="font-size:12px;margin-bottom:4px;">COMMODITY: <strong style="font-weight:900;">${card.commodity}</strong></div>
+          <div style="font-size:12px;margin-bottom:6px;">MARKET: <strong style="font-weight:800;">${card.mandi_name} (${card.location})</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px;background:#FFF;border:1.5px solid #000;padding:6px;border-radius:3px;">
+            <span>Modal: <strong style="font-weight:900;color:#059669;">${card.modal_price}</strong></span>
+            <span>Range: <strong>${card.price_range}</strong></span>
+            <span>Arrivals: <strong>${card.daily_arrivals}</strong></span>
+          </div>
+          <div style="background:#FFF;border:2px solid #000;padding:6px 8px;border-radius:3px;font-size:11px;font-weight:700;">
+            ${card.market_note}
           </div>
         </div>
       `;
@@ -1708,6 +1754,57 @@
       closeDiagnosticsModal();
       openDrawer("telemetry");
     });
+  }
+
+  // Live Database Search in Diagnostics Modal (10,000+ Records)
+  const dbSearchInput = document.getElementById("gnani-db-search-input");
+  const dbSearchBtn = document.getElementById("gnani-db-search-btn");
+  const dbSearchResults = document.getElementById("gnani-db-search-results");
+
+  let searchDebounceTimer = null;
+  async function performDbSearch(q) {
+    if (!dbSearchResults) return;
+    if (!q || !q.trim()) {
+      dbSearchResults.innerHTML = `<div style="color:#64748b;font-weight:700;padding:4px;">Type above to search across 10,000+ FMCG, Civic Ward, and Mandi records.</div>`;
+      return;
+    }
+    try {
+      dbSearchResults.innerHTML = `<div style="color:#000;font-weight:700;padding:4px;">Searching in-memory index (<1ms)...</div>`;
+      const res = await fetch(`/api/db/search?q=${encodeURIComponent(q.trim())}&limit=8`);
+      const data = await res.json();
+      if (!data.results || data.results.length === 0) {
+        dbSearchResults.innerHTML = `<div style="color:#d97706;font-weight:700;padding:4px;">No records found matching "${q}". Try "Amul", "Ward", "Tomato", or "Deadlock".</div>`;
+        return;
+      }
+      dbSearchResults.innerHTML = data.results.map((r) => {
+        const badgeColor = r.type === "PRODUCT" ? "#FFA726" : r.type === "CIVIC_WARD" ? "#FFDE59" : "#00E599";
+        return `
+          <div style="background:#FFF;border:1.5px solid #000;box-shadow:2px 2px 0 #000;border-radius:3px;padding:6px 8px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+            <div style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+              <span style="font-size:9px;font-weight:900;background:${badgeColor};color:#000;padding:2px 5px;border-radius:2px;border:1px solid #000;margin-right:4px;">${r.type}</span>
+              <strong style="color:#000;font-weight:800;">${r.title}</strong>
+              <div style="color:#475569;font-size:10px;margin-top:2px;">${r.detail}</div>
+            </div>
+            <button style="background:#000;color:#FFF;border:none;border-radius:2px;padding:4px 8px;font-size:10px;font-weight:900;cursor:pointer;flex-shrink:0;" onclick="document.getElementById('input').value='Tell me about ${r.title}';document.getElementById('gnani-modal-close-btn').click();document.getElementById('gnani-send-btn').click();">Ask</button>
+          </div>
+        `;
+      }).join("");
+    } catch (e) {
+      dbSearchResults.innerHTML = `<div style="color:#ef4444;font-weight:700;">Search error: ${e.message}</div>`;
+    }
+  }
+
+  if (dbSearchInput) {
+    dbSearchInput.addEventListener("input", (e) => {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(() => performDbSearch(e.target.value), 220);
+    });
+    dbSearchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") performDbSearch(e.target.value);
+    });
+  }
+  if (dbSearchBtn && dbSearchInput) {
+    dbSearchBtn.addEventListener("click", () => performDbSearch(dbSearchInput.value));
   }
 
   // Avatar Character Sync (Top Bar)

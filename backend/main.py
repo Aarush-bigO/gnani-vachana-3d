@@ -39,6 +39,7 @@ from config import (
 from concurrency_guard import concurrency_guard
 from agent_pipeline import BhashaSwarmPipeline
 from telemetry import telemetry
+from massive_db import db
 
 # ── Logging ─────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -125,7 +126,41 @@ async def health_check():
         "gnani_api_configured": bool(settings.gnani_api_key),
         "llm_configured": bool(settings.llm_api_key),
         "concurrency": concurrency_guard.get_telemetry(),
+        "database": db.get_stats(),
     }
+
+
+@app.get("/api/db/stats")
+async def get_db_stats():
+    """Return live metrics on the 10,000+ record Massive Indic Database."""
+    return db.get_stats()
+
+
+@app.get("/api/db/search")
+async def search_db(q: str = "", limit: int = 20):
+    """Instant <1ms multi-domain search across 10,000+ FMCG, Civic Ward, Mandi, and Viva records."""
+    if not q or not q.strip():
+        return {"query": "", "count": 0, "results": []}
+    matches = db.search_all(q.strip(), limit=limit)
+    return {
+        "query": q,
+        "count": len(matches),
+        "results": matches,
+    }
+
+
+@app.get("/api/db/sample")
+async def get_db_sample(domain: str = "all"):
+    """Get sample records for interactive UI explorer."""
+    samples = {
+        "products": db.products[:5],
+        "wards": db.wards[:5],
+        "mandi": db.mandi_rates[:5],
+        "viva": db.socratic_bank[:5],
+    }
+    if domain in samples:
+        return {domain: samples[domain]}
+    return samples
 
 
 @app.get("/api/config")

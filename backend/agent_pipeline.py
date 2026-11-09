@@ -347,10 +347,10 @@ class BhashaSwarmPipeline:
             turn.llm_first_token = time.perf_counter()
 
         # 1. Civic Municipal Triage Match
-        if any(w in lower for w in ["transformer", "spark", "voltage", "ward", "power", "grid", "pipeline", "leak", "light", "pothole"]):
+        if any(w in lower for w in ["transformer", "spark", "voltage", "ward", "power", "grid", "pipeline", "leak", "light", "pothole", "garbage", "sewer", "water"]):
             res = execute_agent_tool("dispatch_gramseva_ticket", {
-                "ward": "Ward 4 - MP Nagar Synthetic Zone",
-                "category": "power_outage",
+                "ward": user_text,
+                "category": "water_leak" if "leak" in lower or "water" in lower else "power_outage",
                 "severity": "CRITICAL_P1",
                 "description": user_text,
             })
@@ -361,10 +361,10 @@ class BhashaSwarmPipeline:
                 turn.llm_end = time.perf_counter()
             return {"text": res["spoken_summary"], "tool_card": res}
 
-        # 2. Kirana Copilot Match
-        elif any(w in lower for w in ["amul", "taaza", "stock", "expiry", "kirana", "batch", "atta", "mrp", "shelf", "discount"]):
+        # 2. Kirana Copilot Match (4,700+ FMCG SKUs)
+        elif any(w in lower for w in ["amul", "taaza", "stock", "expiry", "kirana", "batch", "atta", "mrp", "shelf", "discount", "milk", "butter", "oil", "ghee", "rice", "dal", "salt", "maggi", "parle", "biscuit", "dolo", "soap", "tea", "chai", "coffee", "paneer"]):
             res = execute_agent_tool("query_kirana_inventory", {
-                "sku": "amul_taaza_500ml",
+                "sku": user_text,
                 "query_type": "expiry_alert",
             })
             if turn:
@@ -374,10 +374,22 @@ class BhashaSwarmPipeline:
                 turn.llm_end = time.perf_counter()
             return {"text": res["spoken_summary"], "tool_card": res}
 
-        # 3. Socratic Viva Match
-        elif any(w in lower for w in ["deadlock", "starvation", "operating system", "os", "concept", "viva", "process", "coffman"]):
+        # 3. APMC Mandi Daily Commodity Rates Match (1,150+ Mandi Records)
+        elif any(w in lower for w in ["mandi", "bhav", "rate", "price", "tomato", "onion", "wheat", "cotton", "turmeric", "chilli", "jeera", "potato", "soybean", "chana", "mustard"]):
+            res = execute_agent_tool("query_apmc_mandi_rates", {
+                "commodity": user_text,
+            })
+            if turn:
+                turn.tool_calls.append("query_apmc_mandi_rates")
+            await self.ws_send_json({"type": "tool_card", "data": res})
+            if turn:
+                turn.llm_end = time.perf_counter()
+            return {"text": res["spoken_summary"], "tool_card": res}
+
+        # 4. Socratic Viva Match (1,100+ Engineering Probes)
+        elif any(w in lower for w in ["deadlock", "starvation", "operating system", "os", "concept", "viva", "process", "coffman", "virtual memory", "paging", "mutex", "b+ tree", "acid", "dijkstra", "knapsack"]):
             res = execute_agent_tool("evaluate_socratic_viva", {
-                "topic": "Deadlock vs Starvation in Operating Systems",
+                "topic": user_text,
                 "student_answer": user_text,
                 "clarity_score": 88,
             })
@@ -388,7 +400,7 @@ class BhashaSwarmPipeline:
                 turn.llm_end = time.perf_counter()
             return {"text": res["spoken_summary"], "tool_card": res}
 
-        # 4. Tanglish / Language Switch Match
+        # 5. Tanglish / Language Switch Match
         elif any(w in lower for w in ["vanakkam", "tamil", "tanglish", "accent", "regional", "switch"]):
             resp = "<chuckle> Vanakkam! Prisma v3.0 seamlessly handles code-mixing like Tanglish and regional accents by tracking acoustic candidates simultaneously. Inga paarunga, how naturally it adapts!"
             if turn:
