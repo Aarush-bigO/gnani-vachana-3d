@@ -732,6 +732,9 @@
             <span></span><span></span><span></span>
           </span>
         </div>
+        <div id="gnani-top-db-badge" style="background:#00E599;color:#000;font-size:10px;font-weight:900;padding:2px 8px;border:2px solid #000;border-radius:12px;box-shadow:2px 2px 0 #000;cursor:pointer;white-space:nowrap;" title="Click to view Database Explorer (28,273 records)">
+          🗄️ 28,273 RECORDS
+        </div>
       </div>
     </div>
 
@@ -1898,6 +1901,15 @@
     statusPill.addEventListener("click", (e) => {
       e.stopPropagation();
       openDiagnosticsModal();
+    });
+  }
+
+  const topDbBadge = document.getElementById("gnani-top-db-badge");
+  if (topDbBadge) {
+    topDbBadge.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openDiagnosticsModal();
+      showToast("🗄️ 28,273 Enterprise Records loaded in memory (<1.5ms)");
     });
   }
 
