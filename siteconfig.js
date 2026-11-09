@@ -166,58 +166,44 @@ export const site = {
 
   // Official Gnani.ai Timbre v3.0 Indic Voices (Mapped to 3D Avatar Rigs)
   gnaniVoices: {
-    "Julia (Riyaa)": { id: "Riyaa", model: "timbre-v3.0", avatar: "Brunette", lang: "hi-IN", label: "👩 Julia • Riyaa (v3.0)" },
-    "Jenny (Chetana)": { id: "Chetana", model: "timbre-v3.0", avatar: "VRoid", lang: "hi-IN", label: "👧 Jenny • Chetana (v3.0)" },
-    "Harri (Avinash)": { id: "Avinash", model: "timbre-v3.0", avatar: "AvatarSDK", lang: "hi-IN", label: "👨 Harri • Avinash (v3.0)" },
-    "Avaturn (Shubham)": { id: "Shubham", model: "timbre-v3.0", avatar: "Avaturn", lang: "hi-IN", label: "🧑 Avaturn • Shubham (v3.0)" },
-    "MPFB (Kalpana)": { id: "Kalpana", model: "timbre-v3.0", avatar: "MPFB", lang: "hi-IN", label: "👱‍♀️ MPFB • Kalpana (v3.0)" },
+    "Riya": { id: "Riyaa", model: "timbre-v3.0", avatar: "Riya", lang: "hi-IN", label: "👩 Riya • Riyaa (v3.0)" },
+    "Chetana": { id: "Chetana", model: "timbre-v3.0", avatar: "Chetana", lang: "hi-IN", label: "👧 Chetana • Chetana (v3.0)" },
+    "Kabir": { id: "Avinash", model: "timbre-v3.0", avatar: "Kabir", lang: "hi-IN", label: "👨 Kabir • Avinash (v3.0)" },
+    "Shubham": { id: "Shubham", model: "timbre-v3.0", avatar: "Shubham", lang: "hi-IN", label: "🧑 Shubham • Shubham (v3.0)" },
+    "Kalpana": { id: "Kalpana", model: "timbre-v3.0", avatar: "Kalpana", lang: "hi-IN", label: "👱‍♀️ Kalpana • Kalpana (v3.0)" },
+    "Kannada": { id: "Avinash", model: "timbre-v3.0", avatar: "Kabir", lang: "kn-IN", label: "🇮🇳 Kannada • Avinash" },
+    "Tamil": { id: "Riyaa", model: "timbre-v3.0", avatar: "Riya", lang: "ta-IN", label: "🇮🇳 Tamil • Riyaa" },
+    "Telugu": { id: "Chetana", model: "timbre-v3.0", avatar: "Chetana", lang: "te-IN", label: "🇮🇳 Telugu • Chetana" },
   },
 
-  // Google voices
+  // Gnani Timbre Indic Voices
   googleVoices: {
-    "fi-F": { id: "fi-FI-Standard-A" },
-    "lv-M": { id: "lv-LV-Standard-A" },
-    "lt-M": { id: "lt-LT-Standard-A" },
-    "en-F": { id: "en-GB-Standard-A" },
-    "en-M": { id: "en-GB-Standard-D" },
-    "fr-F": { id: "fr-FR-Standard-A" },
-    "fr-M": { id: "fr-FR-Standard-B" },
-    "de-F": { id: "de-DE-Standard-G" },
-    "de-M": { id: "de-DE-Standard-H" },
-    "pt-F": { id: "pt-BR-Standard-A" },
-    "pt-M": { id: "pt-BR-Standard-B" },
-    "bn-F": { id: "bn-IN-Standard-A" },
-    "bn-M": { id: "bn-IN-Standard-B" },
+    "Riyaa (Hindi)": { id: "Riyaa", lang: "hi-IN" },
+    "Avinash (Hindi)": { id: "Avinash", lang: "hi-IN" },
+    "Shubham (Hindi)": { id: "Shubham", lang: "hi-IN" },
+    "Chetana (Hindi)": { id: "Chetana", lang: "hi-IN" },
+    "Kalpana (Hindi)": { id: "Kalpana", lang: "hi-IN" },
+    "Riyaa (Tamil)": { id: "Riyaa", lang: "ta-IN" },
+    "Avinash (Kannada)": { id: "Avinash", lang: "kn-IN" },
+    "Chetana (Telugu)": { id: "Chetana", lang: "te-IN" },
   },
 
-  // ElevenLab voices
+  // Gnani Timbre Expressive Voices
   elevenVoices: {
-    "Bella": { id: "EXAVITQu4vr4xnSDxMaL" },
-    "Elli": { id: "MF3mGyEYCl7XYWbV9V6O" },
-    "Rachel": { id: "21m00Tcm4TlvDq8ikWAM" },
-    "Adam": { id: "pNInz6obpgDQGcFmaJgB" },
-    "Antoni": { id: "ErXwobaYiN019PkySvjV" },
-    "Arnold": { id: "VR6AewLTigWG4xSOukaG" },
-    "Domi": { id: "AZnzlk1XvdvUeBnXmlld" },
-    "Josh": { id: "TxGEqnHWrfWFTfGW9XjX" },
-    "Sam": { id: "yoZ06aMxZJJ28mfd3POQ" }
+    "Riyaa": { id: "Riyaa" },
+    "Avinash": { id: "Avinash" },
+    "Shubham": { id: "Shubham" },
+    "Chetana": { id: "Chetana" },
+    "Kalpana": { id: "Kalpana" },
   },
 
-  // Microsoft voices
+  // Gnani Timbre Multilingual Indic
   microsoftVoices: {
-    "fi-Selma": { lang: "fi-FI", id: "fi-FI-SelmaNeural" },
-    "fi-Noora": { lang: "fi-FI", id: "fi-FI-NooraNeural" },
-    "fi-Harri": { lang: "fi-FI", id: "fi-FI-HarriNeural" },
-    "en-Jenny": { lang: "en-US", id: "en-US-JennyNeural" },
-    "en-Tony": { lang: "en-US", id: "en-US-TonyNeural" },
-    "fr-Vivienne": { lang: "fr-FR", id: "fr-FR-VivienneMultilingualNeural" },
-    "fr-Lucien": { lang: "fr-FR", id: "fr-FR-LucienMultilingualNeural" },
-    "de-Seraphina": { lang: "de-DE", id: "de-DE-SeraphinaMultilingualNeural" },
-    "de-Florian": { lang: "de-DE", id: "de-DE-FlorianMultilingualNeural" },
-    "pt-Francisca": { lang: "pt-BR", id: "pt-BR-FranciscaNeural" },
-    "pt-Antonio": { lang: "pt-BR", id: "pt-BR-AntonioNeural" },
-    "bn-Nabanita": { lang: "bn-BD", id: "bn-BD-NabanitaNeural" },
-    "bn-Pradeep": { lang: "bn-BD", id: "bn-BD-PradeepNeural" },
+    "Riyaa (hi-IN)": { lang: "hi-IN", id: "Riyaa" },
+    "Avinash (hi-IN)": { lang: "hi-IN", id: "Avinash" },
+    "Chetana (hi-IN)": { lang: "hi-IN", id: "Chetana" },
+    "Shubham (hi-IN)": { lang: "hi-IN", id: "Shubham" },
+    "Kalpana (hi-IN)": { lang: "hi-IN", id: "Kalpana" },
   },
 
   // Preset views
