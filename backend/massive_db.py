@@ -822,6 +822,11 @@ class MassiveIndicDatabase:
             for idx in self._agritech_index.get(tok, [])[:3]:
                 a = self.agritech_records[idx]
                 results.append({"type": "KISAN_AGRI", "title": f"{a['crop_name']} - {a['disease_or_pest']}", "detail": f"{a['recommended_treatment']}", "id": a["advisory_id"]})
+        # Socratic CS Viva
+        for tok in tokens:
+            for idx in self._viva_index.get(tok, [])[:3]:
+                v = self.socratic_bank[idx]
+                results.append({"type": "SOCRATIC_VIVA", "title": v["topic"], "detail": f"{v['socratic_probe'][:80]}...", "id": v["question_id"]})
 
         # Deduplicate
         seen = set()
