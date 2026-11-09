@@ -19,9 +19,9 @@ async def test_scenarios():
 
             await ws.send(json.dumps({"type": "simulate", "preset_id": preset_id}))
 
-            for _ in range(8):
+            for _ in range(30):
                 try:
-                    res = await asyncio.wait_for(ws.recv(), timeout=3.0)
+                    res = await asyncio.wait_for(ws.recv(), timeout=5.0)
                     if isinstance(res, str):
                         data = json.loads(res)
                         msg_type = data.get("type")
@@ -35,9 +35,11 @@ async def test_scenarios():
                                 print(f"    Topic: {data['data']['topic']}, Clarity Score: {data['data']['clarity_score']}%")
                         elif msg_type == "llm_response":
                             print(f"  [LLM RESPONSE] {data['text']}")
+                        elif msg_type == "tts_done":
+                            print("  [TTS DONE] Synthesis finished.")
                             break
                     else:
-                        print(f"  [AUDIO PCM] Received {len(res)} bytes chunk")
+                        print(f"  [AUDIO PCM] Received {len(res)} bytes chunk (Timbre stream)")
                 except asyncio.TimeoutError:
                     break
 

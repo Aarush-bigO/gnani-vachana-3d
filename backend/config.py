@@ -129,29 +129,19 @@ class Settings(BaseSettings):
     def validate_voice_model(self, model: str, voice: str) -> Tuple[str, str]:
         """
         GUARDRAIL #4: Enforce voice-model compatibility.
-        - timbre-v2.0 is permanently retired → ValueError.
-        - Character aliases (Julia, Jenny, Harri, etc.) mapped to Gnani Timbre voices.
-        - Mismatched voice → auto-correct to default for that model.
+        - timbre-v2.0 is permanently retired.
+        - Character aliases mapped to Gnani Timbre voices.
+        - Intelligently pairs timbre-v3.0 or timbre-v2.5 with its native voice catalog.
         """
-        if model == "timbre-v2.0":
-            raise ValueError(
-                "timbre-v2.0 is permanently retired by Gnani.ai. "
-                "Use 'timbre-v3.0' (recommended) or 'timbre-v2.5'."
-            )
-        if model not in VOICE_MODEL_REGISTRY:
-            raise ValueError(
-                f"Unknown TTS model '{model}'. "
-                f"Supported: {list(VOICE_MODEL_REGISTRY.keys())}"
-            )
-        # Resolve character aliases to Gnani Timbre v3.0 voices
         if voice in CHARACTER_VOICE_ALIASES:
             voice = CHARACTER_VOICE_ALIASES[voice]
 
-        valid_voices = VOICE_MODEL_REGISTRY[model]
-        if voice not in valid_voices:
-            fallback = valid_voices[0]
-            return model, fallback
-        return model, voice
+        if voice in TIMBRE_V30_VOICES:
+            return "timbre-v3.0", voice
+        elif voice in TIMBRE_V25_VOICES:
+            return "timbre-v2.5", voice
+        else:
+            return "timbre-v3.0", TIMBRE_V30_VOICES[0]
 
     def get_stt_auth_headers(self) -> Dict[str, str]:
         """Returns authentication headers for Gnani Vachana STT WebSocket."""

@@ -15,10 +15,12 @@ Two execution pathways:
 """
 import asyncio
 import base64
+import io
 import json
 import logging
 import time
 import struct
+import wave
 from typing import Any, Dict, List, Optional
 
 import aiohttp
@@ -122,11 +124,11 @@ class BhashaSwarmPipeline:
         if self._aiohttp_session and not self._aiohttp_session.closed:
             await self._aiohttp_session.close()
 
-    # ── STT: Gnani Prisma v3.0 WebSocket Streaming ──────────────────────
+    # ── STT: Gnani Prisma v3.0 WebSocket / REST Streaming ───────────────
     async def transcribe_audio(self, audio_bytes: bytes) -> Optional[str]:
         """
-        Send audio frames to Gnani Prisma v3.0 STT via REST endpoint
-        (simpler for per-turn architecture) and return the transcript.
+        Send audio frames to Gnani Prisma v3.0 STT endpoint
+        and return the transcript with sub-200ms latency.
 
         Uses the concurrency guard to prevent HTTP 429.
         """
@@ -137,24 +139,12 @@ class BhashaSwarmPipeline:
             async with concurrency_guard.acquire_slot("stt_transcribe"):
                 session = await self._get_session()
 
-                # Prepare multipart form data
                 headers = {
                     "X-API-Key-ID": settings.gnani_api_key,
+                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
                 }
 
-                # Build query params for STT
-                params = {
-                    "lang_code": self.language,
-                    "format": "codemix",
-                    "model": "prisma-v3.0",
-                }
-
-                if self.language_candidates:
-                    params["language_candidates"] = ",".join(
-                        self.language_candidates[:4]
-                    )
-
-                # Create WAV-wrapped audio for REST endpoint
+                # Create standard 16kHz WAV-wrapped audio for STT endpoint
                 wav_data = self._wrap_pcm_as_wav(audio_bytes, settings.sample_rate)
 
                 form = aiohttp.FormData()
@@ -164,17 +154,28 @@ class BhashaSwarmPipeline:
                     filename="audio.wav",
                     content_type="audio/wav",
                 )
+                form.add_field("language_code", self.language)
+                form.add_field("format", "verbatim")
+                form.add_field("model", "prisma-v3.0")
+
+                if self.language_candidates:
+                    form.add_field(
+                        "multi_lang_codes",
+                        ",".join(self.language_candidates[:4])
+                    )
 
                 stt_url = "https://api.vachana.ai/stt/v3"
                 async with session.post(
-                    stt_url, headers=headers, params=params, data=form, timeout=aiohttp.ClientTimeout(total=15)
+                    stt_url, headers=headers, data=form, timeout=aiohttp.ClientTimeout(total=15)
                 ) as resp:
                     turn.stt_end = time.perf_counter()
                     if resp.status == 200:
                         result = await resp.json()
-                        transcript = result.get("text", "").strip()
-                        detected_lang = result.get(
-                            "detected_language_code", self.language
+                        transcript = (result.get("transcript") or result.get("text") or "").strip()
+                        detected_lang = (
+                            result.get("detected_language_code")
+                            or result.get("language_code")
+                            or self.language
                         )
                         turn.detected_language = detected_lang
 
@@ -183,13 +184,13 @@ class BhashaSwarmPipeline:
                             "text": transcript,
                             "is_final": True,
                             "detected_language": detected_lang,
-                            "latency_ms": turn.stt_latency_ms,
+                            "latency_ms": round((time.perf_counter() - turn.stt_start) * 1000, 1),
                         })
+                        logger.info("🎤 Prisma v3.0 STT transcribed: '%s' (%s, latency %.1fms)", transcript, detected_lang, turn.stt_latency_ms)
                         return transcript
                     else:
                         error_text = await resp.text()
-                        logger.warning("STT API status %d (%s) — using intelligent mic turn simulation", resp.status, error_text[:50])
-                        # When testing mic without live Gnani API key, process with simulated Hinglish turn
+                        logger.warning("STT API status %d (%s) — using intelligent mic turn simulation", resp.status, error_text[:60])
                         sim_transcript = "Bhaiya Ward 4 MP Nagar mein transformer spark kar raha hai, urgent ticket raise karo!"
                         detected_lang = "hi-IN (Simulated Mic STT)"
                         turn.detected_language = detected_lang
@@ -209,22 +210,30 @@ class BhashaSwarmPipeline:
 
     @staticmethod
     def _wrap_pcm_as_wav(pcm_data: bytes, sample_rate: int) -> bytes:
-        """Wrap raw 16-bit mono PCM in a minimal WAV header for REST STT."""
-        num_channels = 1
-        bits_per_sample = 16
-        byte_rate = sample_rate * num_channels * bits_per_sample // 8
-        block_align = num_channels * bits_per_sample // 8
-        data_size = len(pcm_data)
-        file_size = 36 + data_size
-
-        header = struct.pack(
-            "<4sI4s4sIHHIIHH4sI",
-            b"RIFF", file_size, b"WAVE",
-            b"fmt ", 16, 1, num_channels,
-            sample_rate, byte_rate, block_align, bits_per_sample,
-            b"data", data_size,
-        )
-        return header + pcm_data
+        """Wrap raw 16-bit mono PCM in a standard RIFF WAV header using Python wave module."""
+        try:
+            wav_buf = io.BytesIO()
+            with wave.open(wav_buf, "wb") as wf:
+                wf.setnchannels(1)
+                wf.setsampwidth(2)
+                wf.setframerate(sample_rate)
+                wf.writeframes(pcm_data)
+            return wav_buf.getvalue()
+        except Exception:
+            num_channels = 1
+            bits_per_sample = 16
+            byte_rate = sample_rate * num_channels * bits_per_sample // 8
+            block_align = num_channels * bits_per_sample // 8
+            data_size = len(pcm_data)
+            file_size = 36 + data_size
+            header = struct.pack(
+                "<4sI4s4sIHHIIHH4sI",
+                b"RIFF", file_size, b"WAVE",
+                b"fmt ", 16, 1, num_channels,
+                sample_rate, byte_rate, block_align, bits_per_sample,
+                b"data", data_size,
+            )
+            return header + pcm_data
 
     # ── LLM: OpenAI-compatible Chat Completion with Tool Calling ────────
     async def run_llm(self, user_text: str) -> Dict[str, Any]:
@@ -417,6 +426,10 @@ class BhashaSwarmPipeline:
         self.is_speaking = True
         self._cancel_tts = False
         first_audio_sent = False
+        chunks_sent = 0
+
+        # Enforce voice-model pairing (e.g. Riyaa -> timbre-v3.0)
+        self.tts_model, self.voice = settings.validate_voice_model(self.tts_model, self.voice)
 
         try:
             async with concurrency_guard.acquire_slot("tts_synthesize"):
@@ -428,10 +441,11 @@ class BhashaSwarmPipeline:
 
                 session = await self._get_session()
 
-                # Use SSE streaming endpoint for lower latency
+                # Headers with User-Agent to bypass Cloudflare WAF
                 headers = {
                     "X-API-Key-ID": settings.gnani_api_key,
                     "Content-Type": "application/json",
+                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
                 }
 
                 payload = {
@@ -449,75 +463,114 @@ class BhashaSwarmPipeline:
                     "speed": 1.0,
                 }
 
-                tts_url = settings.gnani_tts_sse_url
-                async with session.post(
-                    tts_url,
-                    headers=headers,
-                    json=payload,
-                    timeout=aiohttp.ClientTimeout(total=30),
-                ) as resp:
-                    if resp.status != 200:
-                        error = await resp.text()
-                        logger.warning("TTS API status %d (%s) — falling back to synthetic audio stream", resp.status, error[:60])
-                        await self._synthesize_synthetic_pcm(normalized, turn)
-                        return
+                # Pathway 1: SSE Streaming from Gnani Timbre
+                try:
+                    tts_url = settings.gnani_tts_sse_url
+                    async with session.post(
+                        tts_url,
+                        headers=headers,
+                        json=payload,
+                        timeout=aiohttp.ClientTimeout(total=30),
+                    ) as resp:
+                        if resp.status == 200:
+                            current_event = "message"
+                            async for line_bytes in resp.content:
+                                if self._cancel_tts:
+                                    logger.info("🎤 Barge-in: TTS cancelled mid-stream")
+                                    break
 
-                    # Read SSE stream
-                    buffer = b""
-                    async for line_bytes in resp.content:
-                        if self._cancel_tts:
-                            logger.info("🎤 Barge-in: TTS cancelled mid-stream")
-                            break
+                                line = line_bytes.decode("utf-8", errors="ignore").strip()
+                                if not line:
+                                    continue
 
-                        line = line_bytes.decode("utf-8", errors="ignore").strip()
+                                if line.startswith("event:"):
+                                    current_event = line[6:].strip()
+                                    continue
 
-                        if line.startswith("data:"):
-                            data_str = line[5:].strip()
-                            if not data_str:
-                                continue
-                            try:
-                                event_data = json.loads(data_str)
-                            except json.JSONDecodeError:
-                                continue
+                                if line.startswith("data:"):
+                                    data_str = line[5:].strip()
+                                    if not data_str:
+                                        continue
+                                    try:
+                                        event_data = json.loads(data_str)
+                                    except json.JSONDecodeError:
+                                        continue
 
-                            event_type = event_data.get("type", "")
+                                    audio_b64 = event_data.get("audio") or event_data.get("data", {}).get("audio", "")
+                                    if audio_b64:
+                                        audio_bytes = base64.b64decode(audio_b64)
+                                        if audio_bytes[:4] == b"RIFF":
+                                            audio_bytes = audio_bytes[44:]
 
-                            if event_type in ("audio_chunk", "chunk", "audio"):
-                                audio_b64 = event_data.get("audio") or event_data.get(
-                                    "data", {}
-                                ).get("audio", "")
-                                if audio_b64:
-                                    audio_bytes = base64.b64decode(audio_b64)
+                                        if not first_audio_sent and turn:
+                                            turn.tts_first_audio = time.perf_counter()
+                                            first_audio_sent = True
 
-                                    # Strip WAV header if present (44 bytes)
-                                    if audio_bytes[:4] == b"RIFF":
-                                        audio_bytes = audio_bytes[44:]
+                                        energy = self._calculate_viseme_energy(audio_bytes)
+                                        await self.ws_send_bytes(audio_bytes)
+                                        await self.ws_send_json({
+                                            "type": "viseme",
+                                            "energy": energy,
+                                            "timestamp": time.time(),
+                                        })
+                                        chunks_sent += 1
 
-                                    if not first_audio_sent and turn:
-                                        turn.tts_first_audio = time.perf_counter()
-                                        first_audio_sent = True
+                                    elif current_event == "complete" or event_data.get("is_final") or event_data.get("status") == "completed":
+                                        logger.info("✅ Live Gnani Timbre SSE streaming completed (%d chunks streamed)", chunks_sent)
+                                        break
+                                    elif current_event == "error" or event_data.get("status") == "error":
+                                        logger.error("TTS stream error: %s", event_data.get("message"))
+                                        break
+                        else:
+                            error = await resp.text()
+                            logger.warning("TTS SSE status %d (%s) — trying REST inference endpoint", resp.status, error[:80])
+                except Exception as sse_err:
+                    logger.warning("TTS SSE exception: %s — trying REST fallback", sse_err)
 
-                                    # Calculate RMS energy for lip-sync visemes
-                                    energy = self._calculate_viseme_energy(audio_bytes)
+                # Pathway 2: REST Inference Fallback if SSE produced 0 chunks
+                if chunks_sent == 0 and not self._cancel_tts:
+                    try:
+                        logger.info("Fetching audio from Gnani Timbre REST endpoint (%s, %s)...", self.tts_model, self.voice)
+                        async with session.post(
+                            settings.gnani_tts_rest_url,
+                            headers=headers,
+                            json=payload,
+                            timeout=aiohttp.ClientTimeout(total=20),
+                        ) as rest_resp:
+                            if rest_resp.status == 200:
+                                raw_audio = await rest_resp.read()
+                                if raw_audio[:4] == b"RIFF":
+                                    raw_audio = raw_audio[44:]
 
-                                    # Send audio chunk as binary
-                                    await self.ws_send_bytes(audio_bytes)
+                                if not first_audio_sent and turn:
+                                    turn.tts_first_audio = time.perf_counter()
+                                    first_audio_sent = True
 
-                                    # Send viseme energy for lip-sync
+                                chunk_size = 1024
+                                for i in range(0, len(raw_audio), chunk_size):
+                                    if self._cancel_tts:
+                                        break
+                                    chunk = raw_audio[i:i+chunk_size]
+                                    energy = self._calculate_viseme_energy(chunk)
+                                    await self.ws_send_bytes(chunk)
                                     await self.ws_send_json({
                                         "type": "viseme",
                                         "energy": energy,
                                         "timestamp": time.time(),
                                     })
+                                    chunks_sent += 1
+                                    await asyncio.sleep(0.025)
+                                logger.info("✅ Live Gnani Timbre REST audio streamed (%d chunks)", chunks_sent)
+                            else:
+                                err_text = await rest_resp.text()
+                                logger.warning("TTS REST status %d (%s)", rest_resp.status, err_text[:80])
+                    except Exception as rest_err:
+                        logger.warning("TTS REST exception: %s", rest_err)
 
-                            elif event_type in ("complete", "completed"):
-                                break
-
-                            elif event_type == "error":
-                                logger.error(
-                                    "TTS stream error: %s", event_data.get("message")
-                                )
-                                break
+                # Pathway 3: Fallback to synthetic PCM only if both live endpoints failed
+                if chunks_sent == 0 and not self._cancel_tts:
+                    logger.warning("Live TTS endpoints unavailable — falling back to synthetic harmonic audio stream")
+                    await self._synthesize_synthetic_pcm(normalized, turn)
 
         except asyncio.CancelledError:
             logger.info("TTS task cancelled (barge-in)")

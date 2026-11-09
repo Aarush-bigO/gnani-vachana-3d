@@ -1111,7 +1111,7 @@
       ws.send(JSON.stringify({
         type: "config",
         voice: selectedVoice,
-        model: "timbre-v2.5",
+        model: "timbre-v3.0",
         language: selectedLanguage,
       }));
     }
