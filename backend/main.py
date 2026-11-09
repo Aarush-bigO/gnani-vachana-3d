@@ -46,11 +46,11 @@ logging.basicConfig(
     format="%(asctime)s | %(name)-28s | %(levelname)-5s | %(message)s",
     datefmt="%H:%M:%S",
 )
-logger = logging.getLogger("bhashaswarm.server")
+logger = logging.getLogger("gnani.server")
 
 # ── FastAPI App ─────────────────────────────────────────────────────────────
 app = FastAPI(
-    title="BhashaSwarm 3D",
+    title="Gnani Vachana 3D",
     description="Real-time Code-Mixed Indic Voice AI with 3D Avatar Lip-Sync",
     version="1.0.0",
 )
@@ -98,6 +98,12 @@ class SimulationRequest(BaseModel):
     language: Optional[str] = "hi-IN"
 
 
+class ChatRequest(BaseModel):
+    text: str
+    language: Optional[str] = "hi-IN"
+    voice: Optional[str] = "Riyaa"
+
+
 class SettingsUpdateRequest(BaseModel):
     gnani_api_key: Optional[str] = None
     llm_api_key: Optional[str] = None
@@ -115,7 +121,7 @@ active_pipelines: dict[str, BhashaSwarmPipeline] = {}
 async def health_check():
     return {
         "status": "ok",
-        "service": "BhashaSwarm 3D",
+        "service": "Gnani Vachana 3D",
         "gnani_api_configured": bool(settings.gnani_api_key),
         "llm_configured": bool(settings.llm_api_key),
         "concurrency": concurrency_guard.get_telemetry(),
@@ -201,13 +207,62 @@ async def simulate_turn(req: SimulationRequest):
             "pipeline_id": pipeline_id,
         }
     else:
-        return JSONResponse(
-            status_code=503,
-            content={
-                "error": "No active WebSocket connection. Open the frontend first.",
-                "hint": "Connect the browser to establish a WebSocket session.",
-            },
-        )
+        # Fallback: standalone pipeline execution
+        captured_data = []
+        async def dummy_json(data):
+            captured_data.append(data)
+        async def dummy_bytes(data):
+            pass
+        pipeline = BhashaSwarmPipeline(dummy_json, dummy_bytes)
+        pipeline.update_language(language)
+        asyncio.create_task(pipeline.process_text_turn(text))
+        return {
+            "status": "triggered",
+            "text": text,
+            "language": language,
+            "pipeline_id": "standalone",
+        }
+
+
+@app.post("/api/chat")
+async def chat_endpoint(req: ChatRequest):
+    """
+    Direct REST endpoint for text interaction with Evon v3.3 reasoning.
+    """
+    text = req.text.strip()
+    if not text:
+        return JSONResponse(status_code=400, content={"error": "Text cannot be empty"})
+
+    if active_pipelines:
+        pipeline_id = next(iter(active_pipelines))
+        pipeline = active_pipelines[pipeline_id]
+        if req.language:
+            pipeline.update_language(req.language)
+        if req.voice:
+            pipeline.update_voice(req.voice)
+        asyncio.create_task(pipeline.process_text_turn(text))
+        return {
+            "status": "processing",
+            "text": text,
+            "pipeline_id": pipeline_id,
+        }
+    else:
+        captured_reply = []
+        async def capture_json(data):
+            if data.get("type") == "llm_response":
+                captured_reply.append(data.get("text", ""))
+        async def dummy_bytes(data):
+            pass
+        pipeline = BhashaSwarmPipeline(capture_json, dummy_bytes, voice=req.voice or "Riyaa")
+        pipeline.update_language(req.language or "hi-IN")
+        await pipeline.process_text_turn(text)
+        reply = " ".join(captured_reply) if captured_reply else "Turn processed."
+        return {
+            "status": "completed",
+            "text": text,
+            "reply": reply,
+            "pipeline_id": "standalone"
+        }
 
 
 # ── WebSocket Voice Endpoint ───────────────────────────────────────────────
