@@ -90,6 +90,30 @@ SIMULATION_PRESETS = {
         "text": "Vanakkam! Can you switch to Tamil-English code-mixing and explain how Prisma v3.0 handles regional accents?",
         "language": "ta-IN",
     },
+    "hinglish_banking": {
+        "id": "hinglish_banking",
+        "label": "💳 UPI & Banking Dispute",
+        "text": "SBI account se UPI payment 5000 rupaye deduct ho gaya lekin merchant ko credit nahi hua, U19 error aa raha hai, dispute raise karo!",
+        "language": "hi-IN",
+    },
+    "hinglish_health": {
+        "id": "hinglish_health",
+        "label": "💊 Jan Aushadhi Health Triage",
+        "text": "Doctor ne Dolo 650 aur Pantocid 40 likha hai, Jan Aushadhi generic alternative kitne ka padega aur kitni bachat hogi?",
+        "language": "hi-IN",
+    },
+    "hinglish_railway": {
+        "id": "hinglish_railway",
+        "label": "🚆 RailMadad 139 Triage",
+        "text": "Train 20607 Vande Bharat Express ke coach C3 mein AC bilkul cooling nahi kar raha hai, RailMadad complaint dispatch kijiye!",
+        "language": "hi-IN",
+    },
+    "hinglish_agri": {
+        "id": "hinglish_agri",
+        "label": "🌾 Kisan Crop Disease Advisory",
+        "text": "Basmati Dhaan ki fasal mein patte par brown spots ban rahe hain aur blast rog lag raha hai, kaunsa keetnashak spray karein?",
+        "language": "hi-IN",
+    },
 }
 
 
@@ -119,6 +143,7 @@ active_pipelines: dict[str, BhashaSwarmPipeline] = {}
 
 # ── REST Endpoints ──────────────────────────────────────────────────────────
 @app.get("/api/health")
+@app.get("/health")
 async def health_check():
     return {
         "status": "ok",
@@ -157,6 +182,10 @@ async def get_db_sample(domain: str = "all"):
         "wards": db.wards[:5],
         "mandi": db.mandi_rates[:5],
         "viva": db.socratic_bank[:5],
+        "banking": db.banking_records[:5],
+        "health": db.healthcare_records[:5],
+        "railway": db.railway_records[:5],
+        "agritech": db.agritech_records[:5],
     }
     if domain in samples:
         return {domain: samples[domain]}

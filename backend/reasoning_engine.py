@@ -202,23 +202,94 @@ class IndicReasoningEngine:
                 "action": None
             }
 
-        # ── 11. Intelligent Sovereign In-Memory Database Fallback ──────────
+        # ── 11. Banking, UPI & NPCI Dispute Triage (4,500+ Records) ────────
+        if self._is_banking_query(lower, tokens):
+            res = execute_agent_tool("resolve_upi_banking_dispute", {
+                "query": user_text,
+                "bank": "SBI" if "sbi" in lower else ("HDFC" if "hdfc" in lower else "General"),
+            })
+            if turn:
+                turn.tool_calls.append("resolve_upi_banking_dispute")
+                turn.llm_end = time.perf_counter()
+            return {
+                "text": res["spoken_summary"],
+                "tool_card": res,
+                "gesture": "nod",
+                "action": None
+            }
+
+        # ── 12. Pradhan Mantri Jan Aushadhi & Generic Health Triage (4,800+ Records) ──
+        if self._is_healthcare_query(lower, tokens):
+            res = execute_agent_tool("query_jan_aushadhi_medicine", {
+                "medicine": user_text,
+            })
+            if turn:
+                turn.tool_calls.append("query_jan_aushadhi_medicine")
+                turn.llm_end = time.perf_counter()
+            return {
+                "text": res["spoken_summary"],
+                "tool_card": res,
+                "gesture": "ok",
+                "action": None
+            }
+
+        # ── 13. Indian Railways & RailMadad 139 Grievance Triage (4,800+ Records) ──────
+        if self._is_railway_query(lower, tokens):
+            res = execute_agent_tool("dispatch_railmadad_grievance", {
+                "grievance": user_text,
+                "train": "Vande Bharat" if "vande" in lower else "Express",
+            })
+            if turn:
+                turn.tool_calls.append("dispatch_railmadad_grievance")
+                turn.llm_end = time.perf_counter()
+            return {
+                "text": res["spoken_summary"],
+                "tool_card": res,
+                "gesture": "handup",
+                "action": None
+            }
+
+        # ── 14. Agritech, Crop Pest Diagnostics & PM-KISAN (4,500+ Records) ───────────
+        if self._is_agritech_query(lower, tokens):
+            res = execute_agent_tool("diagnose_crop_agritech_issue", {
+                "query": user_text,
+            })
+            if turn:
+                turn.tool_calls.append("diagnose_crop_agritech_issue")
+                turn.llm_end = time.perf_counter()
+            return {
+                "text": res["spoken_summary"],
+                "tool_card": res,
+                "gesture": "thumbup",
+                "action": None
+            }
+
+        # ── 15. Intelligent Sovereign In-Memory Database Fallback across 28,000+ Records ──
         db_matches = self.db.search_all(user_text, limit=3)
         if db_matches:
             top = db_matches[0]
-            domain = top.get("domain", "")
-            if domain == "kirana_fmcg_skus":
-                res = execute_agent_tool("query_kirana_inventory", {"sku": top.get("name", user_text), "query_type": "expiry_alert"})
+            rec_type = top.get("type", "")
+            if rec_type == "PRODUCT":
+                res = execute_agent_tool("query_kirana_inventory", {"sku": top.get("title", user_text), "query_type": "expiry_alert"})
                 return {"text": res["spoken_summary"], "tool_card": res, "gesture": "ok", "action": None}
-            elif domain == "municipal_civic_wards":
-                res = execute_agent_tool("dispatch_gramseva_ticket", {"ward": top.get("name", user_text), "category": "power_outage", "severity": "CRITICAL_P1", "description": user_text})
+            elif rec_type == "CIVIC_WARD":
+                res = execute_agent_tool("dispatch_gramseva_ticket", {"ward": top.get("title", user_text), "category": "power_outage", "severity": "CRITICAL_P1", "description": user_text})
                 return {"text": res["spoken_summary"], "tool_card": res, "gesture": "handup", "action": None}
-            elif domain == "apmc_mandi_rates":
-                res = execute_agent_tool("query_apmc_mandi_rates", {"commodity": top.get("commodity", user_text)})
+            elif rec_type == "MANDI_RATE":
+                res = execute_agent_tool("query_apmc_mandi_rates", {"commodity": top.get("title", user_text)})
                 return {"text": res["spoken_summary"], "tool_card": res, "gesture": "thumbup", "action": None}
-            elif domain == "socratic_viva_probes":
-                res = execute_agent_tool("evaluate_socratic_viva", {"topic": top.get("topic", user_text), "student_answer": user_text, "clarity_score": 92})
+            elif rec_type == "BANKING_UPI":
+                res = execute_agent_tool("resolve_upi_banking_dispute", {"query": top.get("title", user_text)})
                 return {"text": res["spoken_summary"], "tool_card": res, "gesture": "nod", "action": None}
+            elif rec_type == "JAN_AUSHADHI":
+                res = execute_agent_tool("query_jan_aushadhi_medicine", {"medicine": top.get("title", user_text)})
+                return {"text": res["spoken_summary"], "tool_card": res, "gesture": "ok", "action": None}
+            elif rec_type == "RAILMADAD_139":
+                res = execute_agent_tool("dispatch_railmadad_grievance", {"grievance": top.get("title", user_text)})
+                return {"text": res["spoken_summary"], "tool_card": res, "gesture": "handup", "action": None}
+            elif rec_type == "KISAN_AGRI":
+                res = execute_agent_tool("diagnose_crop_agritech_issue", {"query": top.get("title", user_text)})
+                return {"text": res["spoken_summary"], "tool_card": res, "gesture": "thumbup", "action": None}
 
         # ── 12. Smart Semantic Conversational Answering Engine ────────────
         conversational_resp = self._generate_intelligent_conversational_reply(raw_text, lower)
@@ -278,7 +349,7 @@ class IndicReasoningEngine:
                     "Namaste! Main Gnani Vachana hoon — India's premier sovereign 3D Indic AI Voice Avatar, "
                     "engineered by Aarush Bharti for the Gnani.ai Great Indian AI Internship Challenge. "
                     "Main 100% sovereign Indic models par kaam karti hoon: Prisma v3.0 STT, Evon v3.3 reasoning "
-                    "with over 10,000 Indic records in memory, and Timbre v3.0 neural voice with 3D facial lip-sync!"
+                    "with over 28,000 Indic enterprise records in memory, and Timbre v3.0 neural voice with 3D facial lip-sync!"
                 ),
                 "gesture": "namaste"
             }
@@ -287,7 +358,7 @@ class IndicReasoningEngine:
             return {
                 "text": (
                     "Mujhe Aarush Bharti ne create kiya hai as a sovereign full-duplex voice AI system "
-                    "for the Gnani.ai Great Indian AI Internship Challenge. Aarush ne isme 10,000 se zyada "
+                    "for the Gnani.ai Great Indian AI Internship Challenge. Aarush ne isme 28,000 se zyada "
                     "real-time Indic records, sub-500ms voice pipeline, aur Three.js 3D avatar integration banayi hai!"
                 ),
                 "gesture": "thumbup"
@@ -296,11 +367,15 @@ class IndicReasoningEngine:
         if any(phrase in lower for phrase in ["what can you do", "features", "capabilities", "kya kar sakte ho", "help me", "options"]):
             return {
                 "text": (
-                    "Mere paas 4 powerful sovereign features hain: "
-                    "Pehla, Kirana FEFO Copilot — 4,750 se zyada FMCG SKUs ka live expiry aur discount automation. "
-                    "Doosra, GramSeva Civic Triage — 3,000 se zyada wards ke transformer aur water pipeline alerts. "
-                    "Teesra, APMC Mandi Ticker — 16 mandis ke daily agricultural prices. "
-                    "Aur chautha, Hinglish Engineering Viva Mentor — Operating Systems aur DBMS ka Socratic evaluation!"
+                    "Mere paas 8 powerful sovereign enterprise domains hain: "
+                    "1. Kirana FEFO Copilot (4,750+ SKUs), "
+                    "2. GramSeva Civic Triage (3,000+ Municipal Wards), "
+                    "3. APMC Mandi Daily Commodity Ticker (16 wholesale markets), "
+                    "4. Hinglish CS & AI Socratic Viva Mentor (1,100+ viva probes), "
+                    "5. Banking & UPI Dispute Resolution (U19/U30/U69 errors & 1930 Cyber Fraud), "
+                    "6. Jan Aushadhi Generic Medicine Health Triage (80% cost savings & salt matching), "
+                    "7. Indian Railways RailMadad 139 Grievance Triage (AC cooling & PNR confirmation), "
+                    "aur 8. Kisan Agritech Crop Disease & PM-KISAN Portal Advisories!"
                 ),
                 "gesture": "handup"
             }
@@ -668,6 +743,46 @@ class IndicReasoningEngine:
             "azadpur", "lasalgaon", "guntur", "kolar", "unjha", "vashi", "yeshwanthpur"
         ]
         return any(k in lower for k in mandi_keywords)
+
+    def _is_banking_query(self, lower: str, tokens: set) -> bool:
+        """Check if query is related to Banking, UPI dispute, or Financial Triage."""
+        banking_keywords = [
+            "upi", "payment fail", "failed", "paise kat", "kat gaye", "reversal", "dispute",
+            "u19", "u30", "u69", "u03", "bank", "sbi", "hdfc", "icici", "pnb", "bob", "axis",
+            "kotak", "canara", "ifsc", "atm", "debit card", "credit card", "hotlist", "block card",
+            "cyber fraud", "1930", "chargeback", "npci", "udir", "kcc", "mudra loan"
+        ]
+        return any(k in lower for k in banking_keywords)
+
+    def _is_healthcare_query(self, lower: str, tokens: set) -> bool:
+        """Check if query is related to Jan Aushadhi generic medicines or health triage."""
+        health_keywords = [
+            "generic", "jan aushadhi", "medicine", "dawa", "dawakhana", "salt", "molecule",
+            "dolo", "crocin", "paracetamol", "metformin", "glycomet", "telmisartan", "telma",
+            "atorvastatin", "pantoprazole", "pan 40", "amoxicillin", "augmentin", "montelukast",
+            "azithromycin", "azithral", "phc", "chc", "hospital", "doctor", "bukhaar", "fever",
+            "headache", "dard", "tablet", "capsule", "dosage", "side effect"
+        ]
+        return any(k in lower for k in health_keywords)
+
+    def _is_railway_query(self, lower: str, tokens: set) -> bool:
+        """Check if query is related to Indian Railways or RailMadad 139."""
+        rail_keywords = [
+            "railway", "train", "railmadad", "139", "irctc", "pnr", "vande bharat", "rajdhani",
+            "shatabdi", "berth", "seat", "coach", "tatkal", "clean my coach", "obhs", "bio toilet",
+            "pantry", "overcharging", "tte", "rpf", "station", "ndls", "csmt", "sbc", "mas"
+        ]
+        return any(k in lower for k in rail_keywords)
+
+    def _is_agritech_query(self, lower: str, tokens: set) -> bool:
+        """Check if query is related to Agritech, Crop disease, pest or PM-KISAN."""
+        agri_keywords = [
+            "kisan", "crop", "fasal", "kheti", "dhaan", "paddy", "blast", "pink bollworm",
+            "kapas", "cotton", "rust", "yellow rust", "gehu", "wheat", "tamatar", "leaf curl",
+            "pest", "keeda", "pesticide", "keetnashak", "urea", "nano urea", "fertilizer", "khad",
+            "soil health", "soil", "pm kisan", "samman nidhi", "ekyc", "installment", "kvk"
+        ]
+        return any(k in lower for k in agri_keywords)
 
     def _evaluate_student_viva_answer(self, user_text: str, lower: str, tokens: set) -> Optional[Dict[str, Any]]:
         """

@@ -54,7 +54,7 @@
 5. **Expressive Audio Tag Preservation:** Preserves `<laugh>`, `<chuckle>`, `<sigh>`, `<gasp>` across markdown normalizers and triggers physical avatar mood transitions and gestures (e.g. *Namaste*).
 6. **100% Synthetic Data & PII Scrubbing:** All phone numbers (`SYN-PHONE`) and identifiers (`SYN-AADHAAR`) scrubbed before synthesis.
 7. **Sub-500ms Voice Pipeline:** Turn-taking latency clocked at **439ms end-to-end** (STT 184ms, LLM 142ms, TTS 112ms).
-8. **1-Click Mic-Free Simulation Deck:** Four instant presets for 100% reliable evaluation on any machine.
+8. **1-Click Mic-Free Simulation Deck:** 8 instant presets (Civic, Kirana, Viva, Tanglish, UPI Dispute, Jan Aushadhi Health, RailMadad 139, Kisan Agritech) for 100% reliable evaluation on any machine.
 
 ---
 
@@ -70,18 +70,22 @@
 
 ---
 
-## 🗄️ Massive Sovereign Knowledge Base (10,057 In-Memory Records)
+## 🗄️ Massive Sovereign Knowledge Base (28,273 In-Memory Records)
 
-To provide instant sub-millisecond responses without external database bottlenecks, Gnani Vachana 3D features a built-in pure Python inverted token hash index across **10,057 structured sovereign Indic records**:
+To provide instant sub-millisecond responses without external database bottlenecks, Gnani Vachana 3D features a built-in pure Python inverted token hash index across **28,273 structured sovereign Indic enterprise records** across 8 grassroots and mission-critical domains:
 
 | Domain | Records | Description & Live Coverage |
 |---|---|---|
 | **Kirana & FMCG SKUs** | **4,752** | 10 categories (Dairy, Staples, Oils, Biscuits, Spices, OTC Pharma), batch codes, MRPs, expiry days, and automated FEFO discounts. |
-| **Municipal Civic Wards** | **3,048** | 19 Indian cities (BBMP Bengaluru, BMC Mumbai, MCD Delhi, GHMC Hyderabad, PMC Pune, etc.) with transformer grids, water junctions, and nodal engineers. |
+| **Municipal Civic Wards** | **2,540** | 19 Indian cities (BBMP Bengaluru, BMC Mumbai, MCD Delhi, GHMC Hyderabad, PMC Pune, etc.) with transformer grids, water junctions, and nodal engineers. |
 | **APMC Mandi Rates** | **1,152** | 16 national mandis (Azadpur, Lasalgaon, Vashi, Guntur, Kolar, etc.) tracking modal prices (₹/quintal) and daily arrivals across 12 commodities. |
 | **Socratic Viva Probes** | **1,105** | Operating Systems, DBMS, DSA, and System Design questions with conceptual rubrics and edge-case follow-ups. |
+| **Banking, UPI & NPCI Disputes** | **4,500** | UPI failure codes (U19/U30/U69/U03), RBI T+1/T+2 reversal SLAs, National Cyber Crime 1930 reporting, IFSC codes, and KCC/Mudra loans. |
+| **Jan Aushadhi Generic Medicine** | **4,864** | Pradhan Mantri Jan Aushadhi generic salt alternatives (Paracetamol, Metformin, Atorvastatin, Telmisartan), 80% price arbitrage, and hospital contacts. |
+| **Indian Railways & RailMadad 139** | **4,800** | RailMadad grievance dispatch (AC cooling, coach hygiene, medical emergency on board), PNR confirmation predictions, and Tatkal timing. |
+| **Agritech & PM-KISAN Advisories** | **4,560** | Kharif/Rabi crop disease diagnosis (Paddy Blast, Cotton Pink Bollworm, Wheat Rust), bio-pesticide recipes, and PM-KISAN e-KYC assistance. |
 
-*Query Retrieval Latency: **< 1.0 ms** across 11,047 unique indexed tokens.*
+*Query Retrieval Latency: **< 1.5 ms** across 34,132 unique indexed tokens.*
 
 ---
 

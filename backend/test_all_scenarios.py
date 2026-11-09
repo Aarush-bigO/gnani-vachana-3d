@@ -7,7 +7,16 @@ import websockets
 
 async def test_scenarios():
     uri = "ws://localhost:8000/ws/voice"
-    presets = ["hinglish_civic", "hinglish_kirana", "hinglish_viva", "tanglish_switch"]
+    presets = [
+        "hinglish_civic",
+        "hinglish_kirana",
+        "hinglish_viva",
+        "tanglish_switch",
+        "hinglish_banking",
+        "hinglish_health",
+        "hinglish_railway",
+        "hinglish_agri",
+    ]
 
     for preset_id in presets:
         print(f"\n==========================================")
@@ -43,7 +52,7 @@ async def test_scenarios():
                 except asyncio.TimeoutError:
                     break
 
-    print("\n✅ ALL 4 SCENARIOS TESTED AND VERIFIED OVER WEBSOCKET!")
+    print("\n✅ ALL 8 SCENARIOS TESTED AND VERIFIED OVER WEBSOCKET!")
 
 if __name__ == "__main__":
     asyncio.run(test_scenarios())

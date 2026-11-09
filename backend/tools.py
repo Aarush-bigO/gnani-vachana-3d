@@ -226,6 +226,99 @@ TOOL_DEFINITIONS: List[Dict[str, Any]] = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "resolve_upi_banking_dispute",
+            "description": (
+                "Resolve Indian banking, UPI transaction failures (U19/U30/U69/U03), "
+                "NPCI UDIR dispute triage, RBI reversal SLAs, card emergency hotlisting, "
+                "and National Cyber Crime 1930 reporting. Uses 100% synthetic records."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "User's banking or UPI complaint description",
+                    },
+                    "bank": {
+                        "type": "string",
+                        "description": "Bank name (e.g. SBI, HDFC, ICICI, PNB)",
+                    },
+                },
+                "required": ["query"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "query_jan_aushadhi_medicine",
+            "description": (
+                "Query Pradhan Mantri Jan Aushadhi generic medicines, chemical salt alternatives, "
+                "70-85% price comparisons with expensive branded pharma, indications and precautions."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "medicine": {
+                        "type": "string",
+                        "description": "Medicine name, salt, or branded equivalent (e.g. Paracetamol, Dolo, Metformin, Telma)",
+                    },
+                },
+                "required": ["medicine"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "dispatch_railmadad_grievance",
+            "description": (
+                "Dispatch Indian Railways RailMadad 139 complaints, AC cooling failure, coach hygiene, "
+                "medical emergency on running trains, PNR confirmation chances, and Tatkal timing."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "grievance": {
+                        "type": "string",
+                        "description": "Passenger complaint or train enquiry",
+                    },
+                    "train": {
+                        "type": "string",
+                        "description": "Train number or name (e.g. 20607 Vande Bharat, 12951 Rajdhani)",
+                    },
+                },
+                "required": ["grievance"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "diagnose_crop_agritech_issue",
+            "description": (
+                "Diagnose Indian agriculture crop diseases (Paddy Blast, Pink Bollworm, Yellow Rust), "
+                "organic & chemical pesticide dosages, Soil Health NPK deficiencies, and PM-KISAN support."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Farmer's crop symptom, pest description or PM-KISAN query",
+                    },
+                    "crop": {
+                        "type": "string",
+                        "description": "Crop name (e.g. Paddy, Cotton, Wheat, Tomato, Soybean)",
+                    },
+                },
+                "required": ["query"],
+            },
+        },
+    },
 ]
 
 
@@ -372,6 +465,119 @@ def execute_agent_tool(tool_name: str, args: Dict[str, Any]) -> Dict[str, Any]:
                 f"<chuckle> Bahut badhiya explanation! "
                 f"Aapka clarity score {score} percent hai. "
                 f"Lekin ek tricky sawal sochiye: {next_probe}"
+            ),
+        }
+
+    elif tool_name == "resolve_upi_banking_dispute":
+        bank_query = args.get("query", "UPI failed transaction")
+        rec = db.find_banking_record(bank_query)
+        disp_id = rec.get("dispute_id", f"DISP-UPI-{random.randint(1000, 9999)}")
+        bank = rec.get("bank_name", "State Bank of India")
+        err_code = rec.get("upi_error_code", "U19")
+        sla = rec.get("reversal_sla", "T+1 Auto Reversal")
+        desc = rec.get("error_description", "Declined by Beneficiary Bank")
+
+        return {
+            "card_type": "BANKING_DISPUTE",
+            "dispute_id": disp_id,
+            "bank_name": bank,
+            "upi_error_code": err_code,
+            "error_description": desc,
+            "reversal_sla": sla,
+            "branch": rec.get("branch", "Main Branch"),
+            "ifsc": rec.get("ifsc_code", "SBIN001234"),
+            "toll_free_helpline": rec.get("toll_free", "18001234"),
+            "resolution_protocol": rec.get("resolution_protocol", "NPCI UDIR Auto Reversal"),
+            "timestamp": timestamp,
+            "spoken_summary": (
+                f"<sigh> Pareshan mat hoiye. {bank} ka UPI error code {err_code} detect hua hai: {desc}. "
+                f"<chuckle> RBI guidelines ke mutabiq {sla} mein aapka amount account mein credit ho jayega. "
+                f"Aapka dispute ticket {disp_id} register ho gaya hai."
+            ),
+        }
+
+    elif tool_name == "query_jan_aushadhi_medicine":
+        med_query = args.get("medicine", "Paracetamol")
+        rec = db.find_healthcare_record(med_query)
+        gen_name = rec.get("generic_name", "Paracetamol 650mg")
+        brand_alt = rec.get("branded_equivalents", "Dolo-650 / Crocin")
+        gen_price = rec.get("jan_aushadhi_price_inr", 6.50)
+        brand_price = rec.get("branded_market_price_inr", 34.00)
+        savings = rec.get("savings_percentage", "80% Savings")
+        indication = rec.get("clinical_indication", "Fever and mild pain relief")
+        kendra = rec.get("kendra_registration_id", "PMBJK-BLR-101")
+
+        return {
+            "card_type": "JAN_AUSHADHI",
+            "generic_medicine": gen_name,
+            "branded_equivalents": brand_alt,
+            "molecule_salt": rec.get("molecule_salt", "Acetaminophen"),
+            "jan_aushadhi_mrp": f"₹{gen_price}",
+            "branded_market_mrp": f"₹{brand_price}",
+            "savings": savings,
+            "clinical_indication": indication,
+            "precautions": rec.get("precautions_and_warnings", "Safe with meals"),
+            "kendra_id": kendra,
+            "timestamp": timestamp,
+            "spoken_summary": (
+                f"<chuckle> Achhi khabar! {brand_alt} ka Jan Aushadhi generic alternative {gen_name} sirf {gen_price} rupees mein uplabdh hai. "
+                f"Bazaar mein yeh {brand_price} rupees ka milta hai, yani seedhi {savings}! "
+                f"Kendra code {kendra} pe stock verified hai."
+            ),
+        }
+
+    elif tool_name == "dispatch_railmadad_grievance":
+        g_query = args.get("grievance", "AC cooling issue")
+        rec = db.find_railway_record(g_query)
+        t_num = rec.get("train_number", "20607")
+        t_name = rec.get("train_name", "Vande Bharat Express")
+        c_title = rec.get("complaint_title", "AC / Temperature Failure")
+        sla = rec.get("sla_resolution_target", "Attendant dispatched in 20 mins")
+        ticket = rec.get("railmadad_ticket", f"MADAD-SYN-{random.randint(1000, 9999)}")
+        div = rec.get("railway_division", "Delhi Division")
+
+        return {
+            "card_type": "RAILMADAD_139",
+            "railmadad_ticket": ticket,
+            "train": f"{t_num} {t_name}",
+            "coach_class": rec.get("coach_class", "AC 3-Tier (3A)"),
+            "complaint_type": c_title,
+            "railway_division": div,
+            "sla_target": sla,
+            "pnr_prediction": rec.get("pnr_prediction_baseline", "88% Confirmed"),
+            "tatkal_timing": rec.get("tatkal_timing", "AC: 10:00 AM | Non-AC: 11:00 AM"),
+            "timestamp": timestamp,
+            "spoken_summary": (
+                f"<sigh> Train {t_num} {t_name} ke liye RailMadad ticket {ticket} log ho gaya hai. "
+                f"Issue: {c_title}. <chuckle> {div} maintenance team ko alert bhej diya hai, "
+                f"agla station aate hi attend kar liya jayega."
+            ),
+        }
+
+    elif tool_name == "diagnose_crop_agritech_issue":
+        c_query = args.get("query", "Paddy leaf blast")
+        rec = db.find_agritech_record(c_query)
+        crop = rec.get("crop_name", "Basmati Paddy")
+        disease = rec.get("disease_or_pest", "Paddy Blast")
+        remedy = rec.get("recommended_treatment", "Spray Tricyclazole 75% WP @ 0.6g/L")
+        soil_adv = rec.get("soil_recommendation", "Apply Zinc Sulphate @ 5kg/ha")
+        adv_id = rec.get("advisory_id", f"KISAN-ADV-{random.randint(1000, 9999)}")
+
+        return {
+            "card_type": "KISAN_ADVISORY",
+            "advisory_id": adv_id,
+            "crop": crop,
+            "disease_identified": disease,
+            "symptoms": rec.get("symptoms_identified", "Lesions on leaves"),
+            "recommended_treatment": remedy,
+            "soil_health_advisory": soil_adv,
+            "krishi_vigyan_kendra": rec.get("krishi_vigyan_kendra", "KVK Central"),
+            "pm_kisan_status": rec.get("pm_kisan_installment_status", "17th Installment Active"),
+            "timestamp": timestamp,
+            "spoken_summary": (
+                f"<gasp> {crop} mein {disease} ke lakshan hain! "
+                f"<chuckle> Ilaj note kijiye: {remedy}. "
+                f"Saath hi soil health ke liye {soil_adv}. Advisory ID {adv_id} save kar lijiye."
             ),
         }
 

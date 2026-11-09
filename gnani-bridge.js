@@ -761,6 +761,18 @@
       <button class="gnani-lk-preset-chip" data-preset="tanglish_switch" style="padding:5px 8px;font-size:11px;">
         🔄 Tanglish
       </button>
+      <button class="gnani-lk-preset-chip" data-preset="hinglish_banking" style="padding:5px 8px;font-size:11px;">
+        💳 UPI
+      </button>
+      <button class="gnani-lk-preset-chip" data-preset="hinglish_health" style="padding:5px 8px;font-size:11px;">
+        💊 Health
+      </button>
+      <button class="gnani-lk-preset-chip" data-preset="hinglish_railway" style="padding:5px 8px;font-size:11px;">
+        🚆 Train
+      </button>
+      <button class="gnani-lk-preset-chip" data-preset="hinglish_agri" style="padding:5px 8px;font-size:11px;">
+        🌾 Kisan
+      </button>
       <button class="gnani-lk-preset-chip" id="gnani-btn-benchmark" style="padding:5px 8px;font-size:11px;border-color:rgba(16,185,129,0.4);color:#34d399;">
         ⚡ Benchmark
       </button>
@@ -960,8 +972,8 @@
         </div>
         <div class="gnani-diag-box">
           <div class="gnani-diag-label">🗄️ MASSIVE DATABASE</div>
-          <div class="gnani-diag-val" id="gnani-diag-db-count">10,000+ Records</div>
-          <div class="gnani-diag-desc">4.7k FMCG • 3k Wards • 1.1k Mandi • &lt;1ms Index</div>
+          <div class="gnani-diag-val" id="gnani-diag-db-count">28,000+ Records</div>
+          <div class="gnani-diag-desc">8 Enterprise Domains • FMCG • Banking • Health • Rail • Agri • &lt;1.5ms Index</div>
         </div>
         <div class="gnani-diag-box">
           <div class="gnani-diag-label">🔒 CONCURRENCY GUARD</div>
@@ -978,11 +990,11 @@
       <!-- Live Database Search Explorer inside Modal -->
       <div style="margin-top:14px;background:#FFF;border:2.5px solid #000;box-shadow:3px 3px 0 #000;padding:12px;border-radius:4px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-          <span style="font-weight:900;font-size:12px;color:#000;">🔍 MASSIVE INDIC DATABASE EXPLORER (10,000+ RECORDS)</span>
-          <span style="font-size:10px;background:#00E599;color:#000;font-weight:900;padding:2px 6px;border:1px solid #000;border-radius:2px;">&lt; 1ms In-Memory</span>
+          <span style="font-weight:900;font-size:12px;color:#000;">🔍 MASSIVE INDIC ENTERPRISE EXPLORER (28,000+ RECORDS)</span>
+          <span style="font-size:10px;background:#00E599;color:#000;font-weight:900;padding:2px 6px;border:1px solid #000;border-radius:2px;">&lt; 1.5ms In-Memory</span>
         </div>
         <div style="display:flex;gap:8px;">
-          <input id="gnani-db-search-input" type="text" placeholder="Search 10k items (e.g. Amul, Indiranagar, Tomato, Deadlock)..." style="flex:1;padding:8px 12px;font-size:12px;font-weight:700;border:2px solid #000;border-radius:3px;background:#F7F4EB;outline:none;">
+          <input id="gnani-db-search-input" type="text" placeholder="Search 28k items (e.g. Amul, SBI UPI, Dolo, Vande Bharat, Paddy, Tomato)..." style="flex:1;padding:8px 12px;font-size:12px;font-weight:700;border:2px solid #000;border-radius:3px;background:#F7F4EB;outline:none;">
           <button id="gnani-db-search-btn" style="background:#FFDE59;border:2px solid #000;box-shadow:2px 2px 0 #000;font-weight:900;font-size:12px;padding:0 14px;cursor:pointer;">Search</button>
         </div>
         <div id="gnani-db-search-results" style="margin-top:8px;max-height:140px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;font-size:11px;"></div>
@@ -1415,6 +1427,77 @@
           </div>
           <div style="background:#FFF;border:2px solid #000;padding:6px 8px;border-radius:3px;font-size:11px;font-weight:700;">
             ${card.market_note}
+          </div>
+        </div>
+      `;
+    } else if (card.card_type === "BANKING_DISPUTE") {
+      cardDiv.innerHTML = `
+        <div style="background:#C084FC;border:2.5px solid #000;box-shadow:4px 4px 0px #000;border-radius:4px;padding:14px;color:#000;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;border-bottom:2px solid #000;padding-bottom:6px;">
+            <strong style="font-size:12px;font-weight:900;">💳 UPI & BANKING DISPUTE</strong>
+            <span style="font-size:10px;background:#7E22CE;color:#FFF;padding:2px 8px;border-radius:2px;font-weight:900;">CODE: ${card.upi_error_code}</span>
+          </div>
+          <div style="font-size:12px;margin-bottom:4px;">BANK: <strong style="font-weight:900;">${card.bank_name}</strong> (${card.branch})</div>
+          <div style="font-size:12px;margin-bottom:6px;">DISPUTE TICKET: <strong style="font-family:monospace;font-weight:900;">${card.dispute_id}</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px;background:#FFF;border:1.5px solid #000;padding:6px;border-radius:3px;">
+            <span>SLA: <strong style="color:#7E22CE;font-weight:900;">${card.reversal_sla}</strong></span>
+            <span>IFSC: <strong>${card.ifsc}</strong></span>
+          </div>
+          <div style="background:#FFF;border:2px solid #000;padding:6px 8px;border-radius:3px;font-size:11px;font-weight:700;">
+            Root Cause: ${card.error_description}
+          </div>
+        </div>
+      `;
+    } else if (card.card_type === "JAN_AUSHADHI") {
+      cardDiv.innerHTML = `
+        <div style="background:#38BDF8;border:2.5px solid #000;box-shadow:4px 4px 0px #000;border-radius:4px;padding:14px;color:#000;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;border-bottom:2px solid #000;padding-bottom:6px;">
+            <strong style="font-size:12px;font-weight:900;">💊 PM JAN AUSHADHI GENERIC</strong>
+            <span style="font-size:10px;background:#0369A1;color:#FFF;padding:2px 8px;border-radius:2px;font-weight:900;">${card.savings}</span>
+          </div>
+          <div style="font-size:12px;margin-bottom:4px;">GENERIC SALT: <strong style="font-weight:900;">${card.generic_medicine}</strong></div>
+          <div style="font-size:12px;margin-bottom:6px;">BRANDED ALTERNATIVE: <strong style="font-weight:800;">${card.branded_equivalents}</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px;background:#FFF;border:1.5px solid #000;padding:6px;border-radius:3px;">
+            <span>Jan Aushadhi: <strong style="color:#0284C7;font-weight:900;">${card.jan_aushadhi_mrp}</strong></span>
+            <span>Market Price: <strong style="text-decoration:line-through;color:#e11d48;">${card.branded_market_mrp}</strong></span>
+          </div>
+          <div style="background:#FFF;border:2px solid #000;padding:6px 8px;border-radius:3px;font-size:11px;font-weight:700;">
+            Indication: ${card.clinical_indication} • Kendra: ${card.kendra_id}
+          </div>
+        </div>
+      `;
+    } else if (card.card_type === "RAILMADAD_139") {
+      cardDiv.innerHTML = `
+        <div style="background:#FB7185;border:2.5px solid #000;box-shadow:4px 4px 0px #000;border-radius:4px;padding:14px;color:#000;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;border-bottom:2px solid #000;padding-bottom:6px;">
+            <strong style="font-size:12px;font-weight:900;">🚆 RAILMADAD 139 GRIEVANCE</strong>
+            <span style="font-size:10px;background:#BE123C;color:#FFF;padding:2px 8px;border-radius:2px;font-weight:900;">${card.sla_target}</span>
+          </div>
+          <div style="font-size:12px;margin-bottom:4px;">TRAIN: <strong style="font-weight:900;">${card.train}</strong> (${card.coach_class})</div>
+          <div style="font-size:12px;margin-bottom:6px;">COMPLAINT: <strong style="font-weight:800;">${card.complaint_type}</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px;background:#FFF;border:1.5px solid #000;padding:6px;border-radius:3px;">
+            <span>Ticket: <strong style="font-family:monospace;font-weight:900;">#${card.railmadad_ticket}</strong></span>
+            <span>Division: <strong>${card.railway_division}</strong></span>
+          </div>
+          <div style="background:#FFF;border:2px solid #000;padding:6px 8px;border-radius:3px;font-size:11px;font-weight:700;">
+            PNB Prediction: ${card.pnr_prediction} • Tatkal: ${card.tatkal_timing}
+          </div>
+        </div>
+      `;
+    } else if (card.card_type === "KISAN_ADVISORY") {
+      cardDiv.innerHTML = `
+        <div style="background:#4ADE80;border:2.5px solid #000;box-shadow:4px 4px 0px #000;border-radius:4px;padding:14px;color:#000;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;border-bottom:2px solid #000;padding-bottom:6px;">
+            <strong style="font-size:12px;font-weight:900;">🌾 KISAN AGRITECH ADVISORY</strong>
+            <span style="font-size:10px;background:#15803D;color:#FFF;padding:2px 8px;border-radius:2px;font-weight:900;">PM-KISAN SYNC</span>
+          </div>
+          <div style="font-size:12px;margin-bottom:4px;">CROP: <strong style="font-weight:900;">${card.crop}</strong></div>
+          <div style="font-size:12px;margin-bottom:6px;">DISEASE / PEST: <strong style="color:#b91c1c;font-weight:900;">${card.disease_identified}</strong></div>
+          <div style="background:#FFF;border:2px solid #000;padding:6px 8px;border-radius:3px;font-size:11px;font-weight:700;margin-bottom:6px;">
+            Remedy: ${card.recommended_treatment}
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;background:#DCFCE7;border:1px solid #000;padding:4px 6px;border-radius:2px;">
+            <span>Soil: <strong>${card.soil_health_advisory}</strong></span>
           </div>
         </div>
       `;
@@ -1864,19 +1947,24 @@
   async function performDbSearch(q) {
     if (!dbSearchResults) return;
     if (!q || !q.trim()) {
-      dbSearchResults.innerHTML = `<div style="color:#64748b;font-weight:700;padding:4px;">Type above to search across 10,000+ FMCG, Civic Ward, and Mandi records.</div>`;
+      dbSearchResults.innerHTML = `<div style="color:#64748b;font-weight:700;padding:4px;">Type above to search across 28,000+ Indic enterprise records (FMCG, Banking, Health, Railways, Agriculture, Wards).</div>`;
       return;
     }
     try {
-      dbSearchResults.innerHTML = `<div style="color:#000;font-weight:700;padding:4px;">Searching in-memory index (<1ms)...</div>`;
+      dbSearchResults.innerHTML = `<div style="color:#000;font-weight:700;padding:4px;">Searching in-memory index (<1.5ms)...</div>`;
       const res = await fetch(`/api/db/search?q=${encodeURIComponent(q.trim())}&limit=8`);
       const data = await res.json();
       if (!data.results || data.results.length === 0) {
-        dbSearchResults.innerHTML = `<div style="color:#d97706;font-weight:700;padding:4px;">No records found matching "${q}". Try "Amul", "Ward", "Tomato", or "Deadlock".</div>`;
+        dbSearchResults.innerHTML = `<div style="color:#d97706;font-weight:700;padding:4px;">No records found matching "${q}". Try "Amul", "UPI", "Dolo", "Vande", or "Paddy".</div>`;
         return;
       }
       dbSearchResults.innerHTML = data.results.map((r) => {
-        const badgeColor = r.type === "PRODUCT" ? "#FFA726" : r.type === "CIVIC_WARD" ? "#FFDE59" : "#00E599";
+        const badgeColor = r.type === "PRODUCT" ? "#FFA726" :
+          r.type === "CIVIC_WARD" ? "#FFDE59" :
+          r.type === "BANKING_UPI" ? "#C084FC" :
+          r.type === "JAN_AUSHADHI" ? "#38BDF8" :
+          r.type === "RAILMADAD_139" ? "#FB7185" :
+          r.type === "KISAN_AGRI" ? "#4ADE80" : "#00E599";
         return `
           <div style="background:#FFF;border:1.5px solid #000;box-shadow:2px 2px 0 #000;border-radius:3px;padding:6px 8px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
             <div style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">

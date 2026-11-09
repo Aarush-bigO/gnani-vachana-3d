@@ -126,6 +126,42 @@ def test_synthetic_tools():
     assert "mastery_breakdown" in viva_res
     print(f"✓ Socratic viva card generated: Score {viva_res['clarity_score']}% - Probe: {viva_res['next_socratic_probe'][:50]}...")
 
+    # 4. Banking & UPI Dispute Tool
+    bank_res = execute_agent_tool("resolve_upi_banking_dispute", {
+        "query": "Mera 5000 rupaye deduct ho gaya lekin transaction fail ho gaya"
+    })
+    assert bank_res["card_type"] == "BANKING_DISPUTE"
+    assert "DISP" in bank_res["dispute_id"]
+    assert "reversal_sla" in bank_res
+    print(f"✓ Banking dispute card generated: {bank_res['dispute_id']} - {bank_res['reversal_sla']}")
+
+    # 5. Jan Aushadhi Medicine Tool
+    med_res = execute_agent_tool("query_jan_aushadhi_medicine", {
+        "medicine": "Dolo 650"
+    })
+    assert med_res["card_type"] == "JAN_AUSHADHI"
+    assert "Savings" in med_res["savings"]
+    assert "jan_aushadhi_mrp" in med_res
+    print(f"✓ Jan Aushadhi medicine card generated: {med_res['generic_medicine']} ({med_res['savings']})")
+
+    # 6. RailMadad 139 Grievance Tool
+    rail_res = execute_agent_tool("dispatch_railmadad_grievance", {
+        "grievance": "Vande Bharat AC cooling issue"
+    })
+    assert rail_res["card_type"] == "RAILMADAD_139"
+    assert "MADAD" in rail_res["railmadad_ticket"]
+    assert "sla_target" in rail_res
+    print(f"✓ RailMadad grievance card generated: {rail_res['railmadad_ticket']} - {rail_res['train']}")
+
+    # 7. Kisan Agritech Advisory Tool
+    agri_res = execute_agent_tool("diagnose_crop_agritech_issue", {
+        "query": "Dhaan me blast rog patta jhulsa"
+    })
+    assert agri_res["card_type"] == "KISAN_ADVISORY"
+    assert "KISAN" in agri_res["advisory_id"]
+    assert "recommended_treatment" in agri_res
+    print(f"✓ Kisan agritech advisory card generated: {agri_res['advisory_id']} - {agri_res['disease_identified']}")
+
 
 async def async_test_concurrency_guard():
     print("\n--- Testing Concurrency Guard Semaphore (Guardrail #1) ---")
