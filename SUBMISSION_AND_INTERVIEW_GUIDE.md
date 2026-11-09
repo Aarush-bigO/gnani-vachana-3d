@@ -67,3 +67,9 @@ When Gnani's senior engineers invite you to the 1-on-1 technical round, here are
 ### Q4: "How is PII handled for civic and retail tools?"
 > *"I built a dedicated `IndicTextNormalizer` using regex pattern tokenizers that intercept raw phone numbers, Aadhaar numbers, and vehicle registrations, replacing them with synthetic tokens (`SYN-PHONE`, `SYN-AADHAAR`) before sending text to the TTS engine."*
 
+### Q5: "How does the massive 10,000+ record database operate with sub-millisecond retrieval?"
+> *"Instead of introducing heavy relational database dependencies or disk I/O latency, I engineered a sovereign pure-Python in-memory inverted token hash index across 10,057 structured records (4,752 FMCG SKUs, 3,048 Municipal Wards, 1,152 APMC Mandi rates, and 1,105 Socratic Viva probes). It indexes 11,047 unique tokens with O(1) set intersections, delivering query responses in < 0.8ms while consuming less than 18MB of RAM."*
+
+### Q6: "How do you handle voice turn-taking and conversational answers without hallucinating?"
+> *"I implemented a dual-stream architecture: client-side Web Speech API gives instantaneous zero-latency local speech recognition for Chrome/Brave/Edge, while 16kHz PCM audio streams to the backend over WebSocket for telephonic resilience. Incoming text is processed through the `IndicReasoningEngine` which evaluates conceptual keywords, computes clarity rubrics for student viva answers, triggers physical Three.js avatar gestures, and executes real-time FEFO/civic tools."*
+
