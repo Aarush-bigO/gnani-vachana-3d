@@ -184,9 +184,10 @@
     border-radius: 4px;
   }
   #avatar, #view {
-    position: absolute; opacity: 0; top: 0; left: 0; right: 0;
+    position: absolute; opacity: 1; top: 0; left: 0; right: 0;
     bottom: 0; pointer-events: auto; overflow: hidden;
     border-radius: inherit;
+    transition: opacity 0.3s ease;
   }
   #view {
     background-image: none; background-repeat:no-repeat;
@@ -338,7 +339,7 @@
   }
   .disabled { opacity: 0.5; cursor: default; pointer-events: none; }
   .hidden { display: none; }
-  .starttransparent { opacity: 0; }
+  .starttransparent { opacity: 1; transition: opacity 0.3s ease; }
 
   /* blinking */
   @-webkit-keyframes blinking { to { visibility: hidden } }
@@ -443,6 +444,26 @@ const gnaniTTSSSEEndpoint = "https://api.vachana.ai/api/v1/tts/sse";
 const gnaniTTSRestEndpoint = "https://api.vachana.ai/api/v1/tts/inference";
 const gnaniVoiceWSEndpoint = "/ws/voice";
 const jwtEndpoint = "/app/jwt/get";
+
+// Compat proxies for TalkingHead engine
+const googleTTSProxy = gnaniTTSSSEEndpoint;
+const googleTTSEndpoint = gnaniTTSRestEndpoint;
+const elevenTTSEndpoint = ["", ""];
+const elevenTTSProxy = ["", "", ""];
+const microsoftTTSEndpoint = "";
+const microsoftTTSProxy = ["", ""];
+const localWhisperCppProxy = "";
+const openaiAudioTranscriptionsEndpoint = "";
+const openaiAudioTranscriptionsProxy = "";
+const openaiModerationsEndpoint = "";
+const openaiModerationsProxy = "";
+const openaiChatCompletionsEndpoint = "";
+const openaiChatCompletionsProxy = "";
+const grokChatCompletionsEndpoint = "";
+const grokChatCompletionsProxy = "";
+const llamaChatCompletionsProxy = "";
+const geminiEndpoint = "";
+const geminiProxy = "";
 
 
 // I18n internationalization
@@ -2859,6 +2880,7 @@ let head;
 let morphTimer = null;
 
 function headLoaded(firsttime=false) {
+  d3.select("#loading").style("display","none");
 
   // Populate emoji tester
   if ( firsttime ) {
@@ -4633,7 +4655,7 @@ document.addEventListener('DOMContentLoaded', async function(e) {
 
     // Show last avatar
     let o = {};
-    let name = cfg('avatar-name') || Object.values(site.avatars)[0].name;
+    let name = cfg('avatar-name') || Object.keys(site.avatars)[0];
     if ( site.avatars.hasOwnProperty(name) ) {
       o = site.avatars[name];
     } else if ( name === 'URL' ) {
@@ -4643,15 +4665,28 @@ document.addEventListener('DOMContentLoaded', async function(e) {
       o =  Object.values(site.avatars)[0];
     }
     await head.showAvatar( o, progressUpdate);
+    d3.select("#loading").style("display","none");
     headLoaded(true);
     try { head.setView("upper"); } catch(e) {}
   } catch (error) {
+    console.error("Primary avatar loading failed:", error);
     errorShow(error);
 
     // Backup plan: show the first avatar in site config
-    await head.showAvatar( Object.values(site.avatars)[0], progressUpdate);
+    try {
+      await head.showAvatar( Object.values(site.avatars)[0], progressUpdate);
+    } catch (fallbackError) {
+      console.warn("Fallback avatar loading failed:", fallbackError);
+    }
     headLoaded(true);
     try { head.setView("upper"); } catch(e) {}
+  } finally {
+    // Enterprise Failsafe: Ensure UI and 3D canvas are never trapped in opacity: 0
+    setTimeout(() => {
+      d3.select("#loading").style("display", "none");
+      d3.selectAll(".starttransparent").style("opacity", "1");
+      d3.selectAll("#avatar,#view").style("opacity", "1");
+    }, 1200);
   }
 
 });
@@ -4728,7 +4763,7 @@ document.addEventListener('DOMContentLoaded', async function(e) {
 
           <div class="filler"></div>
 
-          <div class="command starttransparent" data-i18n-title="Manuscript" data-show="right-ai">
+          <div class="command starttransparent selected" data-i18n-title="Manuscript" data-show="right-ai">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M7 18H17V16H7V18Z" fill="currentColor" />
               <path d="M17 14H7V12H17V14Z" fill="currentColor" />
@@ -4772,7 +4807,7 @@ document.addEventListener('DOMContentLoaded', async function(e) {
 
         </div>
 
-        <div id="right-ai" class="page noselect nodrag hidden">
+        <div id="right-ai" class="page noselect nodrag">
 
           <div class="vbar"></div>
 
@@ -5846,7 +5881,7 @@ document.addEventListener('DOMContentLoaded', async function(e) {
 
         </div>
 
-        <div id="right-sessions" class="page">
+        <div id="right-sessions" class="page hidden">
           <div id="sessions">
             <div id="session-0" class="session selected"></div>
             <div id="session-1" class="session"></div>

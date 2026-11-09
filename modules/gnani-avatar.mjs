@@ -1239,7 +1239,16 @@ class TalkingHead {
     }
 
     // Register Meshopt decoder
-    loader.setMeshoptDecoder(MeshoptDecoder);
+    if (MeshoptDecoder) {
+      try {
+        if (MeshoptDecoder.ready) {
+          await MeshoptDecoder.ready;
+        }
+        loader.setMeshoptDecoder(MeshoptDecoder);
+      } catch (e) {
+        console.warn("Meshopt decoder initialization notice:", e);
+      }
+    }
 
     let gltf = await loader.loadAsync( avatar.url, onprogress );
 
@@ -1432,8 +1441,8 @@ class TalkingHead {
     // Find objects that we need in the animate function
     this.objectLeftToeBase = this.armature.getObjectByName('LeftToeBase');
     this.objectRightToeBase = this.armature.getObjectByName('RightToeBase');
-    this.objectLeftEye = this.armature.getObjectByName('LeftEye');
-    this.objectRightEye = this.armature.getObjectByName('RightEye');
+    this.objectLeftEye = this.armature.getObjectByName('LeftEye') || this.armature.getObjectByName('EyeLeft') || this.armature.getObjectByName('Head');
+    this.objectRightEye = this.armature.getObjectByName('RightEye') || this.armature.getObjectByName('EyeRight') || this.armature.getObjectByName('Head');
     this.objectLeftArm = this.armature.getObjectByName('LeftArm');
     this.objectRightArm = this.armature.getObjectByName('RightArm');
     this.objectHips = this.armature.getObjectByName('Hips');
@@ -1442,8 +1451,15 @@ class TalkingHead {
 
     // Estimate avatar height based on eye level
     const plEye = new THREE.Vector3();
-    this.objectLeftEye.getWorldPosition(plEye);
-    this.avatarHeight = plEye.y + 0.2;
+    if (this.objectLeftEye && typeof this.objectLeftEye.getWorldPosition === "function") {
+      this.objectLeftEye.getWorldPosition(plEye);
+      this.avatarHeight = plEye.y + 0.2;
+    } else if (this.objectHead && typeof this.objectHead.getWorldPosition === "function") {
+      this.objectHead.getWorldPosition(plEye);
+      this.avatarHeight = plEye.y + 0.1;
+    } else {
+      this.avatarHeight = 1.7;
+    }
 
     // Skeleton helper, FOR TESTING ONLY
     if ( this.avatar.skeletonHelper ) {
