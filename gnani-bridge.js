@@ -72,8 +72,10 @@
       padding: 0;
     }
 
-    #gnani-stage-spotlight, #gnani-voice-ring {
+    #gnani-stage-spotlight, #gnani-voice-ring, #stats, div[style*="10000"], canvas[style*="10000"] {
       display: none !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
     }
 
     /* ── Neobrutalist Top Header Bar (React Bits Pro aesthetic) ── */
@@ -455,6 +457,21 @@
   const voiceRing = document.createElement("div");
   voiceRing.id = "gnani-voice-ring";
   document.body.appendChild(voiceRing);
+
+  // Remove Stats.js FPS overlay
+  const purgeStats = () => {
+    document.querySelectorAll("div, canvas").forEach((el) => {
+      if (
+        el.style.zIndex === "10000" ||
+        (el.style.position === "fixed" && el.style.bottom === "0px" && el.style.left === "0px") ||
+        (el.textContent && el.textContent.includes("FPS ("))
+      ) {
+        el.remove();
+      }
+    });
+  };
+  purgeStats();
+  setInterval(purgeStats, 1000);
 
   // Top Navigation Bar
   const header = document.createElement("header");
