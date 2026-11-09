@@ -16,7 +16,7 @@ Record your screen showing **`http://localhost:8000`** in Google Chrome.
 | **00:00–00:10** | Click **`16kHz MIC`** and speak:<br> *"Namaste! Mere ward 14 mein water pipe burst ho gaya hai, urgent ticket raise karo!"* | Avatar greets with `🙏 Namaste` gesture, jaw & lips sync in real time. **GramSeva Civic Dispatch** card appears on right with `#SYN-714`. | **Immediate hook:** Shows real-time Hinglish STT + LLM + 3D lip-sync in under 3 seconds. |
 | **00:11–00:22** | While the avatar is speaking, immediately click the red **`⚡ BARGE-IN`** button. | Avatar instantly stops talking, mouth zeroes, audio buffer flushes in <50ms. | Proves full-duplex interruption without overlapping audio glitches. |
 | **00:23–00:36** | Click the **`🏪 Kirana FEFO`** preset button. | Avatar speaks in code-mixed Hinglish. **Kirana ShelfCheck** card appears showing expiring milk batch and flash discount action. | Demonstrates **Real-World Utility** solving local Indian retail bottlenecks. |
-| **00:37–00:48** | Switch the Avatar Dropdown to **`👧 Jenny • Chetana`** and click **`🔄 Tanglish Switch`**. | Avatar mesh smoothly updates to the Anime rig with hair physics and speaks in Tanglish. | Demonstrates **Code-Mixing Champion** + multi-avatar flexibility. |
+| **00:37–00:48** | Switch the Avatar Dropdown to **`👧 Chetana`** and click **`🔄 Tanglish Switch`**. | Avatar mesh smoothly updates to the Anime rig with hair physics and speaks in Tanglish. | Demonstrates **Code-Mixing Champion** + multi-avatar flexibility. |
 | **00:49–01:00** | Click **`⚡ Benchmark`** in the top bar. | Live diagnostic audit runs on screen, awarding **`GRADE: A+ (SUB-500MS QUALIFIED)`**. Click **`Export JSON`**. | Irrefutable proof of pipeline latency and engineering guardrails. |
 
 ---

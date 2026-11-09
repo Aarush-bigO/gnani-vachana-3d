@@ -418,6 +418,9 @@ async def voice_websocket(ws: WebSocket):
                             pipeline.update_language(preset.get("language", "hi-IN"))
                             await pipeline.process_text_turn(preset["text"])
 
+                    elif msg_type == "ping":
+                        await send_json({"type": "pong", "timestamp": time.time()})
+
                     elif msg_type == "text_input":
                         text = data.get("text", "").strip()
                         if text:

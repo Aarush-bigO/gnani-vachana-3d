@@ -58,15 +58,15 @@
 
 ---
 
-## 🎭 3D Avatar & Voice Matrix
+## 🎭 3D Avatar & Voice Matrix (Gen-Z Indian Avatars)
 
 | Character | 3D File in Repo | Gnani Timbre v3.0 Voice | Role / Dynamic Physics |
 | :--- | :--- | :--- | :--- |
-| **Julia** | `avatars/brunette.glb` | `Riyaa` (v3.0) | Lead Conversational Assistant |
-| **Jenny** | `avatars/vroid.glb` | `Chetana` (v3.0) | Anime Rig with Dynamic Hair Physics |
-| **Harri** | `avatars/avatarsdk.glb` | `Avinash` (v3.0) | Realistic Male Persona |
-| **Avaturn** | `avatars/avaturn.glb` | `Shubham` (v3.0) | Stylized Humanoid Avatar |
-| **MPFB** | `avatars/mpfb.glb` | `Kalpana` (v3.0) | 34-Chain Dynamic Bone Rig |
+| **Riya** | `avatars/brunette.glb` | `Riyaa` (v3.0) | Lead Gen-Z Conversationalist |
+| **Chetana** | `avatars/vroid.glb` | `Chetana` (v3.0) | Gen-Z Anime Rig with Dynamic Hair Physics |
+| **Kabir** | `avatars/avatarsdk.glb` | `Avinash` (v3.0) | Realistic Gen-Z Male Persona |
+| **Shubham** | `avatars/avaturn.glb` | `Shubham` (v3.0) | Stylized 3D Creator Humanoid Avatar |
+| **Kalpana** | `avatars/mpfb.glb` | `Kalpana` (v3.0) | High-Fidelity 34-Chain Dynamic Bone Rig |
 
 ---
 

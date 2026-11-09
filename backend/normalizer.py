@@ -119,6 +119,11 @@ class IndicTextNormalizer:
         self._pii = PIISanitizer()
 
     @staticmethod
+    def normalize(text: str) -> str:
+        """Alias for normalize_for_tts."""
+        return IndicTextNormalizer.normalize_for_tts(text)
+
+    @staticmethod
     def normalize_for_tts(text: str) -> str:
         """
         Full normalization pipeline for TTS input text.
