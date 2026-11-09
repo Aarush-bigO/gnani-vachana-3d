@@ -437,38 +437,12 @@ import dompurify from 'dompurify';
 import { marked } from 'marked';
 
 // API proxys
-const jwtEndpoint = "/app/jwt/get"; // Get JSON Web Token for Single Sign-On
-const openaiChatCompletionsProxy = "/openai/v1/chat/completions";
-const openaiModerationsProxy = "/openai/v1/moderations";
-const openaiAudioTranscriptionsProxy = "/openai/v1/audio/transcriptions";
-const geminiProxy = "/gemini/";
-const googleTTSProxy = "/gtts/";
-const elevenTTSProxy = [
-  "wss://" + window.location.host + "/elevenlabs/",
-  "/v1/text-to-speech/",
-  "/stream-input?model_id=eleven_turbo_v2_5&output_format=pcm_22050&auto_mode=true&apply_text_normalization=off"
-];
-const microsoftTTSProxy = [
-  "wss://" + window.location.host + "/mstts/",
-  "/cognitiveservices/websocket/v1"
-];
-const grokChatCompletionsProxy = "/grok/v1/responses"; // Grok-beta
-const llamaChatCompletionsProxy = "/llama/v1/chat/completions"; // Local llama.cpp server proxy
-const localWhisperCppProxy = "/whisper/"; // Local whisper.cpp server proxy
-
-
-// Direct API endpoints
-const openaiChatCompletionsEndpoint = "https://api.openai.com/v1/chat/completions";
-const openaiModerationsEndpoint = "https://api.openai.com/v1/moderations";
-const openaiAudioTranscriptionsEndpoint = "https://api.openai.com/v1/audio/transcriptions";
-const geminiEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/";
-const googleTTSEndpoint = "https://eu-texttospeech.googleapis.com/v1beta1/text:synthesize";
-const elevenTTSEndpoint = [
-  "wss://api.elevenlabs.io/v1/text-to-speech/",
-  "/stream-input?model_id=eleven_turbo_v2_5&output_format=pcm_22050&auto_mode=true&apply_text_normalization=off"
-];
-const microsoftTTSEndpoint = "wss://northeurope.tts.speech.microsoft.com/cognitiveservices/websocket/v1";
-const grokChatCompletionsEndpoint = "https://api.x.ai/v1/responses";
+// Gnani Artha Sovereign Indic Stack Endpoints
+const gnaniSTTEndpoint = "https://api.vachana.ai/stt/v3";
+const gnaniTTSSSEEndpoint = "https://api.vachana.ai/api/v1/tts/sse";
+const gnaniTTSRestEndpoint = "https://api.vachana.ai/api/v1/tts/inference";
+const gnaniVoiceWSEndpoint = "/ws/voice";
+const jwtEndpoint = "/app/jwt/get";
 
 
 // I18n internationalization
@@ -4867,7 +4841,7 @@ document.addEventListener('DOMContentLoaded', async function(e) {
                 <div class="command selected" data-item="ai-model" data-type="option" data-ai-model="gpt-4.1-mini">Evon-v3.3 (30B MoE)</div>
                 <div class="command" data-item="ai-model" data-type="option" data-ai-model="gpt-4.1">Evon-v3.3-Fast</div>
                 <div class="command" data-item="ai-model" data-type="option" data-ai-model="grok-4.3">Prisma-v2.5 (16kHz)</div>
-                <div class="command" data-item="ai-model" data-type="option" data-ai-model="gemini-2.5-flash">Timbre-v3.0 TTS</div>
+                <div class="command" data-item="ai-model" data-type="option" data-ai-model="gnani-timbre-v3">Timbre-v3.0 TTS</div>
                 <div class="command" data-item="ai-model" data-type="option" data-ai-model="llama">Indic Bhasha</div>
               </div>
             </div>
