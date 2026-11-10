@@ -1281,7 +1281,7 @@ let CFG = {
   session: 0,
   sessions : [
     {
-      name: "Nimetön",
+      name: "🇮🇳 Gnani Sovereign Studio",
       theme: { lang: 'en', brightness:"dark", ratio:"wide", layout:"port" },
       view: { image: 'NONE' },
       avatar: {},
@@ -1290,7 +1290,7 @@ let CFG = {
       voice: { background: "NONE", type: "google", google:{ id: "en-GB-Standard-A"}, lipsync:{ lang: 'en' } }
     },
     {
-      name: "Nimetön 2",
+      name: "🇮🇳 Indic Dialogue Studio",
 
       theme: { lang: 'en', brightness: "dark", ratio: "wide", layout: "land" },
       view: { image: 'NONE' },
@@ -1385,7 +1385,7 @@ function loadConfig(session = null) {
         if ( id >= 0 && id < CFG.sessions.length ) {
           let name = CFG.sessions[id].name;
           if ( !name || name.length === 0 ) {
-            name = "Nimetön";
+            name = "🇮🇳 Gnani Studio";
             CFG.sessions[id].name = name;
           }
           e.select("div")
@@ -1401,7 +1401,7 @@ function loadConfig(session = null) {
           let n = d3.select("#directory").node().lastElementChild;
           let name = CFG.sessions[i].name;
           if ( !name || name.length === 0 ) {
-            name = "Nimetön";
+            name = "🇮🇳 Gnani Studio " + (i+1);
             CFG.sessions[i].name = name;
           }
           let clone = d3.select(n).clone(true);
@@ -4497,7 +4497,7 @@ document.addEventListener('DOMContentLoaded', async function(e) {
   d3.select("#session-duplicate").on('click', function(ev) {
     let id = CFG.sessions.length;
     let clone = JSON.parse( JSON.stringify(cfg()) );
-    clone.name = 'Nimetön';
+    clone.name = '🇮🇳 Gnani Studio ' + (id+1);
     CFG.sessions.push(clone);
     saveConfig();
     loadConfig(id);
@@ -4757,8 +4757,8 @@ document.addEventListener('DOMContentLoaded', async function(e) {
             </svg>
           </div>
 
-          <div id="name" class="text starttransparent">
-            Nimet&ouml;n
+          <div id="name" class="text starttransparent" style="font-weight:900;color:#000;">
+            🇮🇳 Gnani Indic Studio
           </div>
 
           <div class="filler"></div>
@@ -6027,7 +6027,7 @@ document.addEventListener('DOMContentLoaded', async function(e) {
 
         <div class="page fill">
           <div class="row fill" style="display:flex;align-items:center;gap:10px;">
-            <textarea id="input" class="starttransparent" style="flex:1;" data-i18n-placeholder="input" autocapitalize="sentences"></textarea>
+            <textarea id="input" class="starttransparent" style="flex:1;" placeholder="Ask anything in Hinglish, Tanglish, Kannada, or English (e.g. 'Transformer spark kar raha hai', 'Amul Taaza stock check', 'Deadlock vs Starvation', 'Digital arrest scam')..." autocapitalize="sentences"></textarea>
             <button id="gnani-send-btn" class="command" title="Send to Evon LLM & Synthesize Speech" style="background:#FFDE59;border:2.5px solid #000;box-shadow:3px 3px 0px #000;font-weight:900;font-size:13px;padding:0 18px;height:calc(2.4rem + 16px);display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#000;">
               <span>🗣️ Speak</span>
             </button>

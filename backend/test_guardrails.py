@@ -162,6 +162,15 @@ def test_synthetic_tools():
     assert "recommended_treatment" in agri_res
     print(f"✓ Kisan agritech advisory card generated: {agri_res['advisory_id']} - {agri_res['disease_identified']}")
 
+    # 8. armour365™ Cyber Threat & Scam Interception Tool
+    scam_res = execute_agent_tool("intercept_armour365_scam_call", {
+        "query": "Digital arrest scam call CBI"
+    })
+    assert scam_res["card_type"] == "ARMOUR365_FRAUD"
+    assert "ARMOUR" in scam_res["scam_id"]
+    assert "1930" in scam_res["helpline"]
+    print(f"✓ armour365 scam card generated: {scam_res['scam_id']} - {scam_res['threat_title']}")
+
 
 async def async_test_concurrency_guard():
     print("\n--- Testing Concurrency Guard Semaphore (Guardrail #1) ---")
