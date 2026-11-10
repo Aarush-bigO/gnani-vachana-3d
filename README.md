@@ -8,11 +8,13 @@
 [![30k Records](https://img.shields.io/badge/Database-30,433_Records-00E599?style=for-the-badge)](#)
 [![Sub-500ms Pipeline](https://img.shields.io/badge/Turn_Latency-439ms-10b981?style=for-the-badge)](#)
 [![Sovereign AI](https://img.shields.io/badge/Sovereign_AI-100%25_Made_in_Bharat-f59e0b?style=for-the-badge)](https://gnani.ai/internship)
+[![1-Page Solution Pitch](https://img.shields.io/badge/Solution_Pitch-1--Page_Document-2563eb?style=for-the-badge)](./SOLUTION_PITCH.md)
 
 > **Official Submission for the Gnani.ai Great Indian AI Internship Challenge (Nov 10, 2026)**  
 > *Transforming Sovereign Indian Voice AI into an Expressive, Interactive 3D Digital Human Experience.*  
 >  
-> **Gnani Vachana 3D = Prisma v3.0 STT + Evon 30B MoE LLM + Timbre v3.0 TTS + armour365™ Scam Defense + 30,433 In-Memory Records + 60 FPS Three.js 3D Digital Avatars**
+> **Gnani Vachana 3D = Prisma v3.0 STT + Evon 30B MoE LLM + Timbre v3.0 TTS + armour365™ Scam Defense + 30,433 In-Memory Records + 60 FPS Three.js 3D Digital Avatars**  
+> 📄 **Official 1-Page Solution Pitch Document:** [**Read SOLUTION_PITCH.md**](./SOLUTION_PITCH.md)
 
 ---
 
@@ -20,6 +22,7 @@
 
 | Subsystem / Deliverable | Technology & Provider | Status | Public Verification Link |
 | :--- | :--- | :---: | :--- |
+| **📄 1-Page Solution Pitch** | Required Official Submission Pitch | 🟢 **Included** | **[Read SOLUTION_PITCH.md](./SOLUTION_PITCH.md)** |
 | **🎬 Public Demo Video (X / Twitter)** | 1080p Web-Optimized Walkthrough | 🟢 **Live** | **[View Post & Video on X](https://x.com/Aarush52410944/status/2120201936406511942)** |
 | **📦 GitHub Source Repository** | Python 3.11 FastAPI + Three.js WebGL | 🟢 **Public** | **[https://github.com/Aarush-bigO/gnani-vachana-3d](https://github.com/Aarush-bigO/gnani-vachana-3d)** |
 | **🎙️ Local Sovereign Platform** | Single-Port Full-Duplex WebSocket Engine | 🟢 **Operational** | `http://localhost:8000` |
