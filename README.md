@@ -63,15 +63,31 @@
 
 ---
 
-## 🎭 3D Avatar & Voice Matrix (Gen-Z Indian Avatars)
+## 🎭 3D Digital Human Engine & Avatar Roster
 
-| Character | 3D File in Repo | Gnani Timbre v3.0 Voice | Role / Dynamic Physics |
+Our frontend renders interactive 3D digital humans directly in WebGL via Three.js at a locked **60 FPS**, loading optimized, rigged **GLB / GLTF** models:
+
+| Character | 3D File in Repo | Gnani Timbre Voice | Rigging & Dynamic Physics |
 | :--- | :--- | :--- | :--- |
-| **Riya** | `avatars/brunette.glb` | `Riyaa` (v3.0) | Lead Gen-Z Conversationalist |
-| **Chetana** | `avatars/vroid.glb` | `Chetana` (v3.0) | Gen-Z Anime Rig with Dynamic Hair Physics |
-| **Kabir** | `avatars/avatarsdk.glb` | `Avinash` (v3.0) | Realistic Gen-Z Male Persona |
-| **Shubham** | `avatars/avaturn.glb` | `Shubham` (v3.0) | Stylized 3D Creator Humanoid Avatar |
-| **Kalpana** | `avatars/mpfb.glb` | `Kalpana` (v3.0) | High-Fidelity 34-Chain Dynamic Bone Rig |
+| **Riya** | `avatars/brunette.glb` | `Riyaa` (v3.0) | Lead Gen-Z Conversationalist with ARKit 52 facial blendshapes |
+| **Chetana** | `avatars/vroid.glb` | `Chetana` (v3.0) | VRoid VRM mesh with active Spring-Bone secondary hair & clothing physics |
+| **Kabir** | `avatars/avatarsdk.glb` | `Avinash` (v2.5) | Photorealistic Gen-Z male persona with anatomical skeletal armature |
+| **Shubham** | `avatars/avaturn.glb` | `Shubham` (v2.5) | Stylized 3D creator with expressive eyebrows & jaw articulations |
+| **Kalpana** | `avatars/mpfb.glb` | `Kalpana` (v2.5) | High-fidelity MakeHuman/MPFB mesh featuring a 34-bone upper-body rig |
+
+### 🦾 Real-Time Physical Gestures & Natural Kinematics
+The avatar dynamically executes authentic body language triggered either via one-click UI chips or automatically parsed from Evon's reasoning output:
+- **`🙏 Namaste` (`namaste`):** Both hands brought together at chest level with synchronized clavicle and elbow flexion. Automatically triggers on Indic greetings (*Namaste*, *Vanakkam*, *Pranam*).
+- **`👋 Wave` (`handup`):** Natural conversational greeting with forearm oscillation and palm elevation.
+- **`👍 Thumbs Up` (`thumbup`):** Thumb abduction with wrist rotation. Automatically triggers when a ticket is resolved or an APMC Mandi discount is verified.
+- **`👌 OK` (`ok`):** Index-thumb ring formation for affirmative acknowledgment and UPI transaction validation.
+- **`🤷 Shrug` (`shrug`):** Bilateral shoulder elevation with palms turned upward for inquisitive dialogue.
+- **Procedural Kinematics:** Background breathing cycles, saccadic micro-eye movements, natural blinks every 3–5 seconds, and dynamic head tilts during conversational turn pauses.
+- **Dual Camera Framing:** One-click toggles between **`🎥 Upper`** (chest, arms, facial expressions) and **`🧍 Full`** (full skeletal movement and clothing drape).
+
+### 👄 Phoneme-to-Viseme Lip-Sync Pipeline
+- **Real-Time Morph Target Interpolation:** Gnani Timbre's streaming 16kHz PCM audio stream is continuously analyzed. Viseme amplitudes (`viseme_aa`, `viseme_E`, `viseme_I`, `viseme_O`, `viseme_U`, `viseme_PP`, `viseme_SS`, `viseme_TH`) map directly to the avatar’s facial blendshapes with 16ms interpolation smoothing.
+- **Expressive Mood Audio Tags:** When Timbre streams expressive tags (`<laugh>`, `<chuckle>`, `<sigh>`, `<gasp>`), the avatar’s mouth morph targets dynamically blend into smiling cheek raisers and jaw drops, completely eliminating the "uncanny valley".
 
 ---
 
