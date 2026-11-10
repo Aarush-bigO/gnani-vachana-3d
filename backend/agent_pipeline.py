@@ -155,15 +155,15 @@ class BhashaSwarmPipeline:
                     filename="audio.wav",
                     content_type="audio/wav",
                 )
-                form.add_field("language_code", self.language)
                 form.add_field("format", "verbatim")
                 form.add_field("model", "prisma-v3.0")
 
-                if self.language_candidates:
-                    form.add_field(
-                        "multi_lang_codes",
-                        ",".join(self.language_candidates[:4])
-                    )
+                if self.language == "indic-auto":
+                    form.add_field("language_code", "indic-auto")
+                    candidates = self.language_candidates or ["hi-IN", "en-IN", "ta-IN", "kn-IN"]
+                    form.add_field("multi_lang_codes", ",".join(candidates[:4]))
+                else:
+                    form.add_field("language_code", self.language)
 
                 stt_url = "https://api.vachana.ai/stt/v3"
                 async with session.post(
@@ -184,6 +184,7 @@ class BhashaSwarmPipeline:
                             await self.ws_send_json({
                                 "type": "stt_result",
                                 "text": transcript,
+                                "transcript": transcript,
                                 "is_final": True,
                                 "detected_language": detected_lang,
                                 "latency_ms": round((time.perf_counter() - turn.stt_start) * 1000, 1),

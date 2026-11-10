@@ -1241,9 +1241,12 @@
       setAgentState("idle");
     } else if (msg.type === "stt_result") {
       setAgentState("thinking");
-      if (msg.text) {
-        showSubtitles(`🎙️ "${msg.text}"`);
-        addChatMessage("user", msg.text);
+      const userSpoken = msg.text || msg.transcript || "";
+      if (userSpoken) {
+        showSubtitles(`🎙️ "${userSpoken}"`);
+        addChatMessage("user", userSpoken);
+        const inputEl = document.getElementById("input");
+        if (inputEl) inputEl.value = userSpoken;
       }
     } else if (msg.type === "viseme") {
       animateVoiceRing(msg.energy);
