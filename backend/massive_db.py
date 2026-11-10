@@ -176,6 +176,19 @@ MANDI_HUBS = [
     ("Erode Turmeric Market", "Erode, Tamil Nadu", "Yellow City Turmeric Exchange"),
 ]
 
+COMMODITY_SYNONYMS = {
+    "Tomato": "tamatar tamator thakkali tomatos",
+    "Potato": "aloo aalu urulaikizhangu batata",
+    "Onion": "pyaz pyaaz kanda eerulli vengayam",
+    "Wheat": "gehun gehu godhi",
+    "Basmati": "chawal dhan rice akki",
+    "Chilli": "mirchi mirch menasinakayi milagai",
+    "Turmeric": "haldi arisina manjal",
+    "Jeera": "zeera jeerige seeragam cumin",
+    "Mustard": "sarson sasive kadugu",
+    "Cotton": "kapas hatti paruthi",
+}
+
 COMMODITY_PRICES = [
     ("Onion (Nashik Red)", "Quintal", 1800, 2600, 2250, "Trending Down (-4%)", "Heavy Kharif Arrivals"),
     ("Tomato (Hybrid Red)", "Quintal", 1200, 2100, 1650, "Stable", "Local Harvest Steady"),
@@ -496,7 +509,8 @@ class MassiveIndicDatabase:
                     }
                     idx = len(self.mandi_rates)
                     self.mandi_rates.append(rec)
-                    self._index_tokens(self._mandi_index, f"{mandi_id} {mandi_name} {comm} {grade} {location}", idx)
+                    syns = " ".join(v for k, v in COMMODITY_SYNONYMS.items() if k.lower() in comm.lower())
+                    self._index_tokens(self._mandi_index, f"{mandi_id} {mandi_name} {comm} {syns} {grade} {location}", idx)
 
         # ── 4. Generate 1,105 Socratic Technical Question Bank ─────────────────
         viva_counter = 100

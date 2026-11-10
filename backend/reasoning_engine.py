@@ -52,7 +52,14 @@ class IndicReasoningEngine:
 
         # ── 1. Voice Commands & 3D Gestures ────────────────────────────────
         gesture_match, gesture_name, gesture_resp = self._check_gestures(lower, tokens)
-        if gesture_match:
+        substantive_keys = [
+            "mandi", "rate", "bhav", "tamatar", "tomato", "aalu", "potato", "onion", "pyaz", "pyaaz",
+            "upi", "dispute", "ward", "kirana", "amul", "viva", "health", "dolo", "medicine",
+            "train", "scam", "cbi", "arrest", "kisan", "crop", "price", "daam", "refund", "ticket"
+        ]
+        has_substantive = any(k in lower for k in substantive_keys)
+
+        if gesture_match and not has_substantive:
             if turn:
                 turn.llm_end = time.perf_counter()
             return {
@@ -744,12 +751,19 @@ class IndicReasoningEngine:
         if any(w in lower for w in ["attention", "neural", "deep learning", "nlp", "model", "architecture", "llm", "ai", "machine learning", "layer"]):
             return False
 
+        # Disambiguate APMC Mandi from PMC (Pune Municipal Corp)
+        if "apmc" in tokens or "mandi" in tokens:
+            return False
+
         civic_intents = [
             "spark", "voltage", "power outage", "electricity", "current", "bijli",
             "pipeline", "leak", "pani", "water supply", "street light", "batti",
             "pothole", "gaddha", "road broken", "garbage", "kachra", "sewer", "drain", "nali",
-            "complaint", "gramseva", "sla", "bbmp", "bmc", "mcd", "pmc", "ghmc"
+            "complaint", "gramseva", "sla"
         ]
+        corps = {"bbmp", "bmc", "mcd", "pmc", "ghmc"}
+        if bool(tokens & corps):
+            return True
         if "transformer" in lower and any(w in lower for w in ["spark", "fire", "smoke", "burst", "blast", "power", "electric", "pole", "ward", "street", "batti", "voltage"]):
             return True
         return any(k in lower for k in civic_intents)
