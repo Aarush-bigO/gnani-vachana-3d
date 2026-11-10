@@ -1,0 +1,37 @@
+name: Feature Proposal
+description: Suggest an idea or enhancement for sovereign Indic voice AI
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for suggesting improvements to the Gnani Vachana 3D ecosystem!
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem?
+      description: A clear description of what the problem is (e.g. I want support for an additional Indic dialect).
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Sovereign Solution
+      description: A clear description of what you want to happen.
+    validations:
+      required: true
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain Category
+      options:
+        - APMC Mandi Rates
+        - FMCG Kirana SKUs
+        - Municipal Civic Wards
+        - Banking & UPI Disputes
+        - Jan Aushadhi Medicines
+        - RailMadad Indian Railways
+        - Agritech PM-KISAN
+        - armour365 Cybercrime Defense
+        - Socratic CS Viva
+        - 3D Digital Human Avatar
