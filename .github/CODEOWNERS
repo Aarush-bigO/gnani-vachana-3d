@@ -1,0 +1,14 @@
+# Global code owner for Gnani Vachana 3D
+* @Aarush-bigO
+
+# Core Backend, Pipeline & In-Memory Database
+/backend/ @Aarush-bigO
+
+# WebGL 3D Avatar Engine & Gestures
+/modules/ @Aarush-bigO
+/avatars/ @Aarush-bigO
+/animations/ @Aarush-bigO
+
+# Frontend HUD & WebSocket Bridge
+/index.html @Aarush-bigO
+/gnani-bridge.js @Aarush-bigO
