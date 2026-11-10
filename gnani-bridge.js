@@ -725,16 +725,6 @@
         <div class="gnani-lk-brand-title">
           <span>GNANI ARTHA 3D</span>
         </div>
-        <div class="gnani-lk-brand-pill" id="gnani-status-pill">
-          <span class="gnani-live-pulse-dot" id="gnani-status-dot"></span>
-          <span id="gnani-status-text">SOVEREIGN LIVE</span>
-          <span class="gnani-mini-eq" id="gnani-status-eq" style="display:none;">
-            <span></span><span></span><span></span>
-          </span>
-        </div>
-        <div id="gnani-top-db-badge" style="background:#00E599;color:#000;font-size:10px;font-weight:900;padding:2px 8px;border:2px solid #000;border-radius:12px;box-shadow:2px 2px 0 #000;cursor:pointer;white-space:nowrap;" title="Click to view Database Explorer (30,433 records across 9 Domains)">
-          🗄️ 30,433 RECORDS
-        </div>
       </div>
     </div>
 

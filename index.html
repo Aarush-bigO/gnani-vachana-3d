@@ -1327,6 +1327,13 @@ function cfg(key,value) {
 try {
   let json = localStorage.getItem('gnani_vachana_3d') || localStorage.getItem('talkinghead');
   CFG = (json ? JSON.parse(json) : CFG);
+  if (CFG && CFG.sessions) {
+    CFG.sessions.forEach((s, idx) => {
+      if (!s.name || s.name === "Nimetön") {
+        s.name = idx === 0 ? "🇮🇳 Gnani Sovereign Studio" : "🇮🇳 Gnani Indic Studio";
+      }
+    });
+  }
 } catch(error) {
   alert("Invalid JSON settings");
   console.error(error);
@@ -6081,6 +6088,6 @@ document.addEventListener('DOMContentLoaded', async function(e) {
 
   </div>
 
-  <script src="gnani-bridge.js"></script>
+  <script src="gnani-bridge.js?v=20261110_final"></script>
 </body>
 </html>
