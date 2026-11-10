@@ -243,6 +243,10 @@ class BhashaSwarmPipeline:
 
         self.conversation_history.append({"role": "user", "content": user_text})
 
+        # Sovereign Indic Reasoning Engine (Fast-path when external LLM key is omitted)
+        if not settings.llm_api_key or "your_" in settings.llm_api_key:
+            return await self._fallback_tool_reasoning(user_text, turn)
+
         try:
             session = await self._get_session()
             headers = {
