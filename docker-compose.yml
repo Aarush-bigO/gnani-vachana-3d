@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  gnani-vachana-3d:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gnani-vachana-3d-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - GNANI_API_KEY=${GNANI_API_KEY}
+      - ENVIRONMENT=production
+    healthcheck:
+      test: ["CMD", "python", "/app/backend/healthcheck.py"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
