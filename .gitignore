@@ -8,5 +8,7 @@ backend/.venv/
 backend/__pycache__/
 .env
 backend/.env
-backend/.env.*
+backend/.env.local
+backend/.env.production
+backend/.env.secret
 *.log
