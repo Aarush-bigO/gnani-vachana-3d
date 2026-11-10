@@ -7,7 +7,7 @@
 [![armour365](https://img.shields.io/badge/Voice_Biometrics-armour365™-f43f5e?style=for-the-badge)](https://gnani.ai/internship)
 [![30k Records](https://img.shields.io/badge/Database-30,433_Records-00E599?style=for-the-badge)](#)
 [![Sub-500ms Pipeline](https://img.shields.io/badge/Turn_Latency-439ms-10b981?style=for-the-badge)](#)
-[![Contest Track](https://img.shields.io/badge/Target-₹1,00,000/mo_Internship-f59e0b?style=for-the-badge)](#)
+[![Sovereign AI](https://img.shields.io/badge/Sovereign_AI-100%25_Made_in_Bharat-f59e0b?style=for-the-badge)](https://gnani.ai/internship)
 
 > **Official Submission for the Gnani.ai Great Indian AI Internship Challenge (Nov 10, 2026)**  
 > *Transforming Sovereign Indian Voice AI into an Expressive, Interactive 3D Digital Human Experience.*  
@@ -21,7 +21,6 @@
 | Subsystem / Deliverable | Technology & Provider | Status | Public Verification Link |
 | :--- | :--- | :---: | :--- |
 | **🎬 Public Demo Video (X / Twitter)** | 1080p Web-Optimized Walkthrough | 🟢 **Live** | **[View Post & Video on X](https://x.com/Aarush52410944/status/2120201936406511942)** |
-| **📁 Full Video Demo (Google Drive)** | High-Resolution Master `.mov` (Stereo Audio) | 🟢 **Public** | **[Watch High-Res on Google Drive](https://drive.google.com/file/d/1tVu9hGX8e-fGeNCIqnTh8dkgMft5NbWU/view?usp=sharing)** |
 | **📦 GitHub Source Repository** | Python 3.11 FastAPI + Three.js WebGL | 🟢 **Public** | **[https://github.com/Aarush-bigO/gnani-vachana-3d](https://github.com/Aarush-bigO/gnani-vachana-3d)** |
 | **🎙️ Local Sovereign Platform** | Single-Port Full-Duplex WebSocket Engine | 🟢 **Operational** | `http://localhost:8000` |
 | **📝 Contest Submission Form** | Official Gnani AI Microsoft Submission Form | 🟢 **Submitted** | Verified Entry on `gnani.ai/internship` |
@@ -40,31 +39,18 @@
 
 ---
 
-## 🎯 Targeted Award Tracks
-
-1. 🥇 **Primary Track: Paid 6-Month AI Internship (₹1,00,000 / month)**
-   * Complete full-duplex conversational voice turn with **439ms turnaround latency** (STT: 184ms, Evon/Tool: 142ms, Timbre: 112ms).
-2. 🎭 **Track 1: Main Character Track (₹50,000)**
-   * Deep regional Indic depth utilizing authentic Kannada (*Yeshwanthpur APMC Mandi rates, PM-KISAN diagnostics, and native Kannada dialogue*).
-3. 🔄 **Track 2: Mixed Vibes Track (₹50,000)**
-   * Code-mixed speech build across Hinglish, Tanglish, and Kanglish with candidate-bounded acoustic probability (`language_candidates=["hi-IN", "en-IN", "ta-IN", "kn-IN"]`).
-4. 🛡️ **Track 3: Real Deal Track (₹50,000)**
-   * Mission-critical grassroots utility powered by **Gnani armour365™ Voice Biometrics** (Digital Arrest Interception, Supreme Court legal defense protocol, 1930 Cyber Cell alerts), ITU-T G.712 Telephonic 8kHz Noise Simulation, and 30,433 structured records.
-
----
-
 ## 🏗️ System Architecture & Data Flow
 
 ```mermaid
 flowchart LR
     subgraph Client["Browser & Three.js 3D Engine (:8000)"]
-        MIC[User Microphone]
-        UI[Interactive UI / Neobrutalist Cards]
-        THREE[Three.js 60 FPS Digital Human]
+        MIC["User Microphone"]
+        UI["Interactive UI & Diagnostic Cards"]
+        THREE["Three.js 60 FPS Digital Human"]
     end
 
     subgraph Gateway["FastAPI Server & Guardrails"]
-        WS[Full-Duplex WebSocket Gateway]
+        WS["Full-Duplex WebSocket Gateway"]
         GUARD["Guardrail 1: Semaphore(1) 429 Lock"]
         VAD["Adaptive Dynamic VAD (RMS: 180.0)"]
     end
@@ -84,10 +70,11 @@ flowchart LR
     WS --> VAD
     VAD --> GUARD
     GUARD -->|Bounded Audio Frames| PRISMA
-    PRISMA -->|Indic Transcript (Devanagari/Kannada)| EVON
-    EVON <-->|Instant Inverted Hash Lookup| DB
+    PRISMA -->|Indic Text Transcript| EVON
+    EVON -->|Inverted Hash Lookup| DB
+    DB -->|Sub-1.5ms Results| EVON
     EVON -->|Synthesized Spoken Dialogue| TIMBRE
-    TIMBRE -->|Chunked PCM Audio + Visemes| WS
+    TIMBRE -->|Chunked PCM Audio & Visemes| WS
     ARMOUR -.->|Scam Interception Signal| EVON
     WS -->|Audio Playback| UI
     WS -->|Viseme Morph Targets & Gestures| THREE
@@ -127,7 +114,7 @@ sequenceDiagram
         LLM-->>WS: Send MANDI_RATES Neobrutalist Card + Gesture: "ok"
         WS-->>Avatar: Trigger physical gesture (Hand animation)
     and Expressive Audio Synthesis
-        LLM->>TTS: Stream normalized text with <chuckle> tag
+        LLM->>TTS: Stream normalized text with chuckle audio tag
         Note over TTS: Latency: 112ms (First Chunk)
         TTS-->>WS: Stream chunked 16kHz PCM audio via SSE
     end
@@ -138,7 +125,7 @@ sequenceDiagram
 
     opt Mid-Sentence Barge-In (Interruption)
         User->>WS: User cuts in: "Ruko!" / "Stop!"
-        WS->>WS: Cancel audio buffer (< 50ms)
+        WS->>WS: Cancel audio buffer (under 50ms)
         WS-->>TTS: Abort synthesis session
         WS-->>Avatar: Transition avatar mouth to neutral listening state
     end
@@ -224,7 +211,7 @@ flowchart LR
     RMS --> MOUTH["Mouth Blendshapes: viseme_aa, viseme_O, viseme_PP, etc."]
     MOUTH --> THREE["Three.js WebGL Renderer (60 FPS)"]
 
-    TAGS["Expressive Tags: <laugh>, <chuckle>, <sigh>"] --> MOOD["Facial Expression Engine (Cheek Raisers, Brow Dimplers)"]
+    TAGS["Expressive Audio Tags: laugh, chuckle, sigh, gasp"] --> MOOD["Facial Expression Engine (Cheek Raisers, Brow Dimplers)"]
     MOOD --> THREE
 
     PROCEDURAL["Procedural Engine: Saccadic Eye Micro-Movements + Idle Breathing"] --> THREE
