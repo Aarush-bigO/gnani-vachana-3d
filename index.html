@@ -25,7 +25,7 @@
     --colorToolbarPassive: #000000;
     --colorToolbarPassive2: #475569;
     --colorToolbarActive: #000000;
-    --widthLabel: 5rem;
+    --widthLabel: 9.5rem;
     --colorGlow: transparent;
   }
 
@@ -158,7 +158,8 @@
     min-height: 1.8rem; min-width: 1.8rem;
   }
   .label {
-    width: var(--widthLabel); flex-shrink: 0; color: #475569; font-weight: 700;
+    width: var(--widthLabel); min-width: 9.5rem; flex-shrink: 0; color: #475569; font-weight: 700;
+    overflow: visible; white-space: nowrap;
   }
   .border {
     position: absolute; top: 0; left: 0; bottom: 0; right: 0;
@@ -4833,11 +4834,11 @@ document.addEventListener('DOMContentLoaded', async function(e) {
 
           <div id="ai-gnani" class="column">
             <div class="row">
-              <div class="text label" style="font-weight:800;">System Persona</div>
+              <div class="text label" style="font-weight:800;">System</div>
               <textarea rows="2" autocapitalize="sentences" data-item="ai-openai-system" data-type="value" data-ai-openai-system="" placeholder="You are an expert Indic Conversational AI avatar powered by Gnani Artha. You speak fluent Hindi, Tamil, Telugu, Kannada, Bengali, and English with sub-500ms real-time responsiveness."></textarea>
             </div>
             <div class="row">
-              <div class="text label" style="font-weight:800;">Sovereign Tier</div>
+              <div class="text label" style="font-weight:800;">Sovereign</div>
               <input type="text" value="Gnani Artha Enterprise (Bengaluru Tier-IV DC)" readonly style="background:#F7F4EB;border:2px solid #000;font-weight:700;font-size:11px;">
             </div>
 
@@ -4859,7 +4860,7 @@ document.addEventListener('DOMContentLoaded', async function(e) {
             </div>
 
             <div class="row">
-              <div class="text label" style="font-weight:800;">Latency SLA</div>
+              <div class="text label" style="font-weight:800;">Latency</div>
               <input type="text" value="Sub-500ms End-to-End SLA (Grade A+ Passed)" readonly style="background:#E6F4EA;border:2px solid #000;color:#137333;font-weight:700;font-size:11px;">
             </div>
           </div>
