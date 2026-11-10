@@ -701,7 +701,7 @@ class IndicReasoningEngine:
                 "gesture": "nod"
             }
 
-        if any(p in lower for p in ["bangalore", "bengaluru", "silicon valley of india"]):
+        if any(p in lower for p in ["bangalore", "bengaluru", "silicon valley of india"]) and not any(k in lower for k in ["mandi", "rate", "tamatar", "tomato", "ward", "price", "bhav", "apmc"]):
             return {
                 "text": (
                     "Bengaluru is known as the Silicon Valley of India! It is the nation's premier technology, aerospace, and startup hub, "

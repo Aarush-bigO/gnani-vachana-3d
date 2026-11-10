@@ -160,7 +160,7 @@ FMCG_CATEGORIES = {
 MANDI_HUBS = [
     ("Azadpur Mandi", "Delhi", "Asia's Largest Fruit & Vegetable Terminal"),
     ("Vashi APMC Market", "Mumbai, Maharashtra", "Western India Hub"),
-    ("Yeshwanthpur APMC", "Bengaluru, Karnataka", "South India Grain & Onion Hub"),
+    ("Yeshwanthpur APMC", "Bengaluru Bangalore, Karnataka", "South India Grain & Onion Hub"),
     ("Lasalgaon APMC", "Nashik, Maharashtra", "India's Central Onion Capital"),
     ("Guntur Mirchi Yard", "Guntur, Andhra Pradesh", "Asia's Premier Red Chilli Market"),
     ("Unjha APMC Mandi", "Mehsana, Gujarat", "Global Cumin & Isabgol Capital"),
