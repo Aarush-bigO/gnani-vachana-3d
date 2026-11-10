@@ -431,8 +431,8 @@ async def voice_websocket(ws: WebSocket):
                     try:
                         samples = np.frombuffer(audio_data, dtype=np.int16)
                         rms = float(np.sqrt(np.mean(samples.astype(np.float32) ** 2)))
-                        noise_floor = min(noise_floor * 0.99 + rms * 0.01, 1000.0)
-                        threshold = max(350.0, noise_floor * 1.5)
+                        noise_floor = min(noise_floor * 0.99 + rms * 0.01, 800.0)
+                        threshold = max(180.0, noise_floor * 1.25)
 
                         if rms < threshold:
                             silence_frames += 1
@@ -460,7 +460,7 @@ async def voice_websocket(ws: WebSocket):
                         silence_frames = 0
                         speech_started = False
 
-                        # Process the audio turn via Gnani Prisma v3 STT
+                        logger.info("🎙️ Live mic voice turn detected (%d bytes) — Transcribing with Prisma v3.0 STT...", len(audio_bytes))
                         transcript = await pipeline.transcribe_audio(audio_bytes)
                         if transcript and transcript.strip():
                             await pipeline.process_text_turn(transcript)
