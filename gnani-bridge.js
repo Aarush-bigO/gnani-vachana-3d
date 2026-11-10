@@ -732,8 +732,8 @@
             <span></span><span></span><span></span>
           </span>
         </div>
-        <div id="gnani-top-db-badge" style="background:#00E599;color:#000;font-size:10px;font-weight:900;padding:2px 8px;border:2px solid #000;border-radius:12px;box-shadow:2px 2px 0 #000;cursor:pointer;white-space:nowrap;" title="Click to view Database Explorer (28,273 records)">
-          🗄️ 28,273 RECORDS
+        <div id="gnani-top-db-badge" style="background:#00E599;color:#000;font-size:10px;font-weight:900;padding:2px 8px;border:2px solid #000;border-radius:12px;box-shadow:2px 2px 0 #000;cursor:pointer;white-space:nowrap;" title="Click to view Database Explorer (30,433 records across 9 Domains)">
+          🗄️ 30,433 RECORDS
         </div>
       </div>
     </div>
@@ -752,6 +752,12 @@
         ⚡ BARGE-IN
       </button>
 
+      <button class="gnani-lk-preset-chip" data-preset="armour365_scam" style="padding:5px 8px;font-size:11px;background:#FFE4E6;border-color:#F43F5E;color:#9F1239;font-weight:900;" title="armour365™ Voice Biometrics & Digital Arrest Interception">
+        🛡️ Scam
+      </button>
+      <button class="gnani-lk-preset-chip" data-preset="kannada_main" style="padding:5px 8px;font-size:11px;background:#FEF3C7;border-color:#D97706;color:#92400E;font-weight:900;" title="Regional Indic Main Character Track (Kannada Depth)">
+        🇮🇳 Kannada
+      </button>
       <button class="gnani-lk-preset-chip" data-preset="hinglish_civic" style="padding:5px 8px;font-size:11px;">
         🏛️ Civic
       </button>
@@ -775,6 +781,9 @@
       </button>
       <button class="gnani-lk-preset-chip" data-preset="hinglish_agri" style="padding:5px 8px;font-size:11px;">
         🌾 Kisan
+      </button>
+      <button class="gnani-lk-preset-chip" id="gnani-codec-toggle" style="padding:5px 8px;font-size:11px;background:#E0E7FF;border-color:#6366F1;color:#3730A3;font-weight:900;" title="Toggle ITU-T G.712 Telephonic 8kHz Bandpass Filter (Simulate Noisy Cellular/PSTN Line)">
+        📞 16kHz
       </button>
       <button class="gnani-lk-preset-chip" id="gnani-btn-benchmark" style="padding:5px 8px;font-size:11px;border-color:rgba(16,185,129,0.4);color:#34d399;">
         ⚡ Benchmark
@@ -801,9 +810,14 @@
     <div class="gnani-lk-controls-top" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
       <select class="gnani-lk-select" id="gnani-lang-select" style="padding:5px 8px;font-size:11px;" title="Switch Indic Language">
         <option value="hi-IN" selected>🇮🇳 Hindi (hi)</option>
+        <option value="kn-IN">🇮🇳 Kannada (kn) - Main Track</option>
         <option value="ta-IN">🇮🇳 Tamil (ta)</option>
-        <option value="kn-IN">🇮🇳 Kannada (kn)</option>
         <option value="te-IN">🇮🇳 Telugu (te)</option>
+        <option value="bn-IN">🇮🇳 Bengali (bn)</option>
+        <option value="mr-IN">🇮🇳 Marathi (mr)</option>
+        <option value="gu-IN">🇮🇳 Gujarati (gu)</option>
+        <option value="ml-IN">🇮🇳 Malayalam (ml)</option>
+        <option value="pa-IN">🇮🇳 Punjabi (pa)</option>
         <option value="en-IN">🇮🇳 Indian English (en)</option>
       </select>
 
@@ -993,11 +1007,11 @@
       <!-- Live Database Search Explorer inside Modal -->
       <div style="margin-top:14px;background:#FFF;border:2.5px solid #000;box-shadow:3px 3px 0 #000;padding:12px;border-radius:4px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-          <span style="font-weight:900;font-size:12px;color:#000;">🔍 MASSIVE INDIC ENTERPRISE EXPLORER (28,000+ RECORDS)</span>
+          <span style="font-weight:900;font-size:12px;color:#000;">🔍 MASSIVE INDIC ENTERPRISE EXPLORER (30,433 RECORDS • 9 DOMAINS)</span>
           <span style="font-size:10px;background:#00E599;color:#000;font-weight:900;padding:2px 6px;border:1px solid #000;border-radius:2px;">&lt; 1.5ms In-Memory</span>
         </div>
         <div style="display:flex;gap:8px;">
-          <input id="gnani-db-search-input" type="text" placeholder="Search 28k items (e.g. Amul, SBI UPI, Dolo, Vande Bharat, Paddy, Tomato)..." style="flex:1;padding:8px 12px;font-size:12px;font-weight:700;border:2px solid #000;border-radius:3px;background:#F7F4EB;outline:none;">
+          <input id="gnani-db-search-input" type="text" placeholder="Search 30,433 items (e.g. Digital Arrest, CBI, Amul, SBI UPI, Dolo, Vande Bharat, Paddy)..." style="flex:1;padding:8px 12px;font-size:12px;font-weight:700;border:2px solid #000;border-radius:3px;background:#F7F4EB;outline:none;">
           <button id="gnani-db-search-btn" style="background:#FFDE59;border:2px solid #000;box-shadow:2px 2px 0 #000;font-weight:900;font-size:12px;padding:0 14px;cursor:pointer;">Search</button>
         </div>
         <div id="gnani-db-search-results" style="margin-top:8px;max-height:140px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;font-size:11px;"></div>
@@ -1504,6 +1518,25 @@
           </div>
         </div>
       `;
+    } else if (card.card_type === "ARMOUR365_FRAUD") {
+      cardDiv.innerHTML = `
+        <div style="background:#FFE4E6;border:2.5px solid #000;box-shadow:4px 4px 0px #000;border-radius:4px;padding:14px;color:#000;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;border-bottom:2px solid #000;padding-bottom:6px;">
+            <strong style="font-size:12px;font-weight:900;color:#9F1239;">🛡️ armour365™ SCAM INTERCEPTION</strong>
+            <span style="font-size:10px;background:#E11D48;color:#FFF;padding:2px 8px;border-radius:2px;font-weight:900;">${card.severity_tier || 'CRITICAL_P0'}</span>
+          </div>
+          <div style="font-size:12px;margin-bottom:4px;">THREAT: <strong style="font-weight:900;color:#BE123C;">${card.threat_title}</strong></div>
+          <div style="font-size:11px;margin-bottom:4px;">CLAIMED AGENCY: <strong>${card.impersonated_agency}</strong></div>
+          <div style="font-size:11px;margin-bottom:6px;">GATEWAY: <span style="font-family:monospace;background:#FFF;padding:1px 4px;border:1px solid #000;">${card.caller_gateway}</span></div>
+          <div style="background:#FFF;border:2px solid #000;padding:6px 8px;border-radius:3px;font-size:11px;font-weight:700;margin-bottom:6px;color:#991B1B;">
+            ⚠️ PROTOCOL: ${card.legal_defense_protocol}
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;background:#FDA4AF;border:1px solid #000;padding:4px 6px;border-radius:2px;">
+            <span>Acoustic Liveness: <strong>${card.armour365_biometric_confidence}</strong></span>
+            <span style="font-weight:900;color:#881337;">📞 ${card.helpline}</span>
+          </div>
+        </div>
+      `;
     }
 
     container.prepend(cardDiv);
@@ -1667,6 +1700,8 @@
   }
   window.gnaniToggleMic = toggleMicrophone;
 
+  let isTelephonic8k = false;
+
   async function startMicrophone() {
     try {
       audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
@@ -1693,7 +1728,23 @@
         ws.send(pcm16.buffer);
       };
 
-      source.connect(scriptProcessor);
+      if (isTelephonic8k) {
+        // ITU-T G.712 Telephonic Bandpass: 300Hz to 3400Hz filter
+        const highpass = audioContext.createBiquadFilter();
+        highpass.type = "highpass";
+        highpass.frequency.value = 300;
+
+        const lowpass = audioContext.createBiquadFilter();
+        lowpass.type = "lowpass";
+        lowpass.frequency.value = 3400;
+
+        source.connect(highpass);
+        highpass.connect(lowpass);
+        lowpass.connect(scriptProcessor);
+      } else {
+        source.connect(scriptProcessor);
+      }
+
       // Route through a silent gain node to avoid acoustic feedback through speakers
       const silentGain = audioContext.createGain();
       silentGain.gain.value = 0.0;
@@ -2181,6 +2232,31 @@
         } else {
           showToast("Type a message or use 1-click scenarios above!");
         }
+      }
+    });
+  }
+
+  // 8kHz Telephonic Codec Toggle
+  const codecBtn = document.getElementById("gnani-codec-toggle");
+  if (codecBtn) {
+    codecBtn.addEventListener("click", () => {
+      isTelephonic8k = !isTelephonic8k;
+      if (isTelephonic8k) {
+        codecBtn.textContent = "📞 8kHz GSM";
+        codecBtn.style.background = "#FEE2E2";
+        codecBtn.style.borderColor = "#EF4444";
+        codecBtn.style.color = "#991B1B";
+        showToast("📞 ITU-T G.712 Telephonic Codec Active: 300Hz-3.4kHz Bandpass Filter engaged (Testing Gnani Prisma Telephonic Robustness)!");
+      } else {
+        codecBtn.textContent = "📞 16kHz";
+        codecBtn.style.background = "#E0E7FF";
+        codecBtn.style.borderColor = "#6366F1";
+        codecBtn.style.color = "#3730A3";
+        showToast("🎙️ Studio 16kHz Wideband Audio Active.");
+      }
+      if (isMicActive) {
+        stopMicrophone();
+        setTimeout(startMicrophone, 150);
       }
     });
   }

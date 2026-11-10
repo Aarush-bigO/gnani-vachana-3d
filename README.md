@@ -4,11 +4,16 @@
 [![Prisma v2.5](https://img.shields.io/badge/STT-Prisma_v2.5_(<200ms)-6366f1?style=for-the-badge)](https://gnani.ai/internship)
 [![Evon v3.3](https://img.shields.io/badge/LLM-Evon_v3.3_(30B_MoE)-a855f7?style=for-the-badge)](https://gnani.ai/internship)
 [![Timbre v2.5](https://img.shields.io/badge/TTS-Timbre_v2.5_/_v3.0-ec4899?style=for-the-badge)](https://gnani.ai/internship)
+[![armour365](https://img.shields.io/badge/Voice_Biometrics-armour365™-f43f5e?style=for-the-badge)](https://gnani.ai/internship)
+[![30k Records](https://img.shields.io/badge/Database-30,433_Records-00E599?style=for-the-badge)](#)
 [![Sub-500ms Pipeline](https://img.shields.io/badge/Turn_Latency-439ms-10b981?style=for-the-badge)](#)
 [![Contest Track](https://img.shields.io/badge/Target-₹1,00,000/mo_Internship-f59e0b?style=for-the-badge)](#)
 
 > **Official Submission for the Gnani.ai Great Indian AI Internship Challenge (Nov 10, 2026)**  
-> **Target Award Tracks:** *Code-Mixing Champion* (Hinglish/Tanglish/Kanglish), *Real-World Utility* (GramSeva Municipal SLA & Kirana ShelfCheck FEFO), *Main Character* (Expressive Audio Tags `<laugh>`, `<chuckle>`, `<sigh>` driving dynamic 3D mood and physical gestures).
+> **Target Award Tracks:**
+> 1. 🥇 **Main Character Track:** Deep regional Indic depth utilizing authentic Kannada (*Yeshwanthpur APMC, PM-KISAN, Kannada dialogue*).
+> 2. 🔄 **Mixed Vibes Track:** Seamless Hinglish, Tanglish, and Kanglish code-switching with real-time acoustic candidate bounding.
+> 3. 🛡️ **Real Deal Track:** Mission-critical grassroots enterprise utility powered by **Gnani armour365™ Voice Biometrics** (Digital Arrest Interception, 1930 Cyber Cell Reporting) and **Acoustic Noise / Telephonic 8kHz Simulation** (`📞 8kHz Codec` ITU-T G.712 bandpass).
 
 ---
 
@@ -70,22 +75,23 @@
 
 ---
 
-## 🗄️ Massive Sovereign Knowledge Base (28,273 In-Memory Records)
+## 🗄️ Massive Sovereign Knowledge Base (30,433 In-Memory Records across 9 Domains)
 
-To provide instant sub-millisecond responses without external database bottlenecks, Gnani Vachana 3D features a built-in pure Python inverted token hash index across **28,273 structured sovereign Indic enterprise records** across 8 grassroots and mission-critical domains:
+To provide instant sub-millisecond responses without external database bottlenecks, Gnani Vachana 3D features a built-in pure Python inverted token hash index across **30,433 structured sovereign Indic enterprise records** across 9 grassroots, enterprise, and sovereign cyber defense domains:
 
 | Domain | Records | Description & Live Coverage |
 |---|---|---|
 | **Kirana & FMCG SKUs** | **4,752** | 10 categories (Dairy, Staples, Oils, Biscuits, Spices, OTC Pharma), batch codes, MRPs, expiry days, and automated FEFO discounts. |
 | **Municipal Civic Wards** | **2,540** | 19 Indian cities (BBMP Bengaluru, BMC Mumbai, MCD Delhi, GHMC Hyderabad, PMC Pune, etc.) with transformer grids, water junctions, and nodal engineers. |
-| **APMC Mandi Rates** | **1,152** | 16 national mandis (Azadpur, Lasalgaon, Vashi, Guntur, Kolar, etc.) tracking modal prices (₹/quintal) and daily arrivals across 12 commodities. |
+| **APMC Mandi Rates** | **1,152** | 16 national mandis (Azadpur, Lasalgaon, Vashi, Guntur, Kolar, Yeshwanthpur) tracking modal prices (₹/quintal) and daily arrivals across 12 commodities. |
 | **Socratic Viva Probes** | **1,105** | Operating Systems, DBMS, DSA, and System Design questions with conceptual rubrics and edge-case follow-ups. |
 | **Banking, UPI & NPCI Disputes** | **4,500** | UPI failure codes (U19/U30/U69/U03), RBI T+1/T+2 reversal SLAs, National Cyber Crime 1930 reporting, IFSC codes, and KCC/Mudra loans. |
 | **Jan Aushadhi Generic Medicine** | **4,864** | Pradhan Mantri Jan Aushadhi generic salt alternatives (Paracetamol, Metformin, Atorvastatin, Telmisartan), 80% price arbitrage, and hospital contacts. |
 | **Indian Railways & RailMadad 139** | **4,800** | RailMadad grievance dispatch (AC cooling, coach hygiene, medical emergency on board), PNR confirmation predictions, and Tatkal timing. |
 | **Agritech & PM-KISAN Advisories** | **4,560** | Kharif/Rabi crop disease diagnosis (Paddy Blast, Cotton Pink Bollworm, Wheat Rust), bio-pesticide recipes, and PM-KISAN e-KYC assistance. |
+| **armour365™ Cybercrime & Fraud Defense** | **2,160** | Intercepts Digital Arrest extortion, fake CBI/NCB narcotics threats, Discom power cut SMS, DoT SIM block threats, and synthetic deepfake voice clones. Dispatches legal protocols & 1930 alerts. |
 
-*Query Retrieval Latency: **< 1.5 ms** across 34,132 unique indexed tokens.*
+*Query Retrieval Latency: **< 1.5 ms** across 36,479 unique indexed tokens.*
 
 ---
 

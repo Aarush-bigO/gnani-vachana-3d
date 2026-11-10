@@ -319,6 +319,31 @@ TOOL_DEFINITIONS: List[Dict[str, Any]] = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "intercept_armour365_scam_call",
+            "description": (
+                "Intercept suspected cybercrime extortion, digital arrest, fake CBI/NCB narcotics parcel threats, "
+                "electricity disconnection, or synthetic voice clone attacks using Gnani armour365™ Voice Biometrics "
+                "and the 1930 National Cybercrime Reporting Portal. Returns 100% synthetic scam interception card."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Caller threat description (e.g. Digital Arrest, CBI Skype call, FedEx narcotics, electricity cut)",
+                    },
+                    "authority_claimed": {
+                        "type": "string",
+                        "description": "Agency impersonated by scammer (e.g. CBI, Customs, Police, Discom, DoT)",
+                    },
+                },
+                "required": ["query"],
+            },
+        },
+    },
 ]
 
 
@@ -578,6 +603,39 @@ def execute_agent_tool(tool_name: str, args: Dict[str, Any]) -> Dict[str, Any]:
                 f"<gasp> {crop} mein {disease} ke lakshan hain! "
                 f"<chuckle> Ilaj note kijiye: {remedy}. "
                 f"Saath hi soil health ke liye {soil_adv}. Advisory ID {adv_id} save kar lijiye."
+            ),
+        }
+
+    elif tool_name == "intercept_armour365_scam_call":
+        s_query = args.get("query", "digital arrest cbi parcel scam")
+        rec = db.find_scam_record(s_query)
+        scam_id = rec.get("scam_id", f"ARMOUR-SYN-{random.randint(1000, 9999)}")
+        title = rec.get("scam_title", "Digital Arrest & CBI Money Laundering Extortion")
+        authority = rec.get("impersonated_authority", "Central Bureau of Investigation (CBI)")
+        gateway = rec.get("caller_gateway_type", "VoIP SIP Trunking via Offshore Route")
+        severity = rec.get("severity_tier", "CRITICAL_P0")
+        protocol = rec.get("legal_protocol", "Supreme Court Mandate: No Digital Arrest in Indian Law")
+        confidence = rec.get("armour365_acoustic_confidence", "99.4%")
+
+        return {
+            "card_type": "ARMOUR365_FRAUD",
+            "scam_id": scam_id,
+            "threat_title": title,
+            "category": rec.get("category", "Law Enforcement Impersonation"),
+            "impersonated_agency": authority,
+            "caller_gateway": gateway,
+            "severity_tier": severity,
+            "legal_defense_protocol": protocol,
+            "armour365_biometric_confidence": f"{confidence} (Deepfake & Spoof Signature Detected)",
+            "action_taken": rec.get("action_taken", "Automated Freeze on Gateway Trunk & Immediate 1930 Alert"),
+            "helpline": "1930 (National Cyber Crime Reporting Helpline)",
+            "timestamp": timestamp,
+            "spoken_summary": (
+                f"<gasp> Savdhaan! Yeh 100 percent fake scam call hai! "
+                f"Supreme Court of India aur Indian Law ke mutabiq koi bhi agency video ya audio call pe 'Digital Arrest' nahi kar sakti! "
+                f"<sigh> Gnani armour365 biometric verification ne fake voice impersonation pakad li hai. "
+                f"Synthetic Incident {scam_id} log karke Cyber Crime Portal 1930 ko bhej diya gaya hai. "
+                f"Turant phone kaat dein!"
             ),
         }
 

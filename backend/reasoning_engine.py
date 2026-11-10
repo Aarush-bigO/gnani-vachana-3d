@@ -99,7 +99,7 @@ class IndicReasoningEngine:
             }
 
         if any(w in lower for w in ["switch to hindi", "hindi me bolo", "speak hindi"]):
-            resp = "<chuckle> Namaste! Hindi mode active hai. Main aapke sawalon ka jawab Indic tone aur natural flow ke sath dungi. Boliye, kya janna chahte hain?"
+            resp = "<chuckle> Namaskara! Hindi mode active hai. Main aapke sawalon ka jawab Indic tone aur natural flow ke sath dungi. Boliye, kya janna chahte hain?"
             if turn:
                 turn.llm_end = time.perf_counter()
             return {
@@ -107,6 +107,18 @@ class IndicReasoningEngine:
                 "tool_card": None,
                 "gesture": "namaste",
                 "action": {"type": "switch_language", "language": "hi-IN", "voice": "Riyaa"}
+            }
+
+        # ── 3b. Regional Indic Main Character (Kannada) ──────────────────
+        if any(w in lower for w in ["switch to kannada", "kannada dalli", "kannadadalli", "kannada me bolo", "speak kannada", "namaskara"]) and not any(q in lower for q in ["what", "kya", "explain"]):
+            resp = "<chuckle> Namaskara! Kannada bhasha mode active aagide. Naanu Gnani Vachana 3D, nimma sovereign Indic AI sahayaka. Nimge hege sahayaka maadbeku solliri!"
+            if turn:
+                turn.llm_end = time.perf_counter()
+            return {
+                "text": resp,
+                "tool_card": None,
+                "gesture": "namaste",
+                "action": {"type": "switch_language", "language": "kn-IN", "voice": "Vasudha"}
             }
 
         # ── 4. Identity, Creator, Contest & Platform ──────────────────────
@@ -264,7 +276,22 @@ class IndicReasoningEngine:
                 "action": None
             }
 
-        # ── 15. Intelligent Sovereign In-Memory Database Fallback across 28,000+ Records ──
+        # ── 15. Gnani armour365™ Cybercrime & Digital Arrest Interception (2,160 Records) ──
+        if self._is_scam_query(lower, tokens):
+            res = execute_agent_tool("intercept_armour365_scam_call", {
+                "query": user_text,
+            })
+            if turn:
+                turn.tool_calls.append("intercept_armour365_scam_call")
+                turn.llm_end = time.perf_counter()
+            return {
+                "text": res["spoken_summary"],
+                "tool_card": res,
+                "gesture": "handup",
+                "action": None
+            }
+
+        # ── 16. Intelligent Sovereign In-Memory Database Fallback across 30,000+ Records ──
         db_matches = self.db.search_all(user_text, limit=3)
         if db_matches:
             top = db_matches[0]
@@ -290,6 +317,9 @@ class IndicReasoningEngine:
             elif rec_type == "KISAN_AGRI":
                 res = execute_agent_tool("diagnose_crop_agritech_issue", {"query": top.get("title", user_text)})
                 return {"text": res["spoken_summary"], "tool_card": res, "gesture": "thumbup", "action": None}
+            elif rec_type == "CYBER_SCAM":
+                res = execute_agent_tool("intercept_armour365_scam_call", {"query": top.get("title", user_text)})
+                return {"text": res["spoken_summary"], "tool_card": res, "gesture": "handup", "action": None}
 
         # ── 12. Smart Semantic Conversational Answering Engine ────────────
         conversational_resp = self._generate_intelligent_conversational_reply(raw_text, lower)
@@ -783,6 +813,18 @@ class IndicReasoningEngine:
             "soil health", "soil", "pm kisan", "samman nidhi", "ekyc", "installment", "kvk"
         ]
         return any(k in lower for k in agri_keywords)
+
+    def _is_scam_query(self, lower: str, tokens: set) -> bool:
+        """Check if query is related to Gnani armour365™ Cybercrime defense, Digital Arrest or phone scam."""
+        scam_keywords = [
+            "digital arrest", "cbi", "police arrest", "video call arrest", "fedex parcel",
+            "customs parcel", "narcotics", "ncb", "passport seized", "electricity cut",
+            "bijli kat", "light kat", "discom", "9:30 pm", "sim block", "sim deactivate",
+            "dot sanchar saathi", "chakshu", "voice clone", "deepfake voice", "ai voice clone",
+            "hospital emergency call", "telegram task", "maps review rating", "scam call",
+            "fake cbi", "police extortion", "skype arrest", "ed money laundering", "pmla seizure"
+        ]
+        return any(k in lower for k in scam_keywords)
 
     def _evaluate_student_viva_answer(self, user_text: str, lower: str, tokens: set) -> Optional[Dict[str, Any]]:
         """

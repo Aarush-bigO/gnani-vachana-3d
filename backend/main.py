@@ -114,6 +114,18 @@ SIMULATION_PRESETS = {
         "text": "Basmati Dhaan ki fasal mein patte par brown spots ban rahe hain aur blast rog lag raha hai, kaunsa keetnashak spray karein?",
         "language": "hi-IN",
     },
+    "armour365_scam": {
+        "id": "armour365_scam",
+        "label": "🛡️ Scam Defense (armour365™)",
+        "text": "Mujhe ek call aaya hai bol rahe hain CBI Cyber Crime se bol rahe hain, mere naam pe FedEx narcotics parcel nikla hai aur mera Digital Arrest ho gaya hai, turant paise transfer karne bol rahe hain!",
+        "language": "hi-IN",
+    },
+    "kannada_main": {
+        "id": "kannada_main",
+        "label": "🇮🇳 Kannada (Main Character)",
+        "text": "Namaskara! Kannada dalli mathadi. Gnani Vachana 3D Yeshwanthpur APMC mandi rate mathu kisan sahayaka bagge vivarisi.",
+        "language": "kn-IN",
+    },
 }
 
 

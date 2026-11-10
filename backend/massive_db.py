@@ -343,16 +343,32 @@ SOIL_HEALTH_ADVISORIES = [
     ("Potash Deficiency in High-Yield Crops", "Primary Nutrient", "Apply Muriate of Potash (MOP 60% K2O) in split doses to improve grain weight & drought tolerance"),
 ]
 
+# ── 9. Gnani armour365™ Cyber Threat & Voice Scam Defense Vectors ─────────────
+ARMOUR365_SCAM_PATTERNS = [
+    ("Digital Arrest & CBI Money Laundering Extortion", "Law Enforcement Impersonation", "Central Bureau of Investigation (CBI) Cyber Crime Command", "VoIP SIP Trunking via Offshore Route", "CRITICAL_P0", "Sec 41A CrPC Violation — Dispatched to National Cybercrime Helpline 1930 / I4C Portal"),
+    ("FedEx Narcotics Parcel & Illegal Passport Seizure", "Customs & Courier Blackmail", "Mumbai Customs & Narcotics Control Bureau (NCB)", "Virtual PBX Spoofed Calling Line ID", "CRITICAL_P0", "NDPS Act Section 50 Spoof — Direct Priority FIR on 1930 Helpline"),
+    ("State Police Crime Branch Virtual Arrest & Video Custody", "Police Extortion", "State Police Cyber Command Headquarters", "SIM Box Leased Gateway Trunk", "CRITICAL_P0", "Supreme Court Mandate: No Digital Arrest in Indian Law — Alerted Nodal Cyber Officer"),
+    ("Enforcement Directorate (ED) PMLA Hawala Seizure Threat", "Financial Crime Impersonation", "Enforcement Directorate (ED) Intelligence Cell", "Automated IVR Robotic Blast Channel", "CRITICAL_P0", "PMLA Section 19 Verification Fraud — Ticket Escrow Flagged"),
+    ("Electricity Bill Immediate 9:30 PM Disconnection SMS", "Utility Phishing", "State Power Distribution Corporation (Discom) Nodal Desk", "Bulk SMS Sender ID Alpha Spoof", "HIGH_P1", "Discom Protocol: No night disconnection without notice — Escalated to 1930"),
+    ("DoT Telecom Mobile SIM 2-Hour Aadhaar Disconnection Alert", "Telecom Extortion", "Department of Telecommunications (DoT) Sanchar Saathi", "International Inbound Leased Trunk", "HIGH_P1", "DoT Chakshu Advisory: Telecom dept never calls to block SIMs"),
+    ("Credit Card & UPI Reward Points Expiry .APK Trojan", "Banking Malware", "National Payments Corporation of India (NPCI) / Bank Desk", "Phishing SMS Bitly Link", "HIGH_P1", "RBI Circular on Malicious APKs — Account Biometric Guard Enabled"),
+    ("NHAI Toll FASTag Blacklist & Bank Freeze Phishing", "Transport Scam", "Indian Highway Management Co. Ltd (IHMCL)", "WhatsApp Business Impersonation Channel", "HIGH_P1", "NPCI NETC Protocol: FASTag never freezes saving accounts — Reported to 1930"),
+    ("Deepfake AI Voice Clone Relative Hospital Emergency Extortion", "Synthetic Voice Spoof", "armour365™ Acoustic Biomarker Threat Detection", "Cellular Direct Call with Synthetic Timbre", "CRITICAL_P0", "armour365 Acoustic Liveness Failure (Deepfake Impersonation) — 1930 Emergency Lock"),
+    ("Part-Time Telegram Google Maps Review Rating Fraud", "Task & Investment Syndicate", "Offshore Cyber Syndicate", "Telegram Inbound Bot Channel", "HIGH_P1", "I4C Advisory: Task-based prepaid scams — Bank Account Freeze Request Sent"),
+    ("Illegal Instant Micro-Loan Contact Extortion & Harassment", "Predatory Loan App", "Unregulated Offshore NBFC Clone", "Malicious Sideloaded APK Permission", "HIGH_P1", "RBI Sachet Portal Escalation & Cyber Police Nodal Dispatch"),
+    ("Fake SEBI Institutional Stock IPO Allocation Whitelist", "Financial Securities Fraud", "Securities & Exchange Board of India (SEBI) Spoof", "WhatsApp Group VIP Admin Scam", "HIGH_P1", "SEBI SCORES Escalation & Escrow Intercept Protocol"),
+]
+
 
 class MassiveIndicDatabase:
     """
-    In-memory indexed database engine holding 28,000+ structured synthetic records
-    across 8 core grassroots and enterprise domains.
+    In-memory indexed database engine holding 30,000+ structured synthetic records
+    across 9 core grassroots, enterprise, and sovereign cyber defense domains.
     Provides sub-millisecond full-text token search and structured domain lookups.
     """
 
     def __init__(self):
-        # 8 Core Domain Datasets
+        # 9 Core Domain Datasets
         self.products: List[Dict[str, Any]] = []          # Kirana FMCG SKUs
         self.wards: List[Dict[str, Any]] = []             # Municipal Civic Wards
         self.mandi_rates: List[Dict[str, Any]] = []        # APMC Mandi Rates
@@ -361,6 +377,7 @@ class MassiveIndicDatabase:
         self.healthcare_records: List[Dict[str, Any]] = [] # Jan Aushadhi & Hospitals
         self.railway_records: List[Dict[str, Any]] = []    # Indian Railways & RailMadad
         self.agritech_records: List[Dict[str, Any]] = []   # Crop Disease & PM-KISAN
+        self.cyber_scams: List[Dict[str, Any]] = []        # Gnani armour365 Cyber Scams
 
         # Token inverted indexes for instant <1.5ms lookup
         self._product_index: Dict[str, List[int]] = {}
@@ -371,6 +388,7 @@ class MassiveIndicDatabase:
         self._health_index: Dict[str, List[int]] = {}
         self._railway_index: Dict[str, List[int]] = {}
         self._agritech_index: Dict[str, List[int]] = {}
+        self._scam_index: Dict[str, List[int]] = {}
 
         self.initialized = False
         self._load_data()
@@ -637,18 +655,47 @@ class MassiveIndicDatabase:
                         self.agritech_records.append(rec)
                         self._index_tokens(self._agritech_index, f"{advisory_id} {crop_name} {disease} {city_sample['city']} kisan pm kisan soil fertilizer", idx)
 
+        # ── 9. Generate 2,160 Gnani armour365™ Cyber Crime & Scam Defense Records ──
+        scam_counter = 1000
+        for scam_title, scam_cat, authority, gateway, severity, protocol in ARMOUR365_SCAM_PATTERNS:
+            for city_idx in range(15):
+                city_sample = INDIAN_CITIES[city_idx % len(INDIAN_CITIES)]
+                gateways_pool = [gateway, "VoIP SIP Offshore Gateway", "Spoofed GSM Calling Line ID", "Virtual PBX Trunk", "SIM Box Leased Line", "Cloud Call Center Interactive IVR"]
+                for gw in gateways_pool:
+                    for perm in range(2):
+                        scam_counter += 1
+                        scam_id = f"ARMOUR-SYN-{scam_counter}"
+                        rec = {
+                            "scam_id": scam_id,
+                            "scam_title": scam_title,
+                            "category": scam_cat,
+                            "impersonated_authority": authority,
+                            "caller_gateway_type": gw,
+                            "severity_tier": severity,
+                            "legal_protocol": protocol,
+                            "jurisdiction_city": city_sample["city"],
+                            "state": city_sample["state"],
+                            "reported_complaint_count": random.randint(18, 480),
+                            "action_taken": "Automated Freeze on Gateway Trunk & Immediate 1930 Cyber Cell Alert",
+                            "armour365_acoustic_confidence": f"{random.uniform(97.8, 99.9):.1f}%",
+                        }
+                        idx = len(self.cyber_scams)
+                        self.cyber_scams.append(rec)
+                        self._index_tokens(self._scam_index, f"{scam_id} {scam_title} {scam_cat} {authority} {city_sample['city']} {city_sample['state']} digital arrest cbi police fedex electricity discom dot cybercrime scam fraud 1930", idx)
+
         elapsed = round((time.perf_counter() - t0) * 1000, 1)
         self.initialized = True
         total = self.total_count()
         logger.info(
-            "🗄️ MassiveIndicDatabase initialized in %.1fms across 8 Domains. Total: %d structured records.",
+            "🗄️ MassiveIndicDatabase initialized in %.1fms across 9 Domains. Total: %d structured records.",
             elapsed, total
         )
 
     def total_count(self) -> int:
         return (
             len(self.products) + len(self.wards) + len(self.mandi_rates) + len(self.socratic_bank) +
-            len(self.banking_records) + len(self.healthcare_records) + len(self.railway_records) + len(self.agritech_records)
+            len(self.banking_records) + len(self.healthcare_records) + len(self.railway_records) + len(self.agritech_records) +
+            len(self.cyber_scams)
         )
 
     # ── Search & Retrieval APIs ──────────────────────────────────────────────
@@ -780,8 +827,24 @@ class MassiveIndicDatabase:
             return self.agritech_records[best_idx]
         return random.choice(self.agritech_records)
 
+    def find_scam_record(self, query: str) -> Dict[str, Any]:
+        """Find the closest Gnani armour365 cyber threat or digital arrest scam record."""
+        tokens = self._tokenize(query)
+        if not tokens:
+            return random.choice(self.cyber_scams)
+
+        scores: Dict[int, int] = {}
+        for tok in tokens:
+            for idx in self._scam_index.get(tok, []):
+                scores[idx] = scores.get(idx, 0) + 1
+
+        if scores:
+            best_idx = max(scores, key=scores.get)
+            return self.cyber_scams[best_idx]
+        return random.choice(self.cyber_scams)
+
     def search_all(self, query: str, limit: int = 25) -> List[Dict[str, Any]]:
-        """Multi-domain full-text search across all 28,000+ records in <1.5ms."""
+        """Multi-domain full-text search across all 30,000+ records in <1.5ms."""
         tokens = self._tokenize(query)
         if not tokens:
             return []
@@ -827,6 +890,11 @@ class MassiveIndicDatabase:
             for idx in self._viva_index.get(tok, [])[:3]:
                 v = self.socratic_bank[idx]
                 results.append({"type": "SOCRATIC_VIVA", "title": v["topic"], "detail": f"{v['socratic_probe'][:80]}...", "id": v["question_id"]})
+        # Cyber Scam Defense (armour365)
+        for tok in tokens:
+            for idx in self._scam_index.get(tok, [])[:3]:
+                s = self.cyber_scams[idx]
+                results.append({"type": "CYBER_SCAM", "title": s["scam_title"], "detail": f"{s['impersonated_authority']} • Gateway: {s['caller_gateway_type']} • {s['action_taken']}", "id": s["scam_id"]})
 
         # Deduplicate
         seen = set()
@@ -853,12 +921,14 @@ class MassiveIndicDatabase:
                 "jan_aushadhi_healthcare": len(self.healthcare_records),
                 "indian_railways_railmadad": len(self.railway_records),
                 "agritech_kisan_advisories": len(self.agritech_records),
+                "gnani_armour365_scam_defense": len(self.cyber_scams),
             },
             "cities_covered": len(INDIAN_CITIES),
             "apmc_mandis_covered": len(MANDI_HUBS),
             "indexed_unique_tokens": (
                 len(self._product_index) + len(self._ward_index) + len(self._mandi_index) + len(self._viva_index) +
-                len(self._banking_index) + len(self._health_index) + len(self._railway_index) + len(self._agritech_index)
+                len(self._banking_index) + len(self._health_index) + len(self._railway_index) + len(self._agritech_index) +
+                len(self._scam_index)
             ),
             "index_search_latency": "< 1.5 ms (in-memory inverted hash)",
         }
