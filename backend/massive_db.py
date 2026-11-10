@@ -158,35 +158,35 @@ FMCG_CATEGORIES = {
 
 # ── 3. APMC Mandi Commodities Matrix ─────────────────────────────────────────────
 MANDI_HUBS = [
-    ("Azadpur Mandi", "Delhi", "Asia's Largest Fruit & Vegetable Terminal"),
-    ("Vashi APMC Market", "Mumbai, Maharashtra", "Western India Hub"),
-    ("Yeshwanthpur APMC", "Bengaluru Bangalore, Karnataka", "South India Grain & Onion Hub"),
-    ("Lasalgaon APMC", "Nashik, Maharashtra", "India's Central Onion Capital"),
-    ("Guntur Mirchi Yard", "Guntur, Andhra Pradesh", "Asia's Premier Red Chilli Market"),
-    ("Unjha APMC Mandi", "Mehsana, Gujarat", "Global Cumin & Isabgol Capital"),
-    ("Kolar APMC Mandi", "Kolar, Karnataka", "Asia's 2nd Largest Tomato Market"),
-    ("Mandsaur Mandi", "Mandsaur, Madhya Pradesh", "Garlic & Soybean Center"),
-    ("Nizamabad APMC", "Nizamabad, Telangana", "National Turmeric Hub"),
-    ("Koyambedu Wholesale Market", "Chennai, Tamil Nadu", "Coromandel Produce Terminal"),
-    ("Khari Baoli Wholesale", "Old Delhi", "Asia's Largest Spice Exchange"),
-    ("Rajkot APMC", "Rajkot, Gujarat", "Groundnut & Cotton Exchange"),
-    ("Surat APMC Market", "Surat, Gujarat", "Diamond City Wholesale Produce"),
-    ("Nagpur Orange & Grain Mandi", "Nagpur, Maharashtra", "Vidarbha Produce Exchange"),
-    ("Karnal Grain Market", "Karnal, Haryana", "Basmati Rice Capital Exchange"),
-    ("Erode Turmeric Market", "Erode, Tamil Nadu", "Yellow City Turmeric Exchange"),
+    ("Azadpur Mandi", "Delhi दिल्ली आज़ादपुर Azadpur", "Asia's Largest Fruit & Vegetable Terminal"),
+    ("Vashi APMC Market", "Mumbai वाशी Navi Mumbai, Maharashtra", "Western India Hub"),
+    ("Yeshwanthpur APMC", "Bengaluru Bangalore बेंगलुरु बेंगलोर ಬೆಂಗಳೂರು ಯಶವಂತಪುರ Yeshwanthpur, Karnataka", "South India Grain & Onion Hub"),
+    ("Lasalgaon APMC", "Nashik लासलगाव Lasalgaon, Maharashtra", "India's Central Onion Capital"),
+    ("Guntur Mirchi Yard", "Guntur गुंटूर, Andhra Pradesh", "Asia's Premier Red Chilli Market"),
+    ("Unjha APMC Mandi", "Mehsana उंझा Unjha, Gujarat", "Global Cumin & Isabgol Capital"),
+    ("Kolar APMC Mandi", "Kolar कोलार ಕೋಲಾರ, Karnataka", "Asia's 2nd Largest Tomato Market"),
+    ("Mandsaur Mandi", "Mandsaur मंदसौर, Madhya Pradesh", "Garlic & Soybean Center"),
+    ("Nizamabad APMC", "Nizamabad निजामाबाद, Telangana", "National Turmeric Hub"),
+    ("Koyambedu Wholesale Market", "Chennai चेन्नई, Tamil Nadu", "Coromandel Produce Terminal"),
+    ("Khari Baoli Wholesale", "Old Delhi पुरानी दिल्ली", "Asia's Largest Spice Exchange"),
+    ("Rajkot APMC", "Rajkot राजकोट, Gujarat", "Groundnut & Cotton Exchange"),
+    ("Surat APMC Market", "Surat सूरत, Gujarat", "Diamond City Wholesale Produce"),
+    ("Nagpur Orange & Grain Mandi", "Nagpur नागपुर, Maharashtra", "Vidarbha Produce Exchange"),
+    ("Karnal Grain Market", "Karnal करनाल, Haryana", "Basmati Rice Capital Exchange"),
+    ("Erode Turmeric Market", "Erode इरोड, Tamil Nadu", "Yellow City Turmeric Exchange"),
 ]
 
 COMMODITY_SYNONYMS = {
-    "Tomato": "tamatar tamator thakkali tomatos",
-    "Potato": "aloo aalu urulaikizhangu batata",
-    "Onion": "pyaz pyaaz kanda eerulli vengayam",
-    "Wheat": "gehun gehu godhi",
-    "Basmati": "chawal dhan rice akki",
-    "Chilli": "mirchi mirch menasinakayi milagai",
-    "Turmeric": "haldi arisina manjal",
-    "Jeera": "zeera jeerige seeragam cumin",
-    "Mustard": "sarson sasive kadugu",
-    "Cotton": "kapas hatti paruthi",
+    "Tomato": "tamatar tamator टमाटर thakkali tomatos ಟೊಮೆಟೊ tomato",
+    "Potato": "aloo aalu आलू urulaikizhangu batata ಆಲೂಗಡ್ಡೆ potato",
+    "Onion": "pyaz pyaaz प्याज़ प्याज kanda eerulli vengayam ಈರುಳ್ಳಿ onion",
+    "Wheat": "gehun gehu गेहूं godhi wheat",
+    "Basmati": "chawal dhan rice akki चावल धान",
+    "Chilli": "mirchi mirch मिर्च menasinakayi milagai chilli",
+    "Turmeric": "haldi हल्दी arisina manjal turmeric",
+    "Jeera": "zeera जीरा jeerige seeragam cumin",
+    "Mustard": "sarson सरसों sasive kadugu mustard",
+    "Cotton": "kapas कपास hatti paruthi cotton",
 }
 
 COMMODITY_PRICES = [
@@ -407,8 +407,9 @@ class MassiveIndicDatabase:
         self._load_data()
 
     def _tokenize(self, text: str) -> List[str]:
-        """Convert string to lowercase alphanumeric tokens."""
-        return re.findall(r"\w+", text.lower())
+        """Convert string to lowercase tokens supporting English and Indic scripts."""
+        tokens = [re.sub(r"^[^\w\u0900-\u0D7F]+|[^\w\u0900-\u0D7F]+$", "", w) for w in text.lower().split()]
+        return [t for t in tokens if t]
 
     def _index_tokens(self, index_dict: Dict[str, List[int]], text: str, idx: int):
         tokens = self._tokenize(text)
@@ -510,7 +511,7 @@ class MassiveIndicDatabase:
                     idx = len(self.mandi_rates)
                     self.mandi_rates.append(rec)
                     syns = " ".join(v for k, v in COMMODITY_SYNONYMS.items() if k.lower() in comm.lower())
-                    self._index_tokens(self._mandi_index, f"{mandi_id} {mandi_name} {comm} {syns} {grade} {location}", idx)
+                    self._index_tokens(self._mandi_index, f"{mandi_id} {mandi_name} {comm} {syns} {grade} {location} मंडी रेट भाव दाम ಬೆಲೆ mandi rate bhav", idx)
 
         # ── 4. Generate 1,105 Socratic Technical Question Bank ─────────────────
         viva_counter = 100
@@ -754,7 +755,16 @@ class MassiveIndicDatabase:
         scores: Dict[int, int] = {}
         for tok in tokens:
             for idx in self._mandi_index.get(tok, []):
-                scores[idx] = scores.get(idx, 0) + 1
+                weight = 1
+                rec = self.mandi_rates[idx]
+                comm_lower = rec["commodity"].lower()
+                mandi_lower = rec["mandi_name"].lower()
+                loc_lower = rec["location"].lower()
+                if tok in comm_lower or tok in ["tamatar", "tomato", "टमाटर", "onion", "pyaz", "pyaaz", "प्याज़", "potato", "aloo", "आलू"]:
+                    weight = 4
+                elif tok in mandi_lower or tok in loc_lower or tok in ["bangalore", "bengaluru", "बेंगलुरु", "बेंगलोर", "ಬೆಂಗಳೂರು", "yeshwanthpur"]:
+                    weight = 3
+                scores[idx] = scores.get(idx, 0) + weight
 
         if scores:
             best_idx = max(scores, key=scores.get)

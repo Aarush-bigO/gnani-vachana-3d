@@ -44,7 +44,7 @@ class IndicReasoningEngine:
         """
         raw_text = user_text.strip()
         lower = raw_text.lower()
-        clean = re.sub(r"[^\w\s]", " ", lower)
+        clean = re.sub(r"[^\w\s\u0900-\u0D7F]", " ", lower)
         tokens = set(clean.split())
 
         if turn:
@@ -55,7 +55,13 @@ class IndicReasoningEngine:
         substantive_keys = [
             "mandi", "rate", "bhav", "tamatar", "tomato", "aalu", "potato", "onion", "pyaz", "pyaaz",
             "upi", "dispute", "ward", "kirana", "amul", "viva", "health", "dolo", "medicine",
-            "train", "scam", "cbi", "arrest", "kisan", "crop", "price", "daam", "refund", "ticket"
+            "train", "scam", "cbi", "arrest", "kisan", "crop", "price", "daam", "refund", "ticket",
+            # Devanagari Hindi
+            "मंडी", "भाव", "रेट", "दाम", "टमाटर", "आलू", "प्याज़", "प्याज", "गेहूं", "मिर्च", "हल्दी", "जीरा", "कपास",
+            "बेंगलुरु", "बेंगलोर", "यूपीआई", "पैसे", "रिफंड", "वार्ड", "शिकायत", "अमूल", "दूध", "दवा", "दवाई",
+            "ट्रेन", "स्कैम", "अरेस्ट", "किसान", "फसल",
+            # Kannada
+            "ಮಂಡಿ", "ದರ", "ಬೆಲೆ", "ಟೊಮೆಟೊ", "ಈರುಳ್ಳಿ", "ಆಲೂಗಡ್ಡೆ", "ಬೆಂಗಳೂರು", "ಯಶವಂತಪುರ"
         ]
         has_substantive = any(k in lower for k in substantive_keys)
 
@@ -343,19 +349,19 @@ class IndicReasoningEngine:
 
     def _check_gestures(self, lower: str, tokens: set) -> Tuple[bool, str, str]:
         """Detect and trigger 3D avatar physical gestures."""
-        if any(w in tokens for w in ["namaste", "pranam", "pranaam", "namaskar", "namaskaram"]):
+        if any(w in tokens for w in ["namaste", "pranam", "pranaam", "namaskar", "namaskaram", "नमस्ते", "प्रणाम", "नमस्कार", "ನಮಸ್ಕಾರ"]):
             return (
                 True,
                 "namaste",
                 "<chuckle> Namaste ji! Aapka swagat hai Gnani Vachana 3D me. Boliye, aaj main aapki kya madad kar sakti hoon?"
             )
-        if any(w in tokens for w in ["wave", "handup", "hath"]):
+        if any(w in tokens for w in ["wave", "handup", "hath", "हाथ"]):
             return (
                 True,
                 "handup",
                 "Hello there! Waving at you. Main aapki har command sunne ke liye taiyyar hoon."
             )
-        if any(w in tokens for w in ["thumbsup", "thumbup", "shabash", "badhiya", "cheers", "super"]):
+        if any(w in tokens for w in ["thumbsup", "thumbup", "shabash", "badhiya", "cheers", "super", "शाबाश", "बढ़िया"]):
             return (
                 True,
                 "thumbup",
@@ -701,7 +707,7 @@ class IndicReasoningEngine:
                 "gesture": "nod"
             }
 
-        if any(p in lower for p in ["bangalore", "bengaluru", "silicon valley of india"]) and not any(k in lower for k in ["mandi", "rate", "tamatar", "tomato", "ward", "price", "bhav", "apmc"]):
+        if any(p in lower for p in ["bangalore", "bengaluru", "silicon valley of india", "बेंगलुरु", "बेंगलोर", "ಬೆಂಗಳೂರು"]) and not any(k in lower for k in ["mandi", "rate", "tamatar", "tomato", "ward", "price", "bhav", "apmc", "मंडी", "भाव", "रेट", "दाम", "टमाटर", "ಮಂಡಿ", "ದರ", "ಬೆಲೆ"]):
             return {
                 "text": (
                     "Bengaluru is known as the Silicon Valley of India! It is the nation's premier technology, aerospace, and startup hub, "
@@ -751,15 +757,17 @@ class IndicReasoningEngine:
         if any(w in lower for w in ["attention", "neural", "deep learning", "nlp", "model", "architecture", "llm", "ai", "machine learning", "layer"]):
             return False
 
-        # Disambiguate APMC Mandi from PMC (Pune Municipal Corp)
-        if "apmc" in tokens or "mandi" in tokens:
+        # Disambiguate APMC Mandi, Banking, Medicine & Kirana
+        if "apmc" in tokens or "mandi" in tokens or "मंडी" in lower or "ಮಂಡಿ" in lower or any(w in lower for w in ["upi", "bank", "kirana", "amul", "dawa", "medicine", "dolo", "paracetamol", "train"]):
             return False
 
         civic_intents = [
             "spark", "voltage", "power outage", "electricity", "current", "bijli",
             "pipeline", "leak", "pani", "water supply", "street light", "batti",
             "pothole", "gaddha", "road broken", "garbage", "kachra", "sewer", "drain", "nali",
-            "complaint", "gramseva", "sla"
+            "complaint", "gramseva", "sla",
+            # Indic
+            "बिजली", "पानी", "सड़क", "गड्ढा", "कचरा", "शिकायत", "लाइट", "ट्रांसफार्मर", "सीवर", "नाली"
         ]
         corps = {"bbmp", "bmc", "mcd", "pmc", "ghmc"}
         if bool(tokens & corps):
@@ -770,21 +778,34 @@ class IndicReasoningEngine:
 
     def _is_kirana_query(self, lower: str, tokens: set) -> bool:
         """Check if query is related to Kirana & FMCG Inventory."""
+        # Disambiguate Mandi, Medicine, and Banking
+        if any(w in lower for w in ["mandi", "rate", "bhav", "मंडी", "भाव", "dolo", "medicine", "upi", "bank"]):
+            return False
         fmcg_keywords = [
             "amul", "taaza", "stock", "expiry", "kirana", "batch", "atta", "mrp", "shelf",
             "discount", "doodh", "butter", "makkhan", "ghee", "chawal",
             "dal", "namak", "maggi", "parle", "biscuit", "dolo", "paracetamol", "sabun",
-            "aashirvaad", "fortune", "colgate", "dettol"
+            "aashirvaad", "fortune", "colgate", "dettol",
+            # Indic
+            "अमूल", "ताज़ा", "दूध", "मक्खन", "घी", "चावल", "दाल", "नमक", "आटा", "साबुन", "किराना", "एक्सपायरी", "स्टॉक"
         ]
         return any(k in lower for k in fmcg_keywords)
 
     def _is_mandi_query(self, lower: str, tokens: set) -> bool:
         """Check if query is related to APMC Mandi Daily Commodity Rates."""
+        # Disambiguate Agritech crop disease / pesticide from Mandi commodity ticker
+        if any(w in lower for w in ["disease", "pesticide", "keeda", "keetnashak", "leaf curl", "blast", "rust", "fertilizer", "khad", "soil"]):
+            return False
         mandi_keywords = [
             "mandi", "bhav", "rate", "price", "daam", "tomato", "tamatar", "onion", "pyaaz",
             "wheat", "gehu", "cotton", "kapas", "turmeric", "haldi", "chilli", "mirchi",
             "jeera", "potato", "aloo", "soybean", "chana", "mustard", "sarson", "apmc",
-            "azadpur", "lasalgaon", "guntur", "kolar", "unjha", "vashi", "yeshwanthpur"
+            "azadpur", "lasalgaon", "guntur", "kolar", "unjha", "vashi", "yeshwanthpur",
+            # Devanagari Hindi
+            "मंडी", "भाव", "रेट", "दाम", "टमाटर", "आलू", "प्याज़", "प्याज", "गेहूं", "मिर्च",
+            "हल्दी", "जीरा", "कपास", "बेंगलुरु", "बेंगलोर", "आज़ादपुर", "कृषि",
+            # Kannada
+            "ಮಂಡಿ", "ದರ", "ಬೆಲೆ", "ಟೊಮೆಟೊ", "ಈರುಳ್ಳಿ", "ಆಲೂಗಡ್ಡೆ", "ಬೆಂಗಳೂರು", "ಯಶವಂತಪುರ"
         ]
         return any(k in lower for k in mandi_keywords)
 
@@ -794,7 +815,9 @@ class IndicReasoningEngine:
             "upi", "payment fail", "failed", "paise kat", "kat gaye", "reversal", "dispute",
             "u19", "u30", "u69", "u03", "bank", "sbi", "hdfc", "icici", "pnb", "bob", "axis",
             "kotak", "canara", "ifsc", "atm", "debit card", "credit card", "hotlist", "block card",
-            "cyber fraud", "1930", "chargeback", "npci", "udir", "kcc", "mudra loan"
+            "cyber fraud", "1930", "chargeback", "npci", "udir", "kcc", "mudra loan",
+            # Indic
+            "यूपीआई", "पैसे कट", "कट गए", "पैसे", "रिफंड", "विवाद", "बैंक", "अकाउंट", "खाता", "एटीएम"
         ]
         return any(k in lower for k in banking_keywords)
 
@@ -805,7 +828,9 @@ class IndicReasoningEngine:
             "dolo", "crocin", "paracetamol", "metformin", "glycomet", "telmisartan", "telma",
             "atorvastatin", "pantoprazole", "pan 40", "amoxicillin", "augmentin", "montelukast",
             "azithromycin", "azithral", "phc", "chc", "hospital", "doctor", "bukhaar", "fever",
-            "headache", "dard", "tablet", "capsule", "dosage", "side effect"
+            "headache", "dard", "tablet", "capsule", "dosage", "side effect",
+            # Indic
+            "दवा", "दवाई", "जेनेरिक", "जन औषधि", "बुखार", "दर्द", "सरदर्द", "गोली", "डॉक्टर", "अस्पताल"
         ]
         return any(k in lower for k in health_keywords)
 
@@ -814,7 +839,9 @@ class IndicReasoningEngine:
         rail_keywords = [
             "railway", "train", "railmadad", "139", "irctc", "pnr", "vande bharat", "rajdhani",
             "shatabdi", "berth", "seat", "coach", "tatkal", "clean my coach", "obhs", "bio toilet",
-            "pantry", "overcharging", "tte", "rpf", "station", "ndls", "csmt", "sbc", "mas"
+            "pantry", "overcharging", "tte", "rpf", "station", "ndls", "csmt", "sbc", "mas",
+            # Indic
+            "ट्रेन", "रेलवे", "रेल", "वंदे भारत", "राजधानी", "बर्थ", "सीट", "कोच", "स्टेशन", "पीएनआर"
         ]
         return any(k in lower for k in rail_keywords)
 
@@ -824,7 +851,9 @@ class IndicReasoningEngine:
             "kisan", "crop", "fasal", "kheti", "dhaan", "paddy", "blast", "pink bollworm",
             "kapas", "cotton", "rust", "yellow rust", "gehu", "wheat", "tamatar", "leaf curl",
             "pest", "keeda", "pesticide", "keetnashak", "urea", "nano urea", "fertilizer", "khad",
-            "soil health", "soil", "pm kisan", "samman nidhi", "ekyc", "installment", "kvk"
+            "soil health", "soil", "pm kisan", "samman nidhi", "ekyc", "installment", "kvk",
+            # Indic
+            "किसान", "फसल", "खेती", "कीड़ा", "कीटनाशक", "खाद", "यूरिया", "पीएम किसान"
         ]
         return any(k in lower for k in agri_keywords)
 
@@ -836,7 +865,9 @@ class IndicReasoningEngine:
             "bijli kat", "light kat", "discom", "9:30 pm", "sim block", "sim deactivate",
             "dot sanchar saathi", "chakshu", "voice clone", "deepfake voice", "ai voice clone",
             "hospital emergency call", "telegram task", "maps review rating", "scam call",
-            "fake cbi", "police extortion", "skype arrest", "ed money laundering", "pmla seizure"
+            "fake cbi", "police extortion", "skype arrest", "ed money laundering", "pmla seizure",
+            # Indic
+            "डिजिटल अरेस्ट", "सीबीआई", "पुलिस", "स्कैम", "पार्सल", "धोखाधड़ी", "कॉल"
         ]
         return any(k in lower for k in scam_keywords)
 
