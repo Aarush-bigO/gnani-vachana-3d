@@ -101,6 +101,28 @@
       display: none;
     }
 
+    .gnani-lk-scenarios-top {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 4px 0;
+    }
+    .gnani-lk-scenarios-top::-webkit-scrollbar {
+      display: none;
+    }
+
+    .gnani-lk-controls-top {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
     #main {
       top: calc(50% + 12px) !important;
       z-index: 10 !important;
@@ -729,7 +751,7 @@
     </div>
 
     <!-- 1-Click Indic Scenarios & Full-Duplex Controls in Top Bar -->
-    <div class="gnani-lk-scenarios-top" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+    <div class="gnani-lk-scenarios-top">
       <button class="gnani-lk-mic-btn" id="gnani-mic-btn" style="padding:6px 12px;font-size:11px;">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
@@ -780,7 +802,7 @@
       </button>
     </div>
 
-    <div class="gnani-lk-controls-top" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+    <div class="gnani-lk-controls-top">
       <select class="gnani-lk-select" id="gnani-lang-select" style="padding:5px 8px;font-size:11px;" title="Switch Indic Language">
         <option value="hi-IN" selected>🇮🇳 Hindi (hi)</option>
         <option value="kn-IN">🇮🇳 Kannada (kn) - Main Track</option>
