@@ -790,23 +790,6 @@
       </button>
     </div>
 
-    <!-- Real-time Latency Waterfall (Click to inspect) -->
-    <div class="gnani-lk-waterfall" id="gnani-waterfall" style="cursor:pointer;flex-shrink:0;" title="Click to view Sub-500ms Breakdown">
-      <div class="gnani-lk-pill gnani-lk-pill-stt" title="Prisma v2.5 Streaming STT Latency">
-        <span>STT:</span> <strong id="gnani-stt-ms">184ms</strong>
-      </div>
-      <div class="gnani-lk-pill gnani-lk-pill-llm" title="Evon v3.3 30B MoE Time-To-First-Token">
-        <span>EVON:</span> <strong id="gnani-llm-ms">142ms</strong>
-      </div>
-      <div class="gnani-lk-pill gnani-lk-pill-tts" title="Timbre v2.5 Time-To-First-Audio">
-        <span>TTS:</span> <strong id="gnani-tts-ms">112ms</strong>
-      </div>
-      <div class="gnani-lk-pill gnani-lk-pill-turn" title="Full Conversational Turn-Around Loop">
-        <span class="gnani-badge-dot"></span>
-        <strong id="gnani-turn-ms">438ms</strong>
-      </div>
-    </div>
-
     <div class="gnani-lk-controls-top" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
       <select class="gnani-lk-select" id="gnani-lang-select" style="padding:5px 8px;font-size:11px;" title="Switch Indic Language">
         <option value="hi-IN" selected>🇮🇳 Hindi (hi)</option>
@@ -1180,10 +1163,14 @@
       telemetry.tts = msg.tts_ttfa_ms || telemetry.tts;
       telemetry.total = Math.round(telemetry.stt + telemetry.llm + telemetry.tts);
 
-      document.getElementById("gnani-stt-ms").textContent = `${telemetry.stt}ms`;
-      document.getElementById("gnani-llm-ms").textContent = `${telemetry.llm}ms`;
-      document.getElementById("gnani-tts-ms").textContent = `${telemetry.tts}ms`;
-      document.getElementById("gnani-turn-ms").textContent = `${telemetry.total}ms`;
+      const sttEl = document.getElementById("gnani-stt-ms");
+      const llmEl = document.getElementById("gnani-llm-ms");
+      const ttsEl = document.getElementById("gnani-tts-ms");
+      const turnEl = document.getElementById("gnani-turn-ms");
+      if (sttEl) sttEl.textContent = `${telemetry.stt}ms`;
+      if (llmEl) llmEl.textContent = `${telemetry.llm}ms`;
+      if (ttsEl) ttsEl.textContent = `${telemetry.tts}ms`;
+      if (turnEl) turnEl.textContent = `${telemetry.total}ms`;
     } else if (msg.type === "tool_card" || msg.type === "tool_call") {
       const card = msg.data || msg.tool_card;
       renderToolCard(card);
